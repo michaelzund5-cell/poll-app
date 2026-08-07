@@ -1,59 +1,235 @@
-# PolApp
+# PollApp
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 22.0.8.
+PollApp is an Angular application for creating surveys, collecting votes, and displaying survey results.
 
-## Development server
+The application uses Supabase for persistence and follows a feature-oriented frontend architecture. Data access, domain logic, database models, and presentation logic are kept separate to avoid coupling Angular components directly to the persistence layer.
 
-To start a local development server, run:
+## Tech Stack
 
-```bash
-ng serve
+* Angular 22
+* TypeScript
+* SCSS
+* Supabase
+* Angular Signals
+* Reactive Forms
+* Vitest
+* Node.js 24 LTS
+
+## Architecture
+
+Survey functionality is organized around four main layers:
+
+```text
+Component
+    │
+    ▼
+SurveyService
+    │
+    ▼
+SurveyRepository
+    │
+    ▼
+Supabase
 ```
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+### Components
 
-## Code scaffolding
+Components are responsible for presentation, user interaction, and local UI state.
 
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
+Database access and persistence-specific transformations are intentionally kept outside the component layer. This keeps components focused on the behavior required by their views.
 
-```bash
-ng generate component component-name
+### Service
+
+`SurveyService` provides the application-facing API for survey operations and owns survey-related state and business logic.
+
+Components depend on this service rather than accessing Supabase directly.
+
+### Repository
+
+`SurveyRepository` contains the persistence logic for surveys, questions, answers, and votes.
+
+Keeping database operations behind the repository provides a single boundary between the application and Supabase. Changes to queries or the persistence implementation can therefore be made without spreading database-specific logic throughout the UI.
+
+### DTO Mapping
+
+Database records and application models are represented separately.
+
+```text
+Supabase
+   │
+   ▼
+SurveyDto
+   │
+   ▼
+SurveyMapper
+   │
+   ▼
+Survey
 ```
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
+DTOs reflect the database schema, while domain models represent the structures used by the application.
 
-```bash
-ng generate --help
+This prevents database conventions such as `created_at`, `end_date`, or `allow_multiple` from becoming part of the component API.
+
+## State Management
+
+Angular Signals are used for local and survey-related state.
+
+Derived values are implemented with `computed()` where possible instead of maintaining additional synchronized state manually.
+
+This also removes the need for explicit `ChangeDetectorRef.detectChanges()` calls in the survey flow.
+
+## Type Safety
+
+The survey domain is strictly typed.
+
+Categories are defined from a readonly constant:
+
+```ts
+export const SURVEY_CATEGORIES = [
+  'Team Activities',
+  'Health & Wellness',
+  'Gaming & Entertainment',
+  'Education & Learning',
+  'Lifestyle & Preferences',
+  'Technology & Innovation',
+] as const;
+
+export type SurveyCategory =
+  (typeof SURVEY_CATEGORIES)[number];
 ```
 
-## Building
+The same approach is used for survey, question, answer, DTO, and form-related data instead of falling back to `any`.
 
-To build the project run:
+## Project Structure
 
-```bash
-ng build
+```text
+src/app/
+├── components/
+│   ├── header/
+│   ├── hero/
+│   ├── home/
+│   ├── new-survey/
+│   ├── survey-detail/
+│   └── surveys/
+│
+├── core/
+│   └── data-access/
+│       └── supabase-client.service.ts
+│
+└── features/
+    └── surveys/
+        ├── constants/
+        │   └── survey.constants.ts
+        │
+        ├── data-access/
+        │   ├── survey.mapper.ts
+        │   └── survey.repository.ts
+        │
+        ├── models/
+        │   ├── survey.dto.ts
+        │   └── survey.model.ts
+        │
+        ├── services/
+        │   └── survey.service.ts
+        │
+        └── utils/
+            └── survey-date.util.ts
 ```
 
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
+`core` contains application-wide infrastructure.
 
-## Running unit tests
+Survey-specific code stays inside the survey feature. Components consume the feature API without needing knowledge of how survey data is persisted.
 
-To execute unit tests with the [Vitest](https://vitest.dev/) test runner, use the following command:
+## Design Decisions
+
+### Repository instead of direct Supabase access
+
+Direct Supabase calls from components would couple UI code to the database schema and make persistence concerns part of presentation logic.
+
+The repository provides one location for queries and mutations instead.
+
+### Separate DTOs and domain models
+
+The database schema and frontend model have different responsibilities and are allowed to evolve independently.
+
+Mapping at the data boundary makes that distinction explicit.
+
+### Signals instead of manual change detection
+
+Survey state is reactive. Signals and computed state provide the required update behavior without manually triggering Angular change detection.
+
+### Centralized domain constants
+
+Survey categories, limits, and other domain values are defined centrally rather than repeated as string literals or magic numbers.
+
+### Extracted date calculations
+
+Date-related calculations are implemented as reusable utilities instead of being duplicated across components.
+
+This also makes the calculations independently testable.
+
+### No unnecessary abstraction
+
+The architecture deliberately stops at boundaries that provide practical value.
+
+Presentation remains in components, business behavior in the service, persistence in the repository, and database transformations in the mapper. Additional layers are only introduced when they have a concrete responsibility.
+
+## Development
+
+### Requirements
+
+* Node.js 24.15.0 or newer
+* npm
+
+Install dependencies:
 
 ```bash
-ng test
+npm install
 ```
 
-## Running end-to-end tests
-
-For end-to-end (e2e) testing, run:
+Start the development server:
 
 ```bash
-ng e2e
+npm start
 ```
 
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
+The application is available at:
 
-## Additional Resources
+```text
+http://localhost:4200
+```
 
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+## Build
+
+Create a production build with:
+
+```bash
+npm run build
+```
+
+Build artifacts are written to `dist/`.
+
+## Tests
+
+Run the test suite with:
+
+```bash
+npm test
+```
+
+The survey feature includes tests for isolated domain functionality such as DTO mapping and date utilities.
+
+## Current Scope
+
+The application currently covers the core survey workflow:
+
+* Create surveys
+* Configure questions and answers
+* Browse surveys
+* Filter surveys
+* Open survey details
+* Submit votes
+* Display results
+
+Further functionality can be added through the survey feature without moving persistence or business logic back into the component layer.
