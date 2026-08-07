@@ -1,0 +1,84 @@
+<main>
+  <div class="content">
+    <div class="detail-header">
+      <a routerLink="/">
+        <img src="images/pollapp_dark.png" alt="logo" class="logo" />
+      </a>
+      <button class="n-survey" (click)="openDialog()">
+        Create survey
+        <span class="plus-icon"><img src="icons/add_circle.svg" alt="" /></span>
+      </button>
+    </div>
+    @if (errorMessage()) {
+      <p>{{ errorMessage() }}</p>
+    }
+        <div class="survey-layout">
+      <section class="survey-form">
+        <span class="draft-badge"> Published </span>
+        <div class="meta-row">
+          <span>Ends on {{ survey()?.endDate | date: 'dd.MM.yyyy' }}</span>
+          <span>Category: {{ survey()?.category }}</span>
+        </div>
+        <h1>{{ survey()?.title }}</h1>
+
+        <p>{{ survey()?.description }}</p>
+        <form>
+          @for (question of questions(); track question.id; let qIndex = $index) {
+            <fieldset>
+              <legend>{{ question.legend }}</legend>
+              @if (question.hint) {
+                <p class="hint">{{ question.hint }}</p>
+              }
+
+              @for (answer of question.answers; track answer.id) {
+                <label>
+                  <input
+                    type="checkbox"
+                    [checked]="!!answer.selected"
+                    [disabled]="isPast()"
+                    (change)="toggleAnswer(question.id, answer.id)"
+                  />
+                  <span
+                    ><strong>{{ answer.label }}.</strong> {{ answer.text }}</span
+                  >
+                </label>
+              }
+            </fieldset>
+          }
+
+          <button type="button" class="complete-btn" (click)="completeSurvey()" [disabled]="isPast() || isSubmitting()">
+            {{ isSubmitting() ? 'Submitting...' : 'Complete survey' }}
+          </button>
+        </form>
+      </section>
+
+      <aside class="survey-results">
+        <h2>Survey results <span class="live">LIVE</span></h2>
+
+        @for (question of questions(); track question) {
+          <div class="result-block">
+            @if (!question.totalVotes) {
+              <div class="no-results">
+                <p>Results will be shown here after participants complete the survey.</p>
+                <p class="no-answers">There are no answers yet.</p>
+              </div>
+            } @else {
+              <h3>{{ question.legend }}</h3>
+              @for (answer of question.answers; track answer.id) {
+                <div class="result-row">
+                  <span class="option-label">{{ answer.label }}</span>
+                  <div class="bar-track">
+                    <div class="bar-fill" [style.width.%]="answer.votePercentage ?? 0"></div>
+                  </div>
+                  <span class="percentage">{{ answer.votePercentage ?? 0 }}%</span>
+                </div>
+              }
+            }
+          </div>
+        }
+      </aside>
+    </div>
+  </div>
+
+  <app-new-survey />
+</main>
