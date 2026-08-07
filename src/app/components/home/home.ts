@@ -6,6 +6,6 @@ import { Surveys } from '../surveys/surveys';
   selector: 'app-home',
   imports: [Hero, Surveys],
   templateUrl: './home.html',
-  styleUrl: './home.scss',
+
 })
 export class Home {}

@@ -1,13 +1,32 @@
 import { SURVEY_CATEGORIES, SurveyCategory } from '../constants/survey.constants';
 import { Answer, Question, Survey, SurveyDetails } from '../models/survey.model';
-import { AnswerRowDto, QuestionRowDto, SurveyDetailsRowDto, SurveyRowDto } from '../models/survey.dto';
+import {
+  AnswerRowDto,
+  QuestionRowDto,
+  SurveyDetailsRowDto,
+  SurveyRowDto,
+} from '../models/survey.dto';
 
-function toSurveyCategory(value: string): SurveyCategory {
-  if (SURVEY_CATEGORIES.some((category) => category === value)) {
-    return value as SurveyCategory;
+const DEFAULT_SURVEY_CATEGORY: SurveyCategory = 'Lifestyle & Preferences';
+
+function toSurveyCategory(value: string | null | undefined): SurveyCategory {
+  const normalizedValue = value?.trim();
+
+  if (!normalizedValue) {
+    return DEFAULT_SURVEY_CATEGORY;
   }
 
-  throw new Error(`Unsupported survey category: ${value}`);
+  const category = SURVEY_CATEGORIES.find(
+    (surveyCategory) => surveyCategory === normalizedValue
+  );
+
+  if (category) {
+    return category;
+  }
+
+  console.warn(`Unsupported survey category: "${normalizedValue}"`);
+
+  return DEFAULT_SURVEY_CATEGORY;
 }
 
 export function mapSurvey(dto: SurveyRowDto): Survey {
@@ -36,14 +55,20 @@ function mapQuestion(dto: QuestionRowDto): Question {
     legend: dto.text,
     hint: dto.hint ?? undefined,
     allowMultiple: dto.allow_multiple,
-    answers: [...dto.answers].sort((a, b) => a.position - b.position).map(mapAnswer),
+    answers: [...dto.answers]
+      .sort((a, b) => a.position - b.position)
+      .map(mapAnswer),
     totalVotes: 0,
   };
 }
 
-export function mapSurveyDetails(dto: SurveyDetailsRowDto): SurveyDetails {
+export function mapSurveyDetails(
+  dto: SurveyDetailsRowDto
+): SurveyDetails {
   return {
     ...mapSurvey(dto),
-    questions: [...dto.questions].sort((a, b) => a.position - b.position).map(mapQuestion),
+    questions: [...dto.questions]
+      .sort((a, b) => a.position - b.position)
+      .map(mapQuestion),
   };
 }
