@@ -1,7 +1,15 @@
+/**
+ * @file src/app/app.spec.ts
+ * @description Unit test specification for app.
+ *
+ * Verifies the public behavior or creation contract of the corresponding unit. Tests document expected behavior and protect refactoring from regressions.
+ */
+
 import { TestBed } from '@angular/core/testing';
 import { App } from './app';
 
 describe('App', () => {
+  // Arrange shared test module/fixture before each isolated assertion.
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [App],

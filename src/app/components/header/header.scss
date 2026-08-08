@@ -1,3 +1,9 @@
+/*
+ * File: src/app/components/header/header.scss
+ * Purpose: Header component styles.
+ * Why: Styles scoped to the global header, including responsive navigation presentation.
+ */
+
 @use '../../../styles/variables' as *;
 
 header {

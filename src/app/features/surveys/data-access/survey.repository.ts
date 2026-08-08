@@ -1,8 +1,19 @@
+/**
+ * @file src/app/features/surveys/data-access/survey.repository.ts
+ * @description Survey persistence repository.
+ *
+ * Owns all Supabase queries and mutations for surveys, questions, answers and votes. The repository is the only survey layer that knows table names and persistence field names.
+ */
+
 import { inject, Injectable } from '@angular/core';
 import { SupabaseClientService } from '../../../core/data-access/supabase-client.service';
 import { CreateSurveyInput } from '../models/survey.model';
 import { SurveyDetailsRowDto, SurveyRowDto, VoteRowDto } from '../models/survey.dto';
 
+/**
+ * Repository-specific error that preserves the original Supabase failure.
+ * Components receive stable application messages while diagnostics retain root cause.
+ */
 export class SurveyRepositoryError extends Error {
   constructor(message: string, readonly originalError?: unknown) {
     super(message);
@@ -11,9 +22,18 @@ export class SurveyRepositoryError extends Error {
 }
 
 @Injectable({ providedIn: 'root' })
+/**
+ * Persistence boundary for the survey feature.
+ *
+ * All table names, query syntax and persistence field names stay in this class.
+ * Higher layers depend on intent-oriented methods instead of Supabase directly.
+ */
 export class SurveyRepository {
   private readonly supabase = inject(SupabaseClientService);
 
+  /**
+   * Loads all survey rows. Mapping to domain models is intentionally left to SurveyService/mapper.
+   */
   async findAll(): Promise<SurveyRowDto[]> {
     const { data, error } = await this.supabase.client.from('surveys').select('*');
 
@@ -24,6 +44,9 @@ export class SurveyRepository {
     return (data ?? []) as SurveyRowDto[];
   }
 
+  /**
+   * Loads one survey with nested questions and answers. `null` is a valid not-found result; query failures throw.
+   */
   async findById(id: number): Promise<SurveyDetailsRowDto | null> {
     const { data, error } = await this.supabase.client
       .from('surveys')
@@ -38,6 +61,9 @@ export class SurveyRepository {
     return data as SurveyDetailsRowDto | null;
   }
 
+  /**
+   * Persists a survey aggregate. If a child insert fails, the created parent survey is removed to avoid leaving a visibly incomplete aggregate.
+   */
   async create(input: CreateSurveyInput): Promise<number> {
     const { data: survey, error: surveyError } = await this.supabase.client
       .from('surveys')
@@ -91,6 +117,9 @@ export class SurveyRepository {
     return survey.id;
   }
 
+  /**
+   * Persists selected answer ids in one batch. An empty selection is treated as a no-op rather than issuing an unnecessary query.
+   */
   async createVotes(answerIds: readonly number[]): Promise<void> {
     if (answerIds.length === 0) {
       return;
@@ -105,6 +134,9 @@ export class SurveyRepository {
     }
   }
 
+  /**
+   * Loads only vote data needed for result calculation. The projection avoids fetching unused vote columns.
+   */
   async findVotes(answerIds: readonly number[]): Promise<VoteRowDto[]> {
     if (answerIds.length === 0) {
       return [];

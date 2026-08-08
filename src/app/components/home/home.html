@@ -1,2 +1,10 @@
+<!--
+  File: src/app/components/home/home.html
+  Purpose: Home component template.
+  Why: Home page composition template. It wires hero and survey-list sections together and forwards creation events where required.
+-->
+
+<!-- Landing-page introduction and survey creation entry point -->
 <app-hero (surveyCreated)="surveysRef.loadSurveys()" />
+<!-- Survey collection and filters -->
 <app-surveys #surveysRef />

@@ -1,3 +1,10 @@
+/**
+ * @file src/app/components/surveys/surveys.ts
+ * @description Survey list and filtering component.
+ *
+ * Loads the survey collection and exposes derived lists for tabs, categories and upcoming deadlines. Computed signals keep filtering/sorting derived from source state instead of manually synchronized copies.
+ */
+
 import { Component, computed, inject, signal } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import {
@@ -12,6 +19,7 @@ import {
   isSurveyPast,
 } from '../../features/surveys/utils/survey-date.util';
 
+/** Tabs available in the survey collection view. */
 type SurveyTab = 'active' | 'past';
 
 @Component({
@@ -20,6 +28,12 @@ type SurveyTab = 'active' | 'past';
   templateUrl: './surveys.html',
   styleUrl: './surveys.scss',
 })
+/**
+ * Survey collection controller.
+ *
+ * A single source signal stores fetched surveys. Every visible subset is derived with
+ * computed signals, avoiding manually synchronized filtered copies and change detection.
+ */
 export class Surveys {
   readonly activeTab = signal<SurveyTab>('active');
   readonly selectedCategory = signal<SurveyCategory | null>(null);
@@ -31,6 +45,10 @@ export class Surveys {
   private readonly surveyService = inject(SurveyService);
   private readonly surveys = signal<Survey[]>([]);
 
+  /**
+   * The three nearest non-expired surveys with explicit deadlines.
+   * This is derived state and therefore updates automatically whenever source data changes.
+   */
   readonly endingSurveys = computed(() =>
     [...this.surveys()]
       .filter((survey) => survey.endDate && getDaysUntil(survey.endDate) >= 0)
@@ -38,6 +56,7 @@ export class Surveys {
       .slice(0, 3),
   );
 
+  /** Active/past and category-filtered collection rendered by the main survey list. */
   readonly filteredSurveys = computed(() => {
     const tab = this.activeTab();
     const category = this.selectedCategory();
@@ -57,23 +76,38 @@ export class Surveys {
       : result;
   });
 
+  /**
+   * Triggers the first collection load when the page component is instantiated.
+   */
   constructor() {
     void this.loadSurveys();
   }
 
+  /**
+   * Toggles only the dropdown presentation state; selected filter state is independent.
+   */
   toggleCategoryDropdown(): void {
     this.categoryOpen.update((open) => !open);
   }
 
+  /**
+   * Changes the active/past view; computed collections react automatically.
+   */
   setTab(tab: SurveyTab): void {
     this.activeTab.set(tab);
   }
 
+  /**
+   * Applies or clears a category filter and closes the dropdown.
+   */
   selectCategory(category: SurveyCategory | null): void {
     this.selectedCategory.set(category);
     this.categoryOpen.set(false);
   }
 
+  /**
+   * Owns collection loading state and user-facing errors while delegating data access to SurveyService.
+   */
   async loadSurveys(): Promise<void> {
     this.isLoading.set(true);
     this.loadError.set(null);
@@ -88,6 +122,9 @@ export class Surveys {
     }
   }
 
+  /**
+   * Template adapter for the shared deadline formatter; keeps date wording consistent with other consumers.
+   */
   getDeadlineText(endDate?: Date): string {
     return getDeadlineText(endDate);
   }

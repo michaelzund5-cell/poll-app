@@ -1,3 +1,10 @@
+/**
+ * @file src/app/components/new-survey/new-survey.ts
+ * @description Survey creation UI component.
+ *
+ * Owns reactive form state, dialog/popover interaction and user-facing validation. Persistence is delegated to SurveyService so this component remains focused on the creation workflow rather than database details.
+ */
+
 import { Component, ElementRef, inject, output, signal, viewChild } from '@angular/core';
 import { FormArray, FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import {
@@ -8,6 +15,7 @@ import {
 import { CreateSurveyInput } from '../../features/surveys/models/survey.model';
 import { SurveyService } from '../../features/surveys/services/survey.service';
 
+/** How long success feedback remains visible before the dialog closes. */
 const TOAST_DURATION_MS = 2_000;
 
 @Component({
@@ -16,12 +24,25 @@ const TOAST_DURATION_MS = 2_000;
   templateUrl: './new-survey.html',
   styleUrl: './new-survey.scss',
 })
+/**
+ * Controls the complete survey-creation user workflow.
+ *
+ * Responsibilities kept here:
+ * - reactive form state and validation;
+ * - dialog/category/popover UI state;
+ * - translating valid form values into CreateSurveyInput.
+ *
+ * Persistence is deliberately delegated to SurveyService so the component does not
+ * know table names, DTOs or Supabase query details.
+ */
 export class NewSurvey {
+  /** Notifies the parent that persistence completed successfully. */
   readonly surveyCreated = output<void>();
   readonly dialogRef = viewChild<ElementRef<HTMLDialogElement>>('newSurveyDialog');
   readonly toastEl = viewChild<ElementRef<HTMLDivElement>>('toastEl');
   readonly publishBtn = viewChild<ElementRef<HTMLButtonElement>>('publishBtn');
 
+  /** Reactive presentation state for the custom category dropdown. */
   readonly categoryOpen = signal(false);
   readonly isSaving = signal(false);
   readonly saveError = signal<string | null>(null);
@@ -32,6 +53,10 @@ export class NewSurvey {
   private readonly surveyService = inject(SurveyService);
   private toastTimer?: ReturnType<typeof setTimeout>;
 
+  /**
+   * Typed reactive-form root.
+   * Dynamic questions/answers live in FormArrays because users can add/remove them.
+   */
   readonly surveyForm = this.fb.group({
     surveyName: ['', [Validators.required, Validators.minLength(5)]],
     endDate: [''],
@@ -40,19 +65,31 @@ export class NewSurvey {
     questions: this.fb.array([this.createQuestion()]),
   });
 
+  /**
+   * Convenience accessor for the dynamic question FormArray used by template and helpers.
+   */
   get questions(): FormArray {
     return this.surveyForm.controls.questions;
   }
 
+  /**
+   * Clears stale save errors and opens the native modal dialog.
+   */
   open(): void {
     this.saveError.set(null);
     this.dialogRef()?.nativeElement.showModal();
   }
 
+  /**
+   * Closes the native dialog; reset behavior is centralized in the close event handler.
+   */
   close(): void {
     this.dialogRef()?.nativeElement.close();
   }
 
+  /**
+   * Positions success feedback relative to the publish button and opens the popover. DOM access is isolated to this browser-API-specific interaction.
+   */
   showToast(): void {
     const toast = this.toastEl()?.nativeElement;
     const button = this.publishBtn()?.nativeElement;
@@ -66,10 +103,16 @@ export class NewSurvey {
     toast.showPopover();
   }
 
+  /**
+   * Closes success feedback when the timer or user flow completes.
+   */
   hideToast(): void {
     this.toastEl()?.nativeElement.hidePopover();
   }
 
+  /**
+   * Restores the creation form to a deterministic initial state after any dialog close path.
+   */
   onDialogClose(): void {
     this.categoryOpen.set(false);
     this.saveError.set(null);
@@ -78,6 +121,9 @@ export class NewSurvey {
     this.surveyForm.markAsUntouched();
   }
 
+  /**
+   * Toggles the custom category menu and marks the control touched when closing it so validation can become visible.
+   */
   toggleCategory(): void {
     if (this.categoryOpen()) {
       this.surveyForm.controls.category.markAsTouched();
@@ -85,17 +131,26 @@ export class NewSurvey {
     this.categoryOpen.update((open) => !open);
   }
 
+  /**
+   * Stores a type-safe category selection and closes the custom dropdown.
+   */
   selectCategory(category: SurveyCategory): void {
     this.surveyForm.controls.category.setValue(category);
     this.categoryOpen.set(false);
   }
 
+  /**
+   * Factory for one answer form group. Centralizing creation guarantees new/reset answers use identical validators.
+   */
   createAnswer() {
     return this.fb.group({
       answerText: ['', Validators.required],
     });
   }
 
+  /**
+   * Factory for one question group with the minimum two required answer controls.
+   */
   createQuestion() {
     return this.fb.group({
       questionText: ['', [Validators.required, Validators.minLength(5)]],
@@ -104,12 +159,18 @@ export class NewSurvey {
     });
   }
 
+  /**
+   * Adds a question only while the configured domain maximum has not been reached.
+   */
   addQuestion(): void {
     if (this.questions.length < SURVEY_LIMITS.maxQuestions) {
       this.questions.push(this.createQuestion());
     }
   }
 
+  /**
+   * Removes a dynamic question. The first group is reset instead of removed so the form always retains its required base structure.
+   */
   removeQuestion(index: number): void {
     if (index === 0) {
       this.questions.at(0).reset();
@@ -120,10 +181,16 @@ export class NewSurvey {
     this.questions.removeAt(index);
   }
 
+  /**
+   * Returns the answer FormArray for a specific question so answer operations stay encapsulated.
+   */
   getAnswers(questionIndex: number): FormArray {
     return this.questions.at(questionIndex).get('answers') as FormArray;
   }
 
+  /**
+   * Adds an answer while respecting the centralized per-question maximum.
+   */
   addAnswer(questionIndex: number): void {
     const answers = this.getAnswers(questionIndex);
     if (answers.length < SURVEY_LIMITS.maxAnswersPerQuestion) {
@@ -131,6 +198,9 @@ export class NewSurvey {
     }
   }
 
+  /**
+   * Removes an answer while preserving the minimum answer count; at the minimum the control is cleared instead.
+   */
   removeAnswer(questionIndex: number, answerIndex: number): void {
     const answers = this.getAnswers(questionIndex);
 
@@ -142,10 +212,16 @@ export class NewSurvey {
     answers.removeAt(answerIndex);
   }
 
+  /**
+   * Converts a zero-based answer index into A, B, C... labels used by the UI/persistence model.
+   */
   getLetter(index: number): string {
     return String.fromCharCode(65 + index);
   }
 
+  /**
+   * Validates once, prevents duplicate submissions, delegates persistence and exposes user-facing success/error state.
+   */
   async saveSurvey(): Promise<void> {
     this.surveyForm.markAllAsTouched();
     this.saveError.set(null);
@@ -168,6 +244,9 @@ export class NewSurvey {
     }
   }
 
+  /**
+   * Maps reactive-form values into the explicit application write model and trims user-entered text at the UI boundary.
+   */
   private toCreateSurveyInput(): CreateSurveyInput {
     const value = this.surveyForm.getRawValue();
 
@@ -184,6 +263,9 @@ export class NewSurvey {
     };
   }
 
+  /**
+   * Shows success feedback, replaces any previous timer and closes the dialog after a fixed delay.
+   */
   private showSuccessAndClose(): void {
     this.showToast();
     clearTimeout(this.toastTimer);
@@ -193,6 +275,9 @@ export class NewSurvey {
     }, TOAST_DURATION_MS);
   }
 
+  /**
+   * Collapses dynamic FormArrays back to one question before the form is reused.
+   */
   private resetDynamicFields(): void {
     while (this.questions.length > 1) {
       this.questions.removeAt(this.questions.length - 1);
@@ -200,6 +285,9 @@ export class NewSurvey {
     this.resetAnswersForFirstQuestion();
   }
 
+  /**
+   * Restores the first question to the domain-required minimum answer count.
+   */
   private resetAnswersForFirstQuestion(): void {
     const answers = this.getAnswers(0);
     while (answers.length > SURVEY_LIMITS.minAnswersPerQuestion) {

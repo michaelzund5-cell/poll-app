@@ -1,3 +1,10 @@
+/**
+ * @file src/app/components/survey-detail/survey-detail.ts
+ * @description Survey participation and result page.
+ *
+ * Loads a survey by route id, manages answer selection, submits votes and refreshes calculated results. Data access is delegated to SurveyService and local UI state is represented with signals.
+ */
+
 import { DatePipe } from '@angular/common';
 import { Component, computed, inject, signal, viewChild } from '@angular/core';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
@@ -12,6 +19,12 @@ import { NewSurvey } from '../new-survey/new-survey';
   templateUrl: './survey-detail.html',
   styleUrl: './survey-detail.scss',
 })
+/**
+ * Page controller for participating in a survey and viewing its results.
+ *
+ * Route parsing, UI selection state and submit/load orchestration live here; data
+ * retrieval, persistence and vote aggregation are delegated to SurveyService.
+ */
 export class SurveyDetail {
   readonly newSurveyDialog = viewChild(NewSurvey);
   readonly survey = signal<Survey | null>(null);
@@ -25,14 +38,23 @@ export class SurveyDetail {
   private readonly router = inject(Router);
   private readonly surveyService = inject(SurveyService);
 
+  /**
+   * Starts the initial load immediately when the routed component is created.
+   */
   constructor() {
     void this.loadSurvey();
   }
 
+  /**
+   * Opens the reusable survey-creation dialog from the detail page.
+   */
   openDialog(): void {
     this.newSurveyDialog()?.open();
   }
 
+  /**
+   * Updates answer selection immutably. Single-choice and multi-choice behavior are resolved by a dedicated helper.
+   */
   toggleAnswer(questionId: number, answerId: number): void {
     this.questions.update((questions) =>
       questions.map((question) => {
@@ -49,6 +71,9 @@ export class SurveyDetail {
     );
   }
 
+  /**
+   * Prevents submissions for expired/in-flight surveys, saves selected votes and refreshes derived results.
+   */
   async completeSurvey(): Promise<void> {
     if (this.isPast() || this.isSubmitting()) {
       return;
@@ -68,6 +93,9 @@ export class SurveyDetail {
     }
   }
 
+  /**
+   * Validates the route id, loads the full survey model, splits page/survey state and then loads current results.
+   */
   private async loadSurvey(): Promise<void> {
     const surveyId = Number(this.route.snapshot.paramMap.get('id'));
 
@@ -95,10 +123,16 @@ export class SurveyDetail {
     }
   }
 
+  /**
+   * Replaces question state with a result-enriched immutable copy from SurveyService.
+   */
   private async loadResults(): Promise<void> {
     this.questions.set(await this.surveyService.withResults(this.questions()));
   }
 
+  /**
+   * Applies the selection rule for one answer. Multi-select toggles only the target; single-select also clears siblings.
+   */
   private toggleSelectedAnswer(question: Question, answer: Answer, answerId: number): Answer {
     if (question.allowMultiple) {
       return answer.id === answerId ? { ...answer, selected: !answer.selected } : answer;
@@ -110,6 +144,9 @@ export class SurveyDetail {
     };
   }
 
+  /**
+   * Routes invalid/missing survey states to the dedicated not-found page without exposing an artificial URL.
+   */
   private navigateToNotFound(): Promise<boolean> {
     return this.router.navigateByUrl('/not-found', { skipLocationChange: true });
   }

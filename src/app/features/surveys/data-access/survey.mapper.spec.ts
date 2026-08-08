@@ -1,3 +1,10 @@
+/**
+ * @file src/app/features/surveys/data-access/survey.mapper.spec.ts
+ * @description Unit test specification for survey.mapper.
+ *
+ * Verifies the public behavior or creation contract of the corresponding unit. Tests document expected behavior and protect refactoring from regressions.
+ */
+
 import { describe, expect, it } from 'vitest';
 import { mapSurvey } from './survey.mapper';
 

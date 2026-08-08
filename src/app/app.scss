@@ -1,3 +1,9 @@
+/*
+ * File: src/app/app.scss
+ * Purpose: Root component styles.
+ * Why: Contains only styles that belong to the App shell. Feature-specific styling stays next to the feature component to avoid global coupling.
+ */
+
 @use '../styles/variables' as *;
 
 

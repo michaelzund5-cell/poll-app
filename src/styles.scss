@@ -1,3 +1,9 @@
+/*
+ * File: src/styles.scss
+ * Purpose: Global stylesheet entry point.
+ * Why: Loads project-wide style primitives and defines rules that intentionally apply across component boundaries.
+ */
+
 /* You can add global styles to this file, and also import other style files */
 @use 'styles/fonts';
 @use 'styles/variables' as *;

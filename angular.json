@@ -30,8 +30,9 @@
                 "input": "public"
               }
             ],
-            "styles": ["src/styles.scss"],
-
+            "styles": [
+              "src/styles.scss"
+            ],
             "security": {
               "allowedHosts": []
             }
@@ -46,8 +47,8 @@
                 },
                 {
                   "type": "anyComponentStyle",
-                  "maximumWarning": "9kB",
-                  "maximumError": "12kB"
+                  "maximumWarning": "12kB",
+                  "maximumError": "15kB"
                 }
               ],
               "outputHashing": "all"

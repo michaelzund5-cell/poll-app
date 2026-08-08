@@ -1,3 +1,9 @@
+/*
+ * File: src/styles/_variables.scss
+ * Purpose: Shared design tokens.
+ * Why: Centralizes colors, fonts and reusable style constants so visual decisions are not duplicated as magic values throughout component styles.
+ */
+
 $color-primary-purple: #35273a;
 $color-primary-orange: #ffb770;
 $color-secondary-purple: #8e709929;

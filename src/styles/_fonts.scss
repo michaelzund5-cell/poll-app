@@ -1,3 +1,9 @@
+/*
+ * File: src/styles/_fonts.scss
+ * Purpose: Local font declarations.
+ * Why: Registers bundled font files once so components can reference stable font-family names without repeating @font-face declarations.
+ */
+
 // Mulish (Variable Font – deckt alle Stärken ab)
 @font-face {
   font-family: 'Mulish';

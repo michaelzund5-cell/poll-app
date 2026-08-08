@@ -1,3 +1,10 @@
+<!--
+  File: src/app/components/surveys/surveys.html
+  Purpose: Surveys component template.
+  Why: Survey list template. It renders tabs, category filters, deadline information and navigation links from computed survey collections.
+-->
+
+<!-- Survey discovery/list section. Filtering state comes from computed signals. -->
 <section class="section-two">
   @if (loadError()) {
     <p>{{ loadError() }}</p>
@@ -27,8 +34,8 @@
     <button class="sort-toggle arrow-toggle" (click)="toggleCategoryDropdown()">
       Sort by categories
       <span class="arrow-wrapper">
-        <img src="icons/arrow_drop_down.svg" alt="" class="arrow-default" />
-        <img src="icons/arrow_drop_down_orange.svg" alt="" class="arrow-hover" />
+        <img src="assets/icons/arrow_drop_down.svg" alt="" class="arrow-default" />
+        <img src="assets/icons/arrow_drop_down_orange.svg" alt="" class="arrow-hover" />
       </span>
     </button>
 

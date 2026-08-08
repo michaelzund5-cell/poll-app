@@ -1,3 +1,10 @@
+/**
+ * @file src/app/features/surveys/utils/survey-date.util.spec.ts
+ * @description Unit test specification for survey-date.util.
+ *
+ * Verifies the public behavior or creation contract of the corresponding unit. Tests document expected behavior and protect refactoring from regressions.
+ */
+
 import { describe, expect, it } from 'vitest';
 import { getDeadlineText, getDaysUntil, isSurveyPast } from './survey-date.util';
 

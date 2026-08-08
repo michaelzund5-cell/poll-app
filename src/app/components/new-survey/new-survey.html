@@ -1,3 +1,10 @@
+<!--
+  File: src/app/components/new-survey/new-survey.html
+  Purpose: New Survey component template.
+  Why: Survey creation form template. It binds reactive-form controls, validation state, dynamic question/answer collections and dialog actions.
+-->
+
+<!-- Native modal: owns the survey creation workflow -->
 <dialog
   #newSurveyDialog
   class="new-survey-dialog"
@@ -8,7 +15,7 @@
     <span class="draft-badge">Draft</span>
     <h2>Create new survey</h2>
     <button type="button" class="cancel-btn" (click)="close()">
-      <span class="cancel-text">Cancel</span> <img src="icons/close.svg" alt="Close Icon" />
+      <span class="cancel-text">Cancel</span> <img src="assets/icons/close.svg" alt="Close Icon" />
     </button>
   </div>
 
@@ -17,8 +24,8 @@
       <div class="field">
         <label for="survey-name">Survey name</label>
         <span class="trash-btn" (click)="surveyForm.get('surveyName')?.reset()">
-          <img src="icons/trash_light.svg" alt="" class="trash-default" />
-          <img src="icons/trash_dark.svg" alt="" class="trash-hover" />
+          <img src="assets/icons/trash_light.svg" alt="" class="trash-default" />
+          <img src="assets/icons/trash_dark.svg" alt="" class="trash-hover" />
         </span>
         <div class="input-with-icon">
           <input id="survey-name" type="text" formControlName="surveyName" />
@@ -32,8 +39,8 @@
         <div class="field">
           <label for="end-date">Set end date <span class="optional">(optional)</span></label>
           <span class="trash-btn" (click)="surveyForm.get('endDate')?.reset()">
-            <img src="icons/trash_light.svg" alt="" class="trash-default" />
-            <img src="icons/trash_dark.svg" alt="" class="trash-hover" />
+            <img src="assets/icons/trash_light.svg" alt="" class="trash-default" />
+            <img src="assets/icons/trash_dark.svg" alt="" class="trash-hover" />
           </span>
           <div class="input-with-icon">
             <input id="end-date" type="date" formControlName="endDate" />
@@ -53,8 +60,8 @@
             Choose category
 
             <span class="arrow-wrapper">
-              <img src="icons/arrow_drop_down.svg" alt="" class="arrow-default" />
-              <img src="icons/arrow_drop_down_orange.svg" alt="" class="arrow-hover" />
+              <img src="assets/icons/arrow_drop_down.svg" alt="" class="arrow-default" />
+              <img src="assets/icons/arrow_drop_down_orange.svg" alt="" class="arrow-hover" />
             </span>
           </button>
           @if (surveyForm.get('category')?.invalid && surveyForm.get('category')?.touched) {
@@ -78,8 +85,8 @@
       <div class="field">
         <label for="description">Describing text <span class="optional">(optional)</span></label>
         <span class="trash-btn" (click)="surveyForm.get('description')?.reset()">
-          <img src="icons/trash_light.svg" alt="" class="trash-default" />
-          <img src="icons/trash_dark.svg" alt="" class="trash-hover" />
+          <img src="assets/icons/trash_light.svg" alt="" class="trash-default" />
+          <img src="assets/icons/trash_dark.svg" alt="" class="trash-hover" />
         </span>
         <div class="input-with-icon">
           <textarea id="description" formControlName="description"></textarea>
@@ -92,8 +99,8 @@
           <div class="question-header">
             <label>{{ qIndex + 1 }}. Question</label>
             <span class="trash-btn" (click)="removeQuestion(qIndex)">
-              <img src="icons/trash_light.svg" alt="" class="trash-default" />
-              <img src="icons/trash_dark.svg" alt="" class="trash-hover" />
+              <img src="assets/icons/trash_light.svg" alt="" class="trash-default" />
+              <img src="assets/icons/trash_dark.svg" alt="" class="trash-hover" />
             </span>
           </div>
           <div class="question-field">
@@ -133,8 +140,8 @@
                   "
                 />
                 <span class="trash-btn" (click)="removeAnswer(qIndex, aIndex)">
-                  <img src="icons/trash_light.svg" alt="" class="trash-default" />
-                  <img src="icons/trash_dark.svg" alt="" class="trash-hover" />
+                  <img src="assets/icons/trash_light.svg" alt="" class="trash-default" />
+                  <img src="assets/icons/trash_dark.svg" alt="" class="trash-hover" />
                 </span>
               </div>
             }
@@ -142,7 +149,7 @@
 
           @if (getAnswers(qIndex).controls.length < limits.maxAnswersPerQuestion) {
             <button type="button" class="add-answer-btn" (click)="addAnswer(qIndex)">
-              Add answer <img src="icons/add_circle.svg" alt="" />
+              Add answer <img src="assets/icons/add_circle.svg" alt="" />
             </button>
           }
         </div>
@@ -151,7 +158,7 @@
 
     @if (questions.length < limits.maxQuestions) {
       <button type="button" class="add-question-btn" (click)="addQuestion()">
-        Add next question <img src="icons/add_circle.svg" alt="" />
+        Add next question <img src="assets/icons/add_circle.svg" alt="" />
       </button>
     }
   </div>
@@ -169,13 +176,13 @@
     [disabled]="isSaving()"
   >
     {{ isSaving() ? 'Publishing...' : 'Publish' }}
-    <span class="check-icon"><img src="icons/check.svg" alt="" /></span>
+    <span class="check-icon"><img src="assets/icons/check.svg" alt="" /></span>
   </button>
 </dialog>
 
 <div class="toast" popover="manual" #toastEl>
   <span>Your survey is now published</span>
   <button type="button" (click)="hideToast()">
-    <img src="icons/close.svg" alt="" />
+    <img src="assets/icons/close.svg" alt="" />
   </button>
 </div>

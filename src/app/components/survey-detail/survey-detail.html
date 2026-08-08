@@ -1,3 +1,9 @@
+<!--
+  File: src/app/components/survey-detail/survey-detail.html
+  Purpose: Survey Detail component template.
+  Why: Survey detail template. It renders question choices, loading/error states, vote submission and result percentages from signal-driven component state.
+-->
+
 <main>
   <div class="content">
     <div class="detail-header">
@@ -6,7 +12,7 @@
       </a>
       <button class="n-survey" (click)="openDialog()">
         Create survey
-        <span class="plus-icon"><img src="icons/add_circle.svg" alt="" /></span>
+        <span class="plus-icon"><img src="assets/icons/add_circle.svg" alt="" /></span>
       </button>
     </div>
     @if (errorMessage()) {
