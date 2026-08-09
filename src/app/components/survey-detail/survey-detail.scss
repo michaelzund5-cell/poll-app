@@ -109,7 +109,7 @@ main {
     padding-left: 34px;
     padding-right: 44px;
     font-family: 'Mulish';
-    font-size: 14px;
+    font-size: 16px;
   }
   h1 {
     font-family: 'Nerko One';
@@ -164,7 +164,7 @@ fieldset {
 
   .hint {
     font-family: 'Mulish';
-    font-size: 13px;
+    font-size: 16px;
     color: #6b6b6b;
     margin: 0 0 12px 0;
   }
@@ -284,7 +284,7 @@ fieldset {
     width: 14px;
     font-family: 'Mulish';
     font-weight: 700;
-    font-size: 14px;
+    font-size: 16px;
   }
 
   .bar-track {
@@ -306,7 +306,7 @@ fieldset {
     text-align: right;
     font-family: 'Mulish';
     font-weight: 700;
-    font-size: 14px;
+    font-size: 16px;
     color: $color-primary-orange;
   }
 }
@@ -323,4 +323,34 @@ fieldset {
     margin-top: 24px;
     padding-left: 24px;
   }
+}
+
+/* Mentor feedback: disable the complete answer row and provide stable submit feedback. */
+fieldset label.disabled { opacity: .55; cursor: not-allowed; pointer-events: none; }
+.submit-feedback { grid-column: 1 / -1; min-height: 48px; font-family: 'Mulish'; font-size: 16px; color: #221227; }
+.submit-feedback p { margin: 0 0 20px; padding: 0; font-size: 16px; }
+@media (max-width: 1100px) {
+  main { width: 100%; margin-left: 0; margin-right: 0; }
+  main .content { padding-inline: clamp(16px, 4vw, 48px); }
+  .survey-layout { grid-template-columns: 1fr; gap: 24px; }
+  .survey-results { max-width: none; width: 100%; padding-bottom: 32px; }
+  form { grid-template-columns: 1fr; }
+  .complete-btn { grid-column: 1; justify-self: start; }
+}
+@media (max-width: 767px) {
+  main .content { padding-inline: 16px; }
+  .detail-header { gap: 12px; flex-wrap: wrap; }
+  .n-survey { font-size: 16px; height: 44px; padding-inline: 16px; }
+  .survey-form { border-radius: 0 56px 0 0; }
+  .survey-form .draft-badge { margin-left: 18px; font-size: 16px; }
+  .survey-form .meta-row { flex-direction: column; align-items: flex-start; gap: 6px; padding-inline: 18px; font-size: 16px; }
+  .survey-form h1 { font-size: clamp(2.7rem, 14vw, 4rem); padding-inline: 18px; overflow-wrap: anywhere; }
+  .survey-form p { padding-inline: 18px; margin-top: 0; font-size: 16px; }
+  form { padding-inline: 18px; gap: 24px; }
+  fieldset legend, fieldset .hint, fieldset label, .result-row .option-label, .result-row .percentage { font-size: 16px; max-width: none; }
+  .survey-results h2 { font-size: 2rem; }
+  .survey-results h3 { font-size: 18px; }
+  .result-row .option-label { width: 20px; }
+  .result-row .percentage { width: 46px; }
+  .complete-btn { width: 100%; justify-content: center; margin-bottom: 0; font-size: 16px; }
 }

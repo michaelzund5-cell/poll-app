@@ -5,7 +5,7 @@
  * Loads the survey collection and exposes derived lists for tabs, categories and upcoming deadlines. Computed signals keep filtering/sorting derived from source state instead of manually synchronized copies.
  */
 
-import { Component, computed, inject, signal } from '@angular/core';
+import { Component, HostListener, computed, inject, signal } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import {
   SURVEY_CATEGORIES,
@@ -103,6 +103,14 @@ export class Surveys {
   selectCategory(category: SurveyCategory | null): void {
     this.selectedCategory.set(category);
     this.categoryOpen.set(false);
+  }
+
+  /** Closes the category filter when focus moves elsewhere on the page. */
+  @HostListener('document:click', ['$event'])
+  onDocumentClick(event: MouseEvent): void {
+    if (!this.categoryOpen()) return;
+    const target = event.target as HTMLElement | null;
+    if (!target?.closest('.sort-dropdown')) this.categoryOpen.set(false);
   }
 
   /**

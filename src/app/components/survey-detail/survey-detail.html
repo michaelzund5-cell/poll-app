@@ -37,11 +37,11 @@
               }
 
               @for (answer of question.answers; track answer.id) {
-                <label>
+                <label [class.disabled]="isPast() || hasVoted()">
                   <input
                     type="checkbox"
                     [checked]="!!answer.selected"
-                    [disabled]="isPast()"
+                    [disabled]="isPast() || hasVoted()"
                     (change)="toggleAnswer(question.id, answer.id)"
                   />
                   <span
@@ -52,9 +52,13 @@
             </fieldset>
           }
 
-          <button type="button" class="complete-btn" (click)="completeSurvey()" [disabled]="isPast() || isSubmitting()">
-            {{ isSubmitting() ? 'Submitting...' : 'Complete survey' }}
+          <button type="button" class="complete-btn" (click)="completeSurvey()" [disabled]="!canSubmit() || isSubmitting()">
+            {{ isSubmitting() ? 'Submitting...' : hasVoted() ? 'Survey completed' : 'Complete survey' }}
           </button>
+          <div class="submit-feedback" aria-live="polite">
+            @if (voteFeedback()) { <p>{{ voteFeedback() }}</p> }
+            @else if (!isPast() && !hasVoted() && !canSubmit()) { <p>Please select at least one answer for every question.</p> }
+          </div>
         </form>
       </section>
 
@@ -74,9 +78,9 @@
                 <div class="result-row">
                   <span class="option-label">{{ answer.label }}</span>
                   <div class="bar-track">
-                    <div class="bar-fill" [style.width.%]="answer.votePercentage ?? 0"></div>
+                    <div class="bar-fill" [style.width.%]="answer.votePercentage"></div>
                   </div>
-                  <span class="percentage">{{ answer.votePercentage ?? 0 }}%</span>
+                  <span class="percentage">{{ answer.votePercentage }}%</span>
                 </div>
               }
             }

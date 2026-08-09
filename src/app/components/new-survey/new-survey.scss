@@ -132,7 +132,7 @@
     gap: 10px;
     background-color: #ffb7704d;
     color: #ffffff;
-    font-family: 'Nakora';
+    font-family: 'Nokora';
     font-weight: 700;
     font-size: 20px;
     border: none;
@@ -217,7 +217,7 @@
     position: relative;
     color: #e80000;
     font-family: 'Mulish';
-    font-size: 14px;
+    font-size: 16px;
   }
 
   .input-with-icon {
@@ -342,7 +342,7 @@
       text-align: left;
       color: $color-primary-purple;
       font-family: 'Mulish';
-      font-size: 14px;
+      font-size: 16px;
       cursor: pointer;
 
       &:hover {
@@ -359,7 +359,7 @@
     color: #ffb770;
     font-family: 'Mulish';
     font-weight: 300;
-    font-size: 0.95rem;
+    font-size: 16px;
     margin-top: 4px;
   }
 }
@@ -502,7 +502,7 @@ textarea {
       margin-top: 2px;
       color: #f01b1b;
       font-family: 'Mulish';
-      font-size: 14px;
+      font-size: 16px;
     }
   }
 
@@ -524,10 +524,10 @@ textarea {
       align-items: center;
       gap: 8px;
       font-weight: 400;
-      font-size: 0.875rem;
+      font-size: 16px;
 
       @media (max-width: 767px) {
-        font-size: 0.5rem;
+        font-size: 16px;
       }
 
       input[type='checkbox'] {
@@ -806,4 +806,29 @@ textarea {
       }
     }
   }
+}
+
+/* Mentor feedback: stable validation space, readable mobile text and no clipped dialog content. */
+.new-survey-dialog { max-width: calc(100vw - 32px); max-height: calc(100dvh - 32px); overflow-y: auto; overflow-x: hidden; }
+.field { min-height: 94px; align-content: start; }
+.question-field { min-height: 64px; }
+.field .error-text, .question-block .question-field .error-text { font-size: 16px; min-height: 20px; }
+.category-field .category-list li { font-size: 16px; }
+@media (max-width: 767px) {
+  .new-survey-dialog { width: calc(100vw - 24px); max-width: calc(100vw - 24px); max-height: calc(100dvh - 24px); margin: 12px auto; padding: 20px 16px; }
+  .dialog-header h2 { font-size: clamp(2.5rem, 14vw, 3.25rem); }
+  .form-container { width: 100%; padding: 18px 14px; }
+  .field label, .category-field .category-toggle, .question-block .answers-header .checkbox-label { font-size: 16px; }
+  .form-container #survey-name, .form-container #end-date, .question-block input { width: 100%; height: auto; min-height: 44px; }
+  .field-row { gap: 8px; }
+  .category-field { transform: none; order: 0; padding-top: 0; min-height: 88px; }
+  .category-field .category-toggle { width: 100%; justify-content: space-between; }
+  .category-field .category-list { width: 100%; min-width: 0; }
+  .question-block .question-header { justify-content: space-between; }
+  .question-block .answers-header { flex-wrap: wrap; justify-content: space-between; }
+  .question-block .answer-row { gap: 8px; width: 100%; }
+  .question-block .answer-row span:not(.trash-btn) { font-size: 16px; flex: 0 0 24px; }
+  .question-block .add-answer-btn, .add-question-btn, .publish-btn { font-size: 16px; }
+  .publish-btn { margin-top: 16px; }
+  .toast { max-width: calc(100vw - 32px); font-size: 1.4rem; }
 }

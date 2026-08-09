@@ -5,8 +5,8 @@
  * Owns reactive form state, dialog/popover interaction and user-facing validation. Persistence is delegated to SurveyService so this component remains focused on the creation workflow rather than database details.
  */
 
-import { Component, ElementRef, inject, output, signal, viewChild } from '@angular/core';
-import { FormArray, FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
+import { Component, ElementRef, HostListener, inject, output, signal, viewChild } from '@angular/core';
+import { AbstractControl, FormArray, FormBuilder, ReactiveFormsModule, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
 import {
   SURVEY_CATEGORIES,
   SURVEY_LIMITS,
@@ -17,6 +17,17 @@ import { SurveyService } from '../../features/surveys/services/survey.service';
 
 /** How long success feedback remains visible before the dialog closes. */
 const TOAST_DURATION_MS = 2_000;
+
+/** Rejects values that only satisfy a length rule with whitespace. */
+const trimmedMinLength = (minLength: number): ValidatorFn =>
+  (control: AbstractControl): ValidationErrors | null => {
+    const value = String(control.value ?? '').trim();
+    return value.length >= minLength ? null : { trimmedMinLength: { minLength } };
+  };
+
+/** Rejects empty and whitespace-only answer values. */
+const nonBlank: ValidatorFn = (control: AbstractControl): ValidationErrors | null =>
+  String(control.value ?? '').trim().length > 0 ? null : { blank: true };
 
 @Component({
   selector: 'app-new-survey',
@@ -58,7 +69,7 @@ export class NewSurvey {
    * Dynamic questions/answers live in FormArrays because users can add/remove them.
    */
   readonly surveyForm = this.fb.group({
-    surveyName: ['', [Validators.required, Validators.minLength(5)]],
+    surveyName: ['', [Validators.required, trimmedMinLength(5)]],
     endDate: [''],
     description: [''],
     category: ['', Validators.required],
@@ -139,12 +150,23 @@ export class NewSurvey {
     this.categoryOpen.set(false);
   }
 
+  /** Closes the custom dropdown when the user clicks anywhere outside it. */
+  @HostListener('document:click', ['$event'])
+  onDocumentClick(event: MouseEvent): void {
+    if (!this.categoryOpen()) return;
+    const target = event.target as HTMLElement | null;
+    if (!target?.closest('.category-field')) {
+      this.categoryOpen.set(false);
+      this.surveyForm.controls.category.markAsTouched();
+    }
+  }
+
   /**
    * Factory for one answer form group. Centralizing creation guarantees new/reset answers use identical validators.
    */
   createAnswer() {
     return this.fb.group({
-      answerText: ['', Validators.required],
+      answerText: ['', [Validators.required, nonBlank]],
     });
   }
 
@@ -153,7 +175,7 @@ export class NewSurvey {
    */
   createQuestion() {
     return this.fb.group({
-      questionText: ['', [Validators.required, Validators.minLength(5)]],
+      questionText: ['', [Validators.required, trimmedMinLength(5)]],
       allowMultiple: [false],
       answers: this.fb.array([this.createAnswer(), this.createAnswer()]),
     });

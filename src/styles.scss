@@ -54,3 +54,16 @@ html:has(dialog[open]) {
     opacity: 1;
   }
 }
+
+/* Responsive safety net: prevent page-level horizontal overflow and keep typography readable. */
+html, body { width: 100%; min-width: 0; overflow-x: hidden; }
+body { min-height: 100vh; }
+*, *::before, *::after { box-sizing: border-box; }
+img, svg { max-width: 100%; }
+@media (max-width: 1100px) {
+  body { max-width: none; padding-inline: clamp(16px, 4vw, 48px); }
+}
+@media (max-width: 767px) {
+  body { padding-inline: 16px; }
+  button, input, textarea, select { font-size: 16px; }
+}

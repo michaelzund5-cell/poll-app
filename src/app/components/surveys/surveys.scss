@@ -77,11 +77,11 @@
       padding-left: 24px;
       padding-top: 34px;
       font-family: 'Mulish';
-      font-size: 14px;
+      font-size: 16px;
 
       @media (max-width: 767px) {
         padding-left: 0;
-        font-size: 12px;
+        font-size: 16px;
       }
     }
 
@@ -108,7 +108,7 @@
       margin-top: auto;
       color: $color-primary-purple;
       font-family: 'Mulish';
-      font-size: 14px;
+      font-size: 16px;
       padding: 4px 6px;
       width: 100px;
       border-top-right-radius: 14px;
@@ -117,7 +117,7 @@
 
       @media (max-width: 767px) {
         margin-bottom: 16px;
-        font-size: 12px;
+        font-size: 16px;
         padding: 3px 5px;
         width: 85px;
         text-align: start;
@@ -160,7 +160,7 @@
 
     @media (max-width: 767px) {
       padding: 4px 10px;
-      font-size: 12px;
+      font-size: 16px;
     }
 
     &.active {
@@ -242,7 +242,7 @@
     color: #ffb770;
     font-family: 'Mulish';
     font-weight: 300;
-    font-size: 14px;
+    font-size: 16px;
     text-align: left;
     margin-left: 16px;
   }
@@ -308,7 +308,7 @@
     .span-category {
       color: $color-primary-orange;
       font-family: 'Mulish';
-      font-size: 14px;
+      font-size: 16px;
     }
 
     h3 {
@@ -329,7 +329,31 @@
       background-color: $color-button-secondary-orange;
       color: $color-primary-purple;
       font-family: 'Mulish';
-      font-size: 12px;
+      font-size: 16px;
     }
   }
+}
+
+/* Feedback pass: wrap instead of horizontal scrolling and keep all UI text readable. */
+@media (max-width: 1100px) {
+  .section-two, .section-four { padding-inline: 0; }
+  .section-three .filter-buttons { padding-left: 0; }
+  .sort-dropdown .sort-toggle { margin-right: 0; }
+  .ending-surveys { flex-wrap: wrap; }
+  .survey-card { flex: 1 1 240px; min-width: min(240px, 100%); }
+}
+@media (max-width: 767px) {
+  .section-two .ending-surveys { overflow-x: visible; flex-direction: column; }
+  .section-two .survey-card { flex: none; width: 100%; min-width: 0; height: auto; min-height: 210px; }
+  .section-two .survey-card .span-category,
+  .section-two .survey-card .span-deadline,
+  .section-three button,
+  .section-four .list-card .span-category,
+  .section-four .list-card .span-deadline,
+  .sort-dropdown .selected-category-label,
+  .sort-dropdown .sort-list li { font-size: 16px; }
+  .section-three { width: 100%; }
+  .section-three .filter-buttons { flex-wrap: wrap; width: 100%; }
+  .sort-dropdown .sort-toggle { margin-top: 0; font-size: 16px; }
+  .sort-dropdown .sort-list { right: auto; left: 0; min-width: min(260px, calc(100vw - 32px)); }
 }

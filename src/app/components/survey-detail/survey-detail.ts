@@ -33,6 +33,12 @@ export class SurveyDetail {
   readonly isSubmitting = signal(false);
   readonly errorMessage = signal<string | null>(null);
   readonly isPast = computed(() => isSurveyPast(this.survey()?.endDate));
+  readonly hasVoted = signal(false);
+  readonly voteFeedback = signal<string | null>(null);
+  readonly canSubmit = computed(() =>
+    !this.isPast() && !this.hasVoted() && this.questions().length > 0 &&
+    this.questions().every((question) => question.answers.some((answer) => answer.selected)),
+  );
 
   private readonly route = inject(ActivatedRoute);
   private readonly router = inject(Router);
@@ -56,6 +62,8 @@ export class SurveyDetail {
    * Updates answer selection immutably. Single-choice and multi-choice behavior are resolved by a dedicated helper.
    */
   toggleAnswer(questionId: number, answerId: number): void {
+    if (this.isPast() || this.hasVoted()) return;
+
     this.questions.update((questions) =>
       questions.map((question) => {
         if (question.id !== questionId) {
@@ -75,7 +83,7 @@ export class SurveyDetail {
    * Prevents submissions for expired/in-flight surveys, saves selected votes and refreshes derived results.
    */
   async completeSurvey(): Promise<void> {
-    if (this.isPast() || this.isSubmitting()) {
+    if (!this.canSubmit() || this.isSubmitting()) {
       return;
     }
 
@@ -85,6 +93,12 @@ export class SurveyDetail {
     try {
       await this.surveyService.saveVotes(this.questions());
       await this.loadResults();
+      const surveyId = this.survey()?.id;
+      if (surveyId) {
+        localStorage.setItem(this.voteStorageKey(surveyId), 'true');
+        this.hasVoted.set(true);
+      }
+      this.voteFeedback.set('Thank you! Your vote has been submitted and the live results are updated.');
     } catch (error) {
       console.error('Failed to submit survey', error);
       this.errorMessage.set('Your answers could not be saved. Please try again.');
@@ -113,6 +127,8 @@ export class SurveyDetail {
 
       const { questions, ...survey } = details;
       this.survey.set(survey);
+      this.hasVoted.set(localStorage.getItem(this.voteStorageKey(survey.id)) === 'true');
+      if (this.hasVoted()) this.voteFeedback.set('You have already completed this survey.');
       this.questions.set([...questions]);
       await this.loadResults();
     } catch (error) {
@@ -147,6 +163,10 @@ export class SurveyDetail {
   /**
    * Routes invalid/missing survey states to the dedicated not-found page without exposing an artificial URL.
    */
+  private voteStorageKey(surveyId: number): string {
+    return `poll-app:voted:${surveyId}`;
+  }
+
   private navigateToNotFound(): Promise<boolean> {
     return this.router.navigateByUrl('/not-found', { skipLocationChange: true });
   }
