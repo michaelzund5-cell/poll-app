@@ -10,6 +10,6 @@
  * Do not place privileged server secrets here: browser bundles are visible to clients.
  */
 export const environment = {
-  SUPABASE_URL: 'https://orogxulhvjndrmfbihxc.supabase.co',
-  SUPABASE_KEY: 'sb_publishable_Zw-0QNnXJKoggZOUIg9VMA_Vj3TQ-09',
+  SUPABASE_URL: 'https://xtpzkrbvcgbwjhnrmakl.supabase.co',
+  SUPABASE_KEY: 'sb_publishable_ndHLyKZuILE_P298Jq5y4Q_8om2b75b',
 };
