@@ -1,0 +1,43 @@
+<section class="detail-shell">
+  <a class="back" routerLink="/">← Back to polls</a>
+  @if (busy()) { <div class="state">Loading poll…</div> }
+  @else if (problem()) { <div class="state error">{{ problem() }}</div> }
+  @else if (poll(); as current) {
+    <header class="poll-head">
+      <span class="category">{{ current.category }}</span>
+      <h1>{{ current.title }}</h1>
+      @if (current.description) { <p>{{ current.description }}</p> }
+      @if (locked()) {
+        <div class="locked-note">{{ alreadyVoted() ? 'You already voted in this browser. Results remain available below.' : 'This poll is closed.' }}</div>
+      } @else {
+        <div class="preview-note">Your selections update immediately. Nothing is stored until you press “Submit vote”.</div>
+      }
+    </header>
+
+    <div class="questions">
+      @for (prompt of current.prompts; track prompt.id; let index = $index) {
+        <fieldset class="question" [disabled]="locked()">
+          <legend><span>{{ index + 1 }}</span>{{ prompt.text }}</legend>
+          <p class="question-meta">{{ prompt.multiple ? 'Multiple answers allowed' : 'Choose one answer' }} · {{ prompt.totalVotes }} votes</p>
+          <div class="choice-list">
+            @for (choice of prompt.choices; track choice.id) {
+              <button type="button" class="choice" [class.chosen]="isSelected(prompt.id, choice.id)" (click)="toggle(prompt.id, choice.id, prompt.multiple)">
+                <span class="choice-label">{{ choice.label }}</span>
+                <span class="choice-copy"><strong>{{ choice.text }}</strong>
+                  <span class="bar"><span [style.width.%]="choice.percentage"></span></span>
+                </span>
+                <span class="percent">{{ choice.percentage }}%</span>
+              </button>
+            }
+          </div>
+          @if (!locked()) { <p class="selection-preview">Selected now: {{ previewCount(prompt.id) }}</p> }
+        </fieldset>
+      }
+    </div>
+
+    <div class="action-row">
+      <div class="feedback" aria-live="polite">{{ feedback() }}</div>
+      @if (!locked()) { <button class="submit" type="button" [disabled]="!canSubmit() || saving()" (click)="submitVote()">{{ saving() ? 'Saving…' : 'Submit vote' }}</button> }
+    </div>
+  }
+</section>

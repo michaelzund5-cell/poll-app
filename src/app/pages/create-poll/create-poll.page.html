@@ -1,0 +1,54 @@
+<section class="page-head"><p class="eyebrow">New poll</p><h1>Build a focused question set</h1><p>Keep it clear. Every field is validated before anything is written to the database.</p></section>
+
+<form class="builder" [formGroup]="form" (ngSubmit)="submit()" novalidate>
+  <section class="panel basics">
+    <div class="panel-title"><span>01</span><div><h2>Basics</h2><p>Name the poll and decide where it belongs.</p></div></div>
+    <div class="field-grid">
+      <label>Poll title
+        <input formControlName="title" placeholder="e.g. Binary System Test" autocomplete="off">
+        <span class="validation">@if (controlInvalid(form.controls.title)) { Enter at least 5 non-space characters. }</span>
+      </label>
+      <label>Category
+        <select formControlName="category">
+          <option value="" disabled>Select a category</option>
+          @for (category of categories; track category) { <option [value]="category">{{ category }}</option> }
+        </select>
+        <span class="validation">@if (form.controls.category.touched && !form.controls.category.value) { Choose a category. }</span>
+      </label>
+      <label>Closing date <small>optional</small><input type="date" formControlName="closesAt"><span class="validation"></span></label>
+      <label class="wide">Description <small>optional</small><textarea rows="3" formControlName="description" placeholder="Add context for voters"></textarea><span class="validation"></span></label>
+    </div>
+  </section>
+
+  <section class="panel" formArrayName="prompts">
+    <div class="panel-title"><span>02</span><div><h2>Questions</h2><p>Up to {{ limits.maximumPrompts }} questions, each with {{ limits.minimumChoices }}–{{ limits.maximumChoices }} answers.</p></div></div>
+    <div class="question-list">
+      @for (prompt of prompts.controls; track prompt; let promptIndex = $index) {
+        <article class="question" [formGroupName]="promptIndex">
+          <div class="question-head"><strong>Question {{ promptIndex + 1 }}</strong><button class="ghost danger" type="button" (click)="removePrompt(promptIndex)">Remove</button></div>
+          <label>Question text
+            <input formControlName="text" placeholder="What do you want to know?">
+            <span class="validation">@if (controlInvalid($any(prompt.get('text')))) { Enter at least 5 non-space characters. }</span>
+          </label>
+          <label class="toggle"><input type="checkbox" formControlName="multiple"><span>Allow more than one answer</span></label>
+          <div class="answers" formArrayName="choices">
+            @for (choice of choicesAt(promptIndex).controls; track choice; let choiceIndex = $index) {
+              <div class="answer-row" [formGroupName]="choiceIndex">
+                <span class="answer-letter">{{ answerLabel(choiceIndex) }}</span>
+                <label><span class="sr-only">Answer {{ answerLabel(choiceIndex) }}</span><input formControlName="text" [placeholder]="'Answer ' + answerLabel(choiceIndex)"><span class="validation">@if (controlInvalid($any(choice.get('text')))) { Answer cannot be blank. }</span></label>
+                <button type="button" class="icon-button" (click)="removeChoice(promptIndex, choiceIndex)" [attr.aria-label]="'Remove answer ' + answerLabel(choiceIndex)">×</button>
+              </div>
+            }
+          </div>
+          <button type="button" class="secondary" (click)="addChoice(promptIndex)" [disabled]="choicesAt(promptIndex).length >= limits.maximumChoices">+ Add answer</button>
+        </article>
+      }
+    </div>
+    <button type="button" class="secondary add-question" (click)="addPrompt()" [disabled]="prompts.length >= limits.maximumPrompts">+ Add question</button>
+  </section>
+
+  <div class="submit-zone">
+    <div class="submit-message" aria-live="polite">{{ submitMessage() }}</div>
+    <button class="publish" type="submit" [disabled]="saving()">{{ saving() ? 'Publishing…' : 'Publish poll' }}</button>
+  </div>
+</form>

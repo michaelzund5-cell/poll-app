@@ -1,10 +1,12 @@
-<!--
-  File: src/app/app.html
-  Purpose: Root application template.
-  Why: Defines the global page shell rendered by App. Feature pages are injected through RouterOutlet instead of being hard-wired into the root template.
--->
-
-<!-- Global application chrome -->
-<app-header />
-<!-- Routed page content is rendered here -->
-<router-outlet />
+<header class="shell-header">
+  <a class="brand" routerLink="/" aria-label="Poll Workbench home">
+    <span class="brand-mark" aria-hidden="true">◎</span>
+    <span>Poll Workbench</span>
+  </a>
+  <nav aria-label="Primary navigation">
+    <a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">Browse</a>
+    <a routerLink="/new" routerLinkActive="active">Create poll</a>
+  </nav>
+</header>
+<main class="app-frame"><router-outlet /></main>
+<footer>Built as a small, focused feedback workspace.</footer>
