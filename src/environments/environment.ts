@@ -1,3 +1,10 @@
+/**
+ * @file src/environments/environment.ts
+ * @description Production environment.
+ *
+ * Contains the public Supabase client configuration used by production builds.
+ */
+
 export const environment = {
   production: true,
   supabaseUrl: 'https://xtpzkrbvcgbwjhnrmakl.supabase.co',

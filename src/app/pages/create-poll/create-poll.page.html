@@ -1,3 +1,9 @@
+<!--
+  File: src/app/pages/create-poll/create-poll.page.html
+  Purpose: Create-poll template.
+  Renders the reactive poll builder, validation feedback and dynamic question/answer controls.
+-->
+
 <section class="page-head"><p class="eyebrow">New poll</p><h1>Build a focused question set</h1><p>Keep it clear. Every field is validated before anything is written to the database.</p></section>
 
 <form class="builder" [formGroup]="form" (ngSubmit)="submit()" novalidate>

@@ -1,3 +1,10 @@
+/**
+ * @file src/app/app.ts
+ * @description Root component.
+ *
+ * Provides the application shell and owns only top-level rendering concerns. Feature logic stays in the page/application layers.
+ */
+
 import { Component } from '@angular/core';
 import { RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
 

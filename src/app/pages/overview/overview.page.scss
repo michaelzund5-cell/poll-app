@@ -1,3 +1,9 @@
+/*
+ * File: src/app/pages/overview/overview.page.scss
+ * Purpose: Poll overview styles.
+ * Defines responsive layout and visual presentation for the overview page only.
+ */
+
 .hero { display:grid; grid-template-columns:minmax(0,1fr) auto; gap:2rem; align-items:end; padding:clamp(3rem,8vw,7rem) 0 4rem; }
 .eyebrow { margin:0 0 .6rem; color:#ffb86b; text-transform:uppercase; letter-spacing:.13em; font-size:.82rem; font-weight:800; }
 h1 { margin:0; font-size:clamp(2.5rem,7vw,5.7rem); line-height:.93; letter-spacing:-.055em; max-width:900px; }

@@ -1,3 +1,10 @@
+/**
+ * @file src/app/pages/overview/overview.page.ts
+ * @description Poll overview page controller.
+ *
+ * Loads poll summaries and derives the visible open/closed/category views with Angular Signals.
+ */
+
 import { Component, computed, inject, signal } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { POLL_CATEGORIES, PollCategory, PollSummary } from '../../domain/polls/poll.contracts';
@@ -12,6 +19,12 @@ type ViewMode = 'open' | 'closed';
   templateUrl: './overview.page.html',
   styleUrl: './overview.page.scss',
 })
+/**
+ * Route controller for browsing polls.
+ *
+ * `allPolls` is the single source collection. Filtered/sorted lists are
+ * computed from it so rendering state cannot drift out of sync.
+ */
 export class OverviewPage {
   private readonly pollsApi = inject(PollFacade);
   private readonly allPolls = signal<PollSummary[]>([]);
@@ -22,6 +35,7 @@ export class OverviewPage {
   readonly problem = signal<string | null>(null);
   readonly categories = POLL_CATEGORIES;
 
+  /** Polls matching the current open/closed mode and category filter. */
   readonly visiblePolls = computed(() => {
     const category = this.category();
     const shouldShowClosed = this.mode() === 'closed';
@@ -31,6 +45,7 @@ export class OverviewPage {
       .sort((left, right) => (left.closesAt?.getTime() ?? Number.MAX_SAFE_INTEGER) - (right.closesAt?.getTime() ?? Number.MAX_SAFE_INTEGER));
   });
 
+  /** Up to three open polls whose deadline is within seven days. */
   readonly closingSoon = computed(() => this.allPolls()
     .filter((poll) => {
       const days = daysRemaining(poll.closesAt);
@@ -52,6 +67,7 @@ export class OverviewPage {
     return `${days} days left`;
   }
 
+  /** Reloads summaries and owns the page's loading/error state. */
   async reload(): Promise<void> {
     this.busy.set(true); this.problem.set(null);
     try { this.allPolls.set(await this.pollsApi.browse()); }

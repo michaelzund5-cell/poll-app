@@ -1,3 +1,9 @@
+/*
+ * File: src/app/pages/create-poll/create-poll.page.scss
+ * Purpose: Create-poll styles.
+ * Keeps the dynamic form readable and responsive while reserving stable space for validation feedback.
+ */
+
 .page-head { padding:clamp(2.5rem,6vw,5rem) 0 2rem; max-width:760px; }
 .eyebrow { margin:0 0 .5rem; color:#ffb86b; text-transform:uppercase; letter-spacing:.13em; font-size:.82rem; font-weight:800; }
 h1 { margin:0; font-size:clamp(2.2rem,5vw,4rem); letter-spacing:-.045em; }

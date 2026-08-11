@@ -1,3 +1,10 @@
+/**
+ * @file src/app/pages/poll-detail/poll-detail.page.ts
+ * @description Poll detail page controller.
+ *
+ * Loads a complete poll, manages local answer selection, records votes and refreshes result state after submission.
+ */
+
 import { Component, computed, inject, signal } from '@angular/core';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { PollFacade } from '../../application/polls/poll.facade';
@@ -10,6 +17,12 @@ import { isClosed } from '../../domain/polls/poll.rules';
   templateUrl: './poll-detail.page.html',
   styleUrl: './poll-detail.page.scss',
 })
+/**
+ * Route controller for poll voting and result rendering.
+ *
+ * Answer selection remains local until submission. After a successful vote the
+ * poll is reloaded so displayed percentages reflect the latest persisted state.
+ */
 export class PollDetailPage {
   private readonly route = inject(ActivatedRoute);
   private readonly polls = inject(PollFacade);
@@ -30,6 +43,10 @@ export class PollDetailPage {
   isSelected(questionId: number, answerId: number): boolean { return (this.selected()[questionId] ?? []).includes(answerId); }
   previewCount(questionId: number): number { return (this.selected()[questionId] ?? []).length; }
 
+  /**
+   * Updates temporary selection state.
+   * Single-choice prompts replace the previous selection; multi-choice prompts toggle it.
+   */
   toggle(questionId: number, answerId: number, multiple: boolean): void {
     if (this.locked()) return;
     this.selected.update((current) => {
@@ -41,11 +58,15 @@ export class PollDetailPage {
     });
   }
 
+  /** True only when every question has at least one selected answer. */
   canSubmit(): boolean {
     const poll = this.poll();
     return Boolean(poll && poll.prompts.length > 0 && poll.prompts.every((prompt) => this.previewCount(prompt.id) > 0));
   }
 
+  /**
+   * Saves selected answers, records the browser marker and refreshes results.
+   */
   async submitVote(): Promise<void> {
     if (!this.canSubmit() || this.locked() || this.saving()) return;
     this.saving.set(true); this.feedback.set(null);
@@ -60,6 +81,7 @@ export class PollDetailPage {
     finally { this.saving.set(false); }
   }
 
+  /** Loads the current route poll and owns loading/not-found/error state. */
   async load(showSpinner = true): Promise<void> {
     if (!Number.isFinite(this.pollId)) { this.problem.set('Invalid poll id.'); this.busy.set(false); return; }
     if (showSpinner) this.busy.set(true);
@@ -68,6 +90,10 @@ export class PollDetailPage {
     finally { this.busy.set(false); }
   }
 
+  /**
+   * Reads the browser-only duplicate-vote marker defensively.
+   * localStorage can be unavailable in restricted browser contexts.
+   */
   private readVoteMarker(): boolean {
     try { return Boolean(localStorage.getItem(this.votedKey)); } catch { return false; }
   }

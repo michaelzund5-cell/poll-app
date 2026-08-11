@@ -240,3 +240,11 @@ Supabase setup      → Supabase infrastructure
 A change to the database implementation therefore should not require rewriting the presentation layer.
 
 The result is a codebase with clearer responsibilities, a predictable data flow and components that remain focused primarily on rendering and user interaction.
+
+## Source Documentation
+
+All relevant TypeScript, HTML and SCSS source files contain focused file-level documentation. Important classes and non-obvious methods additionally use JSDoc to explain responsibility and intent.
+
+For a file-by-file architectural guide and rendering/data-flow explanation, see [`CODE_DOCUMENTATION.md`](./CODE_DOCUMENTATION.md).
+
+The comments focus on **why** a decision exists instead of repeating self-explanatory syntax.

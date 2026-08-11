@@ -1,3 +1,10 @@
+/**
+ * @file src/app/domain/polls/poll.contracts.ts
+ * @description Poll domain contracts.
+ *
+ * Defines framework-light poll models used throughout the application. These types describe business data independently from Supabase rows.
+ */
+
 export const POLL_CATEGORIES = [
   'Team Activities',
   'Health & Wellness',

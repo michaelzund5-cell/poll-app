@@ -1,3 +1,10 @@
+/**
+ * @file src/environments/environment.development.ts
+ * @description Development environment.
+ *
+ * Contains the public Supabase client configuration used while running the Angular development server.
+ */
+
 export const environment = {
   production: false,
   supabaseUrl: 'https://xtpzkrbvcgbwjhnrmakl.supabase.co',

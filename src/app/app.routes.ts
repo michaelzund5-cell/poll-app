@@ -1,3 +1,10 @@
+/**
+ * @file src/app/app.routes.ts
+ * @description Route configuration.
+ *
+ * Maps public URLs to route-level page components and provides a final fallback route for unknown URLs.
+ */
+
 import { Routes } from '@angular/router';
 import { OverviewPage } from './pages/overview/overview.page';
 import { CreatePollPage } from './pages/create-poll/create-poll.page';
