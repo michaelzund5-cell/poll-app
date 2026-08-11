@@ -1,18 +1,23 @@
 <!--
-  File: src/app/app.html
-  Purpose: Root application template.
-  Renders the persistent header, primary navigation, routed page outlet and footer.
+  Root visual shell.
+  Application routing and TypeScript behavior are unchanged.
 -->
+<div class="app-shell">
+  <header class="topbar">
+    <a class="brand" routerLink="/" aria-label="Poll App home">
+      <img class="logo logo-orange" src="/images/pollapp_orange.png" alt="PollApp">
+      <img class="logo logo-dark" src="/images/pollapp_dark.png" alt="PollApp">
+    </a>
 
-<header class="shell-header">
-  <a class="brand" routerLink="/" aria-label="Poll Workbench home">
-    <img class="brand-mark" src="favicon.svg" alt="" aria-hidden="true">
-    <span>Poll Workbench</span>
-  </a>
-  <nav aria-label="Primary navigation">
-    <a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">Browse</a>
-    <a routerLink="/new" routerLinkActive="active">Create poll</a>
-  </nav>
-</header>
-<main class="app-frame"><router-outlet /></main>
-<footer>Built as a small, focused feedback workspace.</footer>
+    <nav aria-label="Primary navigation">
+      <a class="nav-home" routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+        Home
+      </a>
+      <a class="nav-create" routerLink="/new" routerLinkActive="active">New survey</a>
+    </nav>
+  </header>
+
+  <main class="route-stage">
+    <router-outlet />
+  </main>
+</div>

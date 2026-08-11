@@ -1,7 +1,8 @@
-/*
- * File: src/app/pages/not-found/not-found.page.scss
- * Purpose: Not-found styles.
- * Styles the small fallback page without introducing global layout rules.
- */
-
-section{min-height:65vh;display:grid;place-items:center;align-content:center;text-align:center;padding:2rem;}span{font-size:clamp(4rem,14vw,9rem);font-weight:950;color:#4f395d;}h1{margin:.4rem 0;font-size:clamp(2rem,5vw,3.5rem);}p{color:#b5aabd;}a{margin-top:1rem;background:#ffb86b;color:#26182d;padding:.8rem 1rem;border-radius:.8rem;font-weight:900;}
+:host {
+  display: grid;
+  min-height: calc(100vh - 78px);
+  place-items: center;
+  padding: 2rem;
+  background: #332338;
+  color: #fff;
+}

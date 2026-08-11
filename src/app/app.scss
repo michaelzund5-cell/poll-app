@@ -1,24 +1,130 @@
 /*
- * File: src/app/app.scss
- * Purpose: Root shell styles.
- * Styles the persistent application frame, navigation and footer without owning page-specific layout.
+ * Application shell presentation.
+ * Route logic and Angular behavior are intentionally untouched.
  */
 
-.shell-header {
-  position: sticky; top: 0; z-index: 20;
-  display: flex; align-items: center; justify-content: space-between; gap: 1rem;
-  padding: .9rem clamp(1rem, 4vw, 3rem);
-  background: rgba(18, 13, 25, .9); backdrop-filter: blur(16px); border-bottom: 1px solid rgba(255,255,255,.09);
+:host {
+  display: block;
+  min-height: 100vh;
+  width: 100%;
+  background: #332338;
+  padding: 0;
 }
-.brand { display: inline-flex; align-items: center; gap: .7rem; font-size: 1.05rem; font-weight: 800; letter-spacing: .01em; }
-.brand-mark { display:block;width:2rem;height:2rem;border-radius:.65rem;object-fit:cover; }
-nav { display:flex; gap:.35rem; }
-nav a { padding:.65rem .85rem; border-radius:.75rem; color:#d8cfe2; font-weight:700; }
-nav a:hover, nav a.active { background:rgba(255,184,107,.14); color:#fff; }
-.app-frame { width:min(1180px, calc(100% - 2rem)); margin:0 auto; min-height:calc(100vh - 140px); }
-footer { text-align:center; color:#998da7; padding:2.5rem 1rem; font-size:.9rem; }
-@media (max-width: 560px) {
-  .shell-header { align-items:flex-start; flex-direction:column; }
-  nav { width:100%; }
-  nav a { flex:1; text-align:center; }
+
+.app-shell {
+  width: 100%;
+  min-height: 100vh;
+  margin: 0;
+  overflow: hidden;
+  border-radius: 0;
+  background: #332338;
+  box-shadow: none;
+}
+
+.topbar {
+  position: relative;
+  z-index: 20;
+  display: flex;
+  min-height: 78px;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem clamp(1.5rem, 4.8vw, 4.25rem);
+  background: #332338;
+}
+
+.brand {
+  display: inline-flex;
+  align-items: center;
+}
+
+.logo {
+  display: block;
+  width: clamp(72px, 7vw, 96px);
+  height: auto;
+}
+
+.logo-dark {
+  display: none;
+}
+
+nav {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+nav a {
+  font-size: 0.875rem;
+  font-weight: 800;
+}
+
+.nav-home {
+  color: #fff;
+  opacity: 0.78;
+}
+
+.nav-home.active,
+.nav-home:hover {
+  opacity: 1;
+}
+
+.nav-create {
+  padding: 0.62rem 0.9rem;
+  border-radius: 0.55rem;
+  background: #ffc473;
+  color: #2f2333;
+  box-shadow: 0 2px 0 #d88a3c;
+}
+
+.route-stage {
+  width: 100%;
+  min-height: calc(100vh - 78px);
+}
+
+/* Detail view in the Figma reference uses a light canvas. */
+.app-shell:has(app-poll-detail-page) {
+  background: #ffffff;
+}
+
+.app-shell:has(app-poll-detail-page) .topbar {
+  background: #ffffff;
+  border-bottom: 1px solid #eee7e8;
+}
+
+.app-shell:has(app-poll-detail-page) .logo-orange {
+  display: none;
+}
+
+.app-shell:has(app-poll-detail-page) .logo-dark {
+  display: block;
+}
+
+.app-shell:has(app-poll-detail-page) .nav-home {
+  color: #453747;
+}
+
+@media (max-width: 640px) {
+  :host {
+    padding: 0;
+    background: #332338;
+  }
+
+  .app-shell {
+    min-height: 100vh;
+    border-radius: 0;
+  }
+
+  .topbar {
+    min-height: 64px;
+    padding: 0.75rem 1rem;
+  }
+
+  .nav-home {
+    display: none;
+  }
+
+  .nav-create {
+    padding: 0.52rem 0.7rem;
+    font-size: 0.78rem;
+  }
 }

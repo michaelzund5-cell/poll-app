@@ -1,6 +1,6 @@
-# Poll Workbench
+# Poll App
 
-Poll Workbench is an Angular survey application for creating, browsing, voting on and evaluating polls.
+Poll App is an Angular survey application for creating, browsing, voting on and evaluating polls.
 
 The project uses a layered architecture to separate presentation, application logic, domain rules and external infrastructure. The goal is to keep responsibilities clearly defined and prevent database-specific logic from spreading into Angular page components.
 
@@ -36,7 +36,7 @@ npm run build
 The generated browser application is written to:
 
 ```text
-dist/poll-workbench/browser
+dist/poll-app/browser
 ```
 
 ## Architecture
