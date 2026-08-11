@@ -1,53 +1,86 @@
 /**
  * @file src/app/infrastructure/polls/supabase-poll.store.ts
- * @description Supabase poll store.
+ * @description Supabase persistence adapter for polls.
  *
- * Owns database-specific reads and writes for surveys, questions, answers and votes. No rendering logic belongs in this layer.
+ * Only this layer knows the database schema. Pages and domain code never build
+ * Supabase queries directly.
  */
 
 import { inject, Injectable } from '@angular/core';
+import { RealtimeChannel } from '@supabase/supabase-js';
 import { PollDraft } from '../../domain/polls/poll.contracts';
 import { SupabaseConnector } from '../supabase/supabase.connector';
 
-interface SurveyRow { id: number; title: string; category: string; description: string | null; end_date: string | null; }
-interface AnswerRow { id: number; label: string; text: string; position: number; }
-interface QuestionRow { id: number; text: string; allow_multiple: boolean; position: number; answers: AnswerRow[]; }
-interface SurveyDetailRow extends SurveyRow { questions: QuestionRow[]; }
-interface VoteRow { answer_id: number; }
+export interface SurveyRow {
+  id: number;
+  title: string;
+  category: string;
+  description: string | null;
+  end_date: string | null;
+}
+
+export interface AnswerRow {
+  id: number;
+  label: string;
+  text: string;
+  position: number;
+}
+
+export interface QuestionRow {
+  id: number;
+  text: string;
+  allow_multiple: boolean;
+  position: number;
+  answers: AnswerRow[];
+}
+
+export interface SurveyDetailRow extends SurveyRow {
+  questions: QuestionRow[];
+}
+
+export interface VoteRow {
+  answer_id: number;
+}
 
 @Injectable({ providedIn: 'root' })
-/**
- * Supabase persistence adapter for the poll feature.
- *
- * This is the only poll-specific layer that knows table names and database
- * column names. Rendering and application orchestration stay outside this file.
- */
 export class SupabasePollStore {
   private readonly database = inject(SupabaseConnector).client;
 
-  /** Reads the lightweight survey columns required by overview rendering. */
+  /** Loads the lightweight survey fields required by the home page. */
   async list(): Promise<SurveyRow[]> {
-    const { data, error } = await this.database.from('surveys').select('id,title,category,description,end_date');
-    if (error) throw new Error(`Poll list query failed: ${error.message}`);
+    const { data, error } = await this.database
+      .from('surveys')
+      .select('id,title,category,description,end_date');
+
+    if (error) {
+      throw new Error(`Survey list query failed: ${error.message}`);
+    }
+
     return (data ?? []) as SurveyRow[];
   }
 
-  /** Loads one survey with its nested questions and answers. */
+  /** Loads one survey including ordered questions and answer options. */
   async get(id: number): Promise<SurveyDetailRow | null> {
     const { data, error } = await this.database
       .from('surveys')
-      .select('id,title,category,description,end_date,questions(id,text,allow_multiple,position,answers(id,label,text,position))')
+      .select(
+        'id,title,category,description,end_date,questions(id,text,allow_multiple,position,answers(id,label,text,position))',
+      )
       .eq('id', id)
       .maybeSingle();
-    if (error) throw new Error(`Poll detail query failed: ${error.message}`);
+
+    if (error) {
+      throw new Error(`Survey detail query failed: ${error.message}`);
+    }
+
     return data as SurveyDetailRow | null;
   }
 
   /**
-   * Persists the complete poll hierarchy.
+   * Creates a complete survey hierarchy.
    *
-   * The parent survey is created first because child records need its id.
-   * If a child insert fails, the new survey is removed to avoid partial data.
+   * Parent records are created before their children. If a child insert fails,
+   * the newly-created parent survey is removed to avoid partial test data.
    */
   async create(draft: PollDraft): Promise<number> {
     const { data: survey, error } = await this.database
@@ -55,36 +88,47 @@ export class SupabasePollStore {
       .insert({
         title: draft.title,
         category: draft.category,
-        description: draft.description || null,
-        end_date: draft.closesAt || null,
+        description: draft.description ?? null,
+        end_date: draft.closesAt ?? null,
       })
       .select('id')
       .single();
-    if (error || !survey) throw new Error(`Poll creation failed: ${error?.message ?? 'No id returned'}`);
+
+    if (error || !survey) {
+      throw new Error(`Survey creation failed: ${error?.message ?? 'Missing id'}`);
+    }
 
     try {
-      for (let promptIndex = 0; promptIndex < draft.prompts.length; promptIndex++) {
-        const prompt = draft.prompts[promptIndex];
+      for (const [questionIndex, prompt] of draft.prompts.entries()) {
         const { data: question, error: questionError } = await this.database
           .from('questions')
           .insert({
             survey_id: survey.id,
             text: prompt.text,
             allow_multiple: prompt.multiple,
-            position: promptIndex,
+            position: questionIndex,
           })
           .select('id')
           .single();
-        if (questionError || !question) throw new Error(questionError?.message ?? 'Question id missing');
 
-        const answerRows = prompt.choices.map((choice, choiceIndex) => ({
+        if (questionError || !question) {
+          throw new Error(questionError?.message ?? 'Question id missing');
+        }
+
+        const answerRows = prompt.choices.map((choice, answerIndex) => ({
           question_id: question.id,
-          label: String.fromCharCode(65 + choiceIndex),
+          label: String.fromCharCode(65 + answerIndex),
           text: choice.text,
-          position: choiceIndex,
+          position: answerIndex,
         }));
-        const { error: choiceError } = await this.database.from('answers').insert(answerRows);
-        if (choiceError) throw new Error(choiceError.message);
+
+        const { error: answerError } = await this.database
+          .from('answers')
+          .insert(answerRows);
+
+        if (answerError) {
+          throw new Error(answerError.message);
+        }
       }
     } catch (childError) {
       await this.database.from('surveys').delete().eq('id', survey.id);
@@ -94,17 +138,50 @@ export class SupabasePollStore {
     return survey.id as number;
   }
 
-  /** Inserts one vote row for every selected answer id. */
+  /** Stores the selected answer ids for one submitted response. */
   async recordVotes(answerIds: number[]): Promise<void> {
-    const { error } = await this.database.from('votes').insert(answerIds.map((answerId) => ({ answer_id: answerId })));
-    if (error) throw new Error(`Vote creation failed: ${error.message}`);
+    const rows = answerIds.map((answerId) => ({ answer_id: answerId }));
+    const { error } = await this.database.from('votes').insert(rows);
+
+    if (error) {
+      throw new Error(`Vote creation failed: ${error.message}`);
+    }
   }
 
-  /** Returns vote rows belonging to the supplied answer ids. */
+  /** Loads persisted votes for the supplied answer ids. */
   async votesFor(answerIds: number[]): Promise<VoteRow[]> {
-    if (answerIds.length === 0) return [];
-    const { data, error } = await this.database.from('votes').select('answer_id').in('answer_id', answerIds);
-    if (error) throw new Error(`Vote query failed: ${error.message}`);
+    if (answerIds.length === 0) {
+      return [];
+    }
+
+    const { data, error } = await this.database
+      .from('votes')
+      .select('answer_id')
+      .in('answer_id', answerIds);
+
+    if (error) {
+      throw new Error(`Vote query failed: ${error.message}`);
+    }
+
     return (data ?? []) as VoteRow[];
+  }
+
+  /**
+   * Subscribes to vote inserts so detail pages can refresh live result data.
+   * Returns a cleanup callback for the page lifecycle.
+   */
+  watchVotes(onVoteInserted: () => void): () => void {
+    const channel: RealtimeChannel = this.database
+      .channel(`poll-votes-${crypto.randomUUID()}`)
+      .on(
+        'postgres_changes',
+        { event: 'INSERT', schema: 'public', table: 'votes' },
+        () => onVoteInserted(),
+      )
+      .subscribe();
+
+    return () => {
+      void this.database.removeChannel(channel);
+    };
   }
 }

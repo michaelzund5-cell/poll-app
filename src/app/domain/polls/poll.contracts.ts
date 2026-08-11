@@ -1,8 +1,9 @@
 /**
  * @file src/app/domain/polls/poll.contracts.ts
- * @description Poll domain contracts.
+ * @description Framework-independent contracts for the poll feature.
  *
- * Defines framework-light poll models used throughout the application. These types describe business data independently from Supabase rows.
+ * The domain layer describes the data the application works with without
+ * exposing Supabase table/column names to Angular pages.
  */
 
 export const POLL_CATEGORIES = [
@@ -44,8 +45,16 @@ export interface PollDetails extends PollSummary {
   prompts: PollPrompt[];
 }
 
-export interface PollDraftChoice { text: string; }
-export interface PollDraftPrompt { text: string; multiple: boolean; choices: PollDraftChoice[]; }
+export interface PollDraftChoice {
+  text: string;
+}
+
+export interface PollDraftPrompt {
+  text: string;
+  multiple: boolean;
+  choices: PollDraftChoice[];
+}
+
 export interface PollDraft {
   title: string;
   category: PollCategory;

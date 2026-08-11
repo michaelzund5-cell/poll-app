@@ -1,180 +1,72 @@
 # Code Documentation
 
-This file explains the source structure, responsibility boundaries and rendering/data flow of Poll Workbench.
-
-## Core design rule
-
-The project deliberately separates **rendering**, **application use cases**, **domain rules** and **database access**.
+## Dependency flow
 
 ```text
-User / Browser
-      ↓
-Pages
-(rendering + interaction)
-      ↓
-PollFacade
-(application use cases + mapping)
-      ↓
+Pages / Presentation
+        ↓
+    PollFacade
+        ↓
 SupabasePollStore
-(database operations)
-      ↓
+        ↓
 SupabaseConnector
-      ↓
-Supabase
+        ↓
+     Supabase
 ```
 
-The domain layer provides the shared models and rules used by those layers.
+## Domain
 
-## Bootstrap and application shell
+`poll.contracts.ts` contains application-friendly models.
 
-### `src/main.ts`
-Starts the standalone Angular application. No poll logic belongs here.
+`poll.rules.ts` contains reusable validation, deadline and sorting logic.
 
-### `src/app/app.config.ts`
-Registers application-wide Angular providers. Currently it configures routing and component-input binding.
+## Application
 
-### `src/app/app.routes.ts`
-Defines the URL contract:
-- `/` — poll overview
-- `/new` — create poll
-- `/poll/:id` — poll detail and voting
-- `**` — fallback page
+`poll.facade.ts` exposes the poll use cases to the UI and translates persistence
+rows into domain models. Vote percentages are calculated here instead of inside
+templates or database code.
 
-### `src/app/app.ts`, `app.html`, `app.scss`
-Render the persistent shell: brand, navigation, routed page content and footer. The root component intentionally does not query the database.
+## Infrastructure
 
-## Domain layer
+`supabase-poll.store.ts` owns all table names, queries, inserts and the Realtime
+subscription for vote inserts.
 
-### `domain/polls/poll.contracts.ts`
-Defines framework-light application models.
+`supabase.connector.ts` creates the browser-safe Supabase client.
 
-Important distinction:
-- database rows use persistence names such as `end_date`
-- the domain uses application names such as `closesAt`
+## Presentation
 
-This prevents database naming from spreading through the UI.
+`create-poll-dialog` implements New Survey as a real modal instead of a route.
+Reactive Forms validate required values before a domain draft is created.
 
-### `domain/polls/poll.rules.ts`
-Centralizes reusable rules:
-- meaningful text validation
-- whitespace normalization
-- question/answer limits
-- poll deadline calculations
+## Overview page
 
-A rule used by multiple pages belongs here instead of being copied into components.
+The page stores one source survey list. Angular computed signals derive:
 
-## Application layer
+- ending-soon surveys
+- open surveys
+- past surveys
+- category filtered results
 
-### `application/polls/poll.facade.ts`
-The facade is the page-facing API of the poll feature.
+Open/Past maintain separate category state so filters never get mixed.
 
-Responsibilities:
-- load poll summaries
-- load complete poll details
-- map persistence records to domain models
-- calculate vote totals and percentages
-- create polls
-- record votes
+## Poll detail page
 
-Pages therefore express user intentions instead of constructing database queries.
+Temporary answer selection is kept in page state.
 
-## Infrastructure layer
+On desktop:
+- left column = voting
+- right column = current results
 
-### `infrastructure/supabase/supabase.connector.ts`
-Creates one shared Supabase browser client from the selected Angular environment.
+The result preview reacts immediately to selections. After submission the
+persisted result is reloaded. Supabase Realtime also refreshes the result when
+another browser inserts a vote.
 
-Only public browser-safe configuration belongs in the frontend. A Supabase secret/service-role key must never be stored here.
+Past surveys and already-voted surveys set the page into a locked state, which
+disables every answer control and blocks submission.
 
-### `infrastructure/polls/supabase-poll.store.ts`
-Owns Supabase queries and writes for:
-- `surveys`
-- `questions`
-- `answers`
-- `votes`
+## Responsive behavior
 
-This layer knows database table and column names; the rest of the application does not need to.
-
-### Poll creation sequence
-
-```text
-Create survey
-    ↓ survey id
-Create question(s)
-    ↓ question id(s)
-Create answer rows
-```
-
-If child creation fails, the newly created survey is deleted so the application does not intentionally leave an incomplete poll.
-
-## Presentation and rendering
-
-### `pages/overview`
-The page stores the fetched poll collection once.
-
-Angular `computed()` derives:
-- the visible open/closed/category-filtered list
-- the three polls closing soon
-
-**Why:** derived UI state should be calculated from one source instead of manually keeping several arrays synchronized.
-
-### `pages/create-poll`
-Uses Reactive Forms because questions and answers can be added and removed dynamically.
-
-Responsibilities:
-- editable form state
-- validation feedback
-- add/remove question and answer controls
-- normalization into `PollDraft`
-- publish loading/error state
-
-Database queries are intentionally not part of the page.
-
-### `pages/poll-detail`
-Manages:
-- temporary answer selection
-- single vs. multiple choice behavior
-- submit readiness
-- vote feedback
-- result refresh after voting
-- browser-local repeat-vote marker
-
-The browser marker improves UX but is **not** treated as a security boundary.
-
-### `pages/not-found`
-Handles unknown routes and provides a clean recovery path.
-
-## HTML templates
-
-Templates focus on:
-- semantic markup
-- Angular bindings
-- accessible labels/states
-- rendering current page state
-
-Complex calculations and persistence operations stay in TypeScript.
-
-## SCSS organization
-
-- `src/styles.scss` — global reset/defaults only
-- `src/app/app.scss` — persistent application shell
-- page SCSS — page-specific responsive layout and interaction styles
-
-Keeping styles scoped by responsibility reduces global side effects.
-
-## Environment files
-
-`environment.ts` and `environment.development.ts` isolate environment-dependent public client configuration from application code.
-
-## Where should a change go?
-
-| Change | Location |
-| --- | --- |
-| Page layout / visual styling | page HTML + SCSS |
-| Temporary interaction state | page TypeScript |
-| Shared validation/deadline rule | domain |
-| Mapping / use-case orchestration | application facade |
-| Table/query/write behavior | infrastructure store |
-| Supabase client setup | connector + environment |
-| URL/navigation behavior | routes |
-
-This structure makes debugging more predictable because every responsibility has a defined home.
+- Home cards collapse to one column.
+- New Survey becomes a mobile bottom-sheet style dialog.
+- Detail switches from two columns to one stacked column under 900px.
+- Typography and controls remain readable/touch-friendly from 320px upward.

@@ -1,0 +1,296 @@
+:host {
+  position: relative;
+  z-index: 1000;
+}
+
+.backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  display: grid;
+  place-items: center;
+  overflow-y: auto;
+  padding: 1rem;
+  background: rgba(22, 14, 24, 0.76);
+  backdrop-filter: blur(5px);
+}
+
+.dialog {
+  width: min(960px, 100%);
+  max-height: calc(100vh - 2rem);
+  overflow-y: auto;
+  border-radius: 1rem;
+  background: #3a2940;
+  color: #fff;
+  box-shadow: 0 28px 80px rgba(0, 0, 0, 0.4);
+}
+
+.dialog-header,
+.dialog-footer {
+  position: sticky;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 1rem 1.25rem;
+  background: #3a2940;
+}
+
+.dialog-header {
+  top: 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.dialog-footer {
+  bottom: 0;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.dialog-header h2,
+.section-header h3 {
+  margin: 0;
+}
+
+.eyebrow {
+  margin: 0 0 0.2rem;
+  color: #f5ae5c;
+  font-size: 0.7rem;
+  font-weight: 900;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.close-button {
+  display: grid;
+  width: 2.25rem;
+  height: 2.25rem;
+  place-items: center;
+  border: 0;
+  border-radius: 50%;
+  background: #4b3650;
+  color: #fff;
+  font-size: 1.5rem;
+}
+
+form {
+  padding: 1.15rem 1.25rem 0;
+}
+
+.survey-fields {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0 1rem;
+}
+
+.full-width {
+  grid-column: 1 / -1;
+}
+
+label {
+  display: grid;
+  gap: 0.35rem;
+}
+
+label > span {
+  font-size: 0.78rem;
+  font-weight: 700;
+}
+
+label strong {
+  color: #ffc473;
+}
+
+label em {
+  color: #b9aaba;
+  font-size: 0.68rem;
+  font-style: normal;
+  font-weight: 500;
+}
+
+input,
+textarea,
+select {
+  width: 100%;
+  border: 1px solid transparent;
+  border-radius: 0.45rem;
+  padding: 0.68rem 0.72rem;
+  background: #533d58;
+  color: #fff;
+}
+
+input:focus,
+textarea:focus,
+select:focus {
+  border-color: #ffc473;
+  outline: none;
+}
+
+input::placeholder,
+textarea::placeholder {
+  color: #c5b8c7;
+}
+
+small {
+  min-height: 1rem;
+  color: #ffb9bd;
+  font-size: 0.67rem;
+}
+
+.questions {
+  margin-top: 0.8rem;
+}
+
+.section-header,
+.question-card header,
+.dialog-footer > div {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+}
+
+.question-card {
+  margin-top: 0.75rem;
+  padding: 0.9rem;
+  border-radius: 0.7rem;
+  background: #46324b;
+}
+
+.question-card header {
+  margin-bottom: 0.7rem;
+}
+
+.multiple {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin: 0.15rem 0 0.7rem;
+}
+
+.multiple input {
+  width: 1rem;
+  height: 1rem;
+  margin: 0;
+  accent-color: #ffc473;
+}
+
+.answers {
+  display: grid;
+  gap: 0.5rem;
+}
+
+.answer-row {
+  display: grid;
+  grid-template-columns: 1.8rem minmax(0, 1fr) auto;
+  gap: 0.5rem;
+  align-items: start;
+}
+
+.answer-label {
+  display: grid;
+  width: 1.6rem;
+  height: 1.6rem;
+  place-items: center;
+  margin-top: 0.45rem;
+  border-radius: 50%;
+  background: #ffc473;
+  color: #332338;
+  font-size: 0.7rem;
+  font-weight: 900;
+}
+
+.secondary,
+.primary,
+.cancel {
+  border-radius: 0.45rem;
+  padding: 0.6rem 0.85rem;
+  font-weight: 900;
+}
+
+.secondary,
+.primary {
+  border: 0;
+  background: #ffc473;
+  color: #332338;
+}
+
+.cancel {
+  border: 1px solid #987f9a;
+  background: transparent;
+  color: #fff;
+}
+
+.text-button {
+  border: 0;
+  padding: 0.4rem;
+  background: transparent;
+  color: #dbcddc;
+  font-size: 0.72rem;
+  font-weight: 700;
+}
+
+.text-button.danger {
+  color: #ffb9bd;
+}
+
+.add-answer {
+  margin-top: 0.45rem;
+  color: #ffc473;
+}
+
+.dialog-footer > p {
+  min-height: 1rem;
+  margin: 0;
+  color: #ffb9bd;
+  font-size: 0.72rem;
+}
+
+button:disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+
+@media (max-width: 700px) {
+  .backdrop {
+    align-items: end;
+    padding: 0;
+  }
+
+  .dialog {
+    width: 100%;
+    max-height: 94vh;
+    border-radius: 1rem 1rem 0 0;
+  }
+
+  .survey-fields {
+    grid-template-columns: 1fr;
+  }
+
+  .full-width {
+    grid-column: auto;
+  }
+
+  .answer-row {
+    grid-template-columns: 1.7rem minmax(0, 1fr);
+  }
+
+  .answer-row > .text-button {
+    grid-column: 2;
+    justify-self: start;
+    padding-top: 0;
+  }
+
+  .dialog-footer {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .dialog-footer > div {
+    width: 100%;
+  }
+
+  .dialog-footer button {
+    flex: 1;
+  }
+}

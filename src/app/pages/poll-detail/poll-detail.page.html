@@ -1,96 +1,149 @@
-<!-- Single survey view following the supplied Figma layout. -->
-<section class="detail-page">
-  <a class="back" routerLink="/">← Back</a>
+<section class="detail">
+  <a class="back" routerLink="/">← Back to surveys</a>
 
   @if (busy()) {
-    <div class="state">Loading poll…</div>
+    <div class="state">Loading survey…</div>
   } @else if (problem()) {
     <div class="state error">{{ problem() }}</div>
   } @else if (poll(); as current) {
-    <section class="survey-layout">
-      <aside class="survey-summary">
-        <span class="published">Published</span>
-        <span class="category">{{ current.category }}</span>
+    <header class="survey-header">
+      <div>
+        <p class="eyebrow">{{ current.category }}</p>
         <h1>{{ current.title }}</h1>
 
         @if (current.description) {
-          <p class="description">{{ current.description }}</p>
+          <p>{{ current.description }}</p>
         }
+      </div>
 
-        @if (current.closesAt) {
-          <div class="meta-line">
-            <span>Ending date</span>
-            <strong>{{ current.closesAt }}</strong>
+      <div class="meta">
+        <span>Deadline</span>
+        <strong>{{ formatDate(current.closesAt) }}</strong>
+
+        <span class="badge" [class.closed]="locked()">
+          {{ locked() ? 'Past survey' : 'Open survey' }}
+        </span>
+      </div>
+    </header>
+
+    <div class="layout">
+      <section class="voting">
+        <header class="panel-header">
+          <div>
+            <p class="eyebrow">Vote</p>
+            <h2>Your answers</h2>
           </div>
+
+          @if (locked()) {
+            <span>Voting disabled</span>
+          }
+        </header>
+
+        @for (
+          prompt of current.prompts;
+          track prompt.id;
+          let questionIndex = $index
+        ) {
+          <article class="question" [class.disabled]="locked()">
+            <div class="question-title">
+              <span>{{ questionIndex + 1 }}</span>
+              <div>
+                <h3>{{ prompt.text }}</h3>
+                <p>
+                  {{
+                    prompt.multiple
+                      ? 'Select one or more answers'
+                      : 'Select one answer'
+                  }}
+                </p>
+              </div>
+            </div>
+
+            <div class="choices">
+              @for (choice of prompt.choices; track choice.id) {
+                <button
+                  type="button"
+                  [class.selected]="isSelected(prompt.id, choice.id)"
+                  [disabled]="locked()"
+                  (click)="toggle(prompt.id, choice.id, prompt.multiple)"
+                >
+                  <span
+                    class="control"
+                    [class.multiple]="prompt.multiple"
+                  ></span>
+                  <span>{{ choice.text }}</span>
+                </button>
+              }
+            </div>
+          </article>
         }
-
-        <div class="summary-stats">
-          <div>
-            <strong>{{ current.prompts.length }}</strong>
-            <span>Questions</span>
-          </div>
-          <div>
-            <strong>{{ current.prompts.length > 0 ? current.prompts[0].totalVotes : 0 }}</strong>
-            <span>Responses</span>
-          </div>
-        </div>
 
         @if (locked()) {
           <div class="locked-note">
-            {{ alreadyVoted() ? 'You already voted in this browser.' : 'This poll is closed.' }}
+            {{
+              alreadyVoted()
+                ? 'You already voted in this browser. Results remain visible.'
+                : 'This survey has ended. It can still be viewed, but voting is disabled.'
+            }}
           </div>
         } @else {
-          <div class="privacy-note">
-            Your selections are only stored after you press “Submit vote”.
-          </div>
-        }
-      </aside>
-
-      <section class="survey-form">
-        <div class="questions">
-          @for (prompt of current.prompts; track prompt.id; let index = $index) {
-            <fieldset class="question" [disabled]="locked()">
-              <legend>{{ index + 1 }}. {{ prompt.text }}</legend>
-              <p class="question-meta">{{ prompt.multiple ? 'Choose one or more options' : 'Choose one option' }}</p>
-
-              <div class="choice-list">
-                @for (choice of prompt.choices; track choice.id) {
-                  <button
-                    type="button"
-                    class="choice"
-                    [class.chosen]="isSelected(prompt.id, choice.id)"
-                    (click)="toggle(prompt.id, choice.id, prompt.multiple)">
-                    <span class="control-shape" [class.multiple]="prompt.multiple"></span>
-                    <span class="choice-text">{{ choice.text }}</span>
-                    <span class="percent">{{ choice.percentage }}%</span>
-                  </button>
-                }
-              </div>
-
-              @if (!locked()) {
-                <p class="selection-preview">Selected: {{ previewCount(prompt.id) }}</p>
-              }
-            </fieldset>
-          }
-        </div>
-
-        <div class="respondent-note">
-          <span class="info-icon">i</span>
-          <div>
-            <strong>Note for respondents</strong>
-            <p>Your response is used for survey analysis and is stored only when you submit it.</p>
-          </div>
-        </div>
-
-        <div class="action-row">
-          <div class="feedback" aria-live="polite">{{ feedback() }}</div>
-          @if (!locked()) {
-            <button class="submit" type="button" [disabled]="!canSubmit() || saving()" (click)="submitVote()">
-              {{ saving() ? 'Saving…' : 'Submit vote' }}
+          <footer class="vote-footer">
+            <p aria-live="polite">{{ feedback() }}</p>
+            <button
+              type="button"
+              [disabled]="!canSubmit() || saving()"
+              (click)="submitVote()"
+            >
+              {{ saving() ? 'Submitting…' : 'Submit vote' }}
             </button>
-          }
-        </div>
+          </footer>
+        }
       </section>
-    </section>
+
+      <aside class="results">
+        <header class="panel-header">
+          <div>
+            <p class="eyebrow">Live</p>
+            <h2>Current results</h2>
+          </div>
+          <span class="live">Live</span>
+        </header>
+
+        @for (
+          prompt of current.prompts;
+          track prompt.id;
+          let questionIndex = $index
+        ) {
+          <section class="result-group">
+            <h3>{{ questionIndex + 1 }}. {{ prompt.text }}</h3>
+
+            @for (choice of prompt.choices; track choice.id) {
+              <div class="result-row">
+                <div>
+                  <span>{{ choice.text }}</span>
+                  <strong>{{ livePercentage(prompt, choice) }}%</strong>
+                </div>
+
+                <div class="bar">
+                  <div
+                    [style.width.%]="livePercentage(prompt, choice)"
+                  ></div>
+                </div>
+
+                <small>
+                  {{ liveVotes(prompt, choice) }}
+                  vote{{ liveVotes(prompt, choice) === 1 ? '' : 's' }}
+                </small>
+              </div>
+            }
+          </section>
+        }
+
+        <p class="results-note">
+          Results update while you select answers and refresh when submitted
+          votes arrive through Supabase Realtime.
+        </p>
+      </aside>
+    </div>
   }
 </section>

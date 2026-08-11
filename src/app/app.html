@@ -1,23 +1,27 @@
-<!--
-  Root visual shell.
-  Application routing and TypeScript behavior are unchanged.
--->
 <div class="app-shell">
   <header class="topbar">
     <a class="brand" routerLink="/" aria-label="Poll App home">
-      <img class="logo logo-orange" src="/images/pollapp_orange.png" alt="PollApp">
-      <img class="logo logo-dark" src="/images/pollapp_dark.png" alt="PollApp">
+      <img src="/images/pollapp_orange.png" alt="Poll App">
     </a>
 
     <nav aria-label="Primary navigation">
-      <a class="nav-home" routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+      <a
+        routerLink="/"
+        routerLinkActive="active"
+        [routerLinkActiveOptions]="{ exact: true }"
+      >
         Home
       </a>
-      <a class="nav-create" routerLink="/new" routerLinkActive="active">New survey</a>
+
+      <button type="button" (click)="createDialog.open()">
+        New Survey
+      </button>
     </nav>
   </header>
 
-  <main class="route-stage">
+  <main>
     <router-outlet />
   </main>
 </div>
+
+<app-create-poll-dialog />

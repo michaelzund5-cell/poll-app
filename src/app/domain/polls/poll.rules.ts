@@ -1,59 +1,57 @@
 /**
  * @file src/app/domain/polls/poll.rules.ts
- * @description Poll domain rules.
- *
- * Contains reusable validation, normalization and deadline calculations so business rules do not have to be duplicated in page components.
+ * @description Shared poll validation, deadline and sorting rules.
  */
 
 import { AbstractControl, ValidationErrors, ValidatorFn } from '@angular/forms';
 
-/** Central creation limits shared by the form and domain workflow. */
 export const POLL_LIMITS = {
   maximumPrompts: 4,
   minimumChoices: 2,
   maximumChoices: 6,
+  endingSoonDays: 7,
 } as const;
 
-/**
- * Rejects blank and whitespace-only form input.
- * Trimming before measuring prevents strings such as "     " from being valid.
- */
+/** Rejects empty and whitespace-only text. */
 export function meaningfulText(minimumCharacters: number): ValidatorFn {
   return (control: AbstractControl): ValidationErrors | null => {
-    const normalized = String(control.value ?? '').trim();
-    return normalized.length >= minimumCharacters
+    const value = String(control.value ?? '').trim();
+
+    return value.length >= minimumCharacters
       ? null
       : { meaningfulText: { requiredLength: minimumCharacters } };
   };
 }
 
-/**
- * Normalizes user text before persistence by trimming and collapsing
- * repeated whitespace.
- */
+/** Normalizes user text before persistence. */
 export function normalizeText(value: unknown): string {
   return String(value ?? '').trim().replace(/\s+/g, ' ');
 }
 
-/** Returns whether a poll deadline is before the current local day. */
+/** Returns true when a poll deadline is before today. */
 export function isClosed(date?: Date): boolean {
-  return Boolean(date && date.getTime() < startOfToday().getTime());
+  return Boolean(date && startOfDay(date).getTime() < startOfToday().getTime());
 }
 
-/**
- * Calculates whole calendar days until a deadline.
- * `null` means the poll has no configured deadline.
- */
+/** Returns whole calendar days remaining, or null when no deadline exists. */
 export function daysRemaining(date?: Date): number | null {
-  if (!date) return null;
+  if (!date) {
+    return null;
+  }
+
   const difference = startOfDay(date).getTime() - startOfToday().getTime();
   return Math.ceil(difference / 86_400_000);
 }
 
+/** Sorting helper: surveys without deadlines are placed last. */
+export function deadlineTimestamp(date?: Date): number {
+  return date?.getTime() ?? Number.MAX_SAFE_INTEGER;
+}
+
 function startOfDay(date: Date): Date {
-  const copy = new Date(date);
-  copy.setHours(0, 0, 0, 0);
-  return copy;
+  const normalized = new Date(date);
+  normalized.setHours(0, 0, 0, 0);
+  return normalized;
 }
 
 function startOfToday(): Date {
