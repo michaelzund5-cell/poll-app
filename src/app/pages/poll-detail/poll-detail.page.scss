@@ -2,7 +2,7 @@
   display: block;
   min-height: calc(100vh - 72px);
   background: #f4f4f4;
-  color: #343434;
+  color: #2f2032;
 }
 
 .detail {
@@ -36,13 +36,13 @@
   margin-bottom: 1rem;
   padding: 1.25rem 1.5rem;
   border-radius: 0.85rem;
-  background: #343434;
+  background: #2f2032;
   color: #fff;
 }
 
 .eyebrow {
   margin: 0 0 0.25rem;
-  color: #e59a4e;
+  color: #f39a43;
   font-size: 0.68rem;
   font-weight: 900;
   letter-spacing: 0.08em;
@@ -51,7 +51,7 @@
 
 .survey-header h1 {
   margin: 0;
-  color: #ffc473;
+  color: #ffc06b;
   font-size: clamp(1.8rem, 4vw, 3rem);
 }
 
@@ -79,8 +79,8 @@
   margin-top: 0.5rem;
   border-radius: 999px;
   padding: 0.32rem 0.55rem;
-  background: #ffc473;
-  color: #343434;
+  background: #ffc06b;
+  color: #2f2032;
   font-weight: 900;
 }
 
@@ -150,7 +150,7 @@
   height: 1.55rem;
   place-items: center;
   border-radius: 50%;
-  background: #ffc473;
+  background: #ffc06b;
   font-size: 0.7rem;
   font-weight: 900;
 }
@@ -182,7 +182,7 @@
   border-radius: 0.45rem;
   padding: 0.65rem 0.7rem;
   background: #fff;
-  color: #343434;
+  color: #2f2032;
   text-align: left;
 }
 
@@ -208,8 +208,8 @@
 }
 
 .choices button.selected .control {
-  border-color: #e59a4e;
-  background: #ffc473;
+  border-color: #f39a43;
+  background: #ffc06b;
   box-shadow: inset 0 0 0 2px #fff;
 }
 
@@ -231,8 +231,8 @@
   border: 0;
   border-radius: 0.45rem;
   padding: 0.65rem 0.9rem;
-  background: #ffc473;
-  color: #343434;
+  background: #ffc06b;
+  color: #2f2032;
   font-weight: 900;
 }
 
@@ -302,7 +302,7 @@
 .bar > div {
   height: 100%;
   border-radius: inherit;
-  background: linear-gradient(90deg, #f3a955, #ffc473);
+  background: linear-gradient(90deg, #f39a43, #ffc06b);
   transition: width 180ms ease;
 }
 

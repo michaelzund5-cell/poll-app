@@ -1,75 +1,42 @@
 :host {
   display: block;
   min-height: 100vh;
-  background: #343434;
+  background: #2f2032;
 }
-
 .app-shell {
   width: 100%;
   min-height: 100vh;
   overflow-x: hidden;
-  background: #343434;
+  background: #2f2032;
 }
-
 .topbar {
-  position: sticky;
-  top: 0;
+  position: relative;
   z-index: 50;
   display: flex;
-  min-height: 72px;
+  min-height: 64px;
   align-items: center;
   justify-content: space-between;
   gap: 1rem;
-  padding: 0.85rem clamp(1rem, 5vw, 4.5rem);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-  background: rgba(52, 52, 52, 0.96);
-  backdrop-filter: blur(12px);
+  padding: .8rem clamp(1.25rem, 7vw, 6.5rem) 0;
+  background: #2f2032;
 }
-
-.brand img {
-  display: block;
-  width: clamp(78px, 9vw, 112px);
-  height: auto;
-}
-
-nav {
-  display: flex;
-  align-items: center;
-  gap: 0.75rem;
-}
-
-nav a {
-  color: #e8e8e8;
-  font-size: 0.85rem;
-  font-weight: 800;
-}
-
-nav a.active,
-nav a:hover {
-  color: #fff;
-}
-
+.brand img { display: block; width: 86px; height: auto; }
+nav { display: flex; align-items: center; gap: .8rem; }
+nav a { color: #fff8ef; font-size: .76rem; font-weight: 700; }
+nav a.active, nav a:hover { color: #ffc46b; }
 nav button {
-  border: 0;
-  border-radius: 0.5rem;
-  padding: 0.62rem 0.9rem;
-  background: #ffc473;
-  color: #343434;
+  border: 1px solid #2b1c2e;
+  border-radius: .35rem;
+  padding: .52rem .78rem;
+  background: #ffd18b;
+  color: #2f2032;
+  font-size: .72rem;
   font-weight: 900;
-  box-shadow: 0 2px 0 #d38a42;
+  box-shadow: 0 2px 0 #e89b4b;
 }
-
 @media (max-width: 520px) {
-  .topbar {
-    min-height: 62px;
-  }
-
-  nav a {
-    display: none;
-  }
-
-  nav button {
-    padding: 0.52rem 0.72rem;
-    font-size: 0.78rem;
-  }
+  .topbar { min-height: 58px; padding-inline: 1rem; }
+  .brand img { width: 72px; }
+  nav a { display: none; }
+  nav button { padding: .46rem .65rem; font-size: .68rem; }
 }
