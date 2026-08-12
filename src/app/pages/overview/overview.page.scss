@@ -7,8 +7,8 @@
 .home {
   min-height: calc(100vh - 72px);
   background:
-    radial-gradient(circle at 76% 18%, rgba(91, 60, 95, 0.4), transparent 30%),
-    #332338;
+    radial-gradient(circle at 76% 18%, rgba(110, 110, 110, 0.32), transparent 30%),
+    #343434;
 }
 
 .hero {
@@ -51,7 +51,7 @@ h1 {
   border-radius: 0.5rem;
   padding: 0.68rem 1rem;
   background: #ffc473;
-  color: #332338;
+  color: #343434;
   font-weight: 900;
 }
 
@@ -97,7 +97,7 @@ h1 {
 }
 
 .ending-soon header > span {
-  color: #bfaec0;
+  color: #bdbdbd;
   font-size: 0.72rem;
 }
 
@@ -114,8 +114,8 @@ h1 {
   flex-direction: column;
   padding: 1rem;
   border-radius: 0.8rem 1.8rem 0.8rem 0.8rem;
-  background: #f9f5f9;
-  color: #332338;
+  background: #f7f7f7;
+  color: #343434;
 }
 
 .soon-card span {
@@ -142,7 +142,7 @@ h1 {
 }
 
 .browser label span {
-  color: #cbbdcc;
+  color: #c9c9c9;
   font-size: 0.7rem;
   font-weight: 700;
 }
@@ -152,7 +152,7 @@ select {
   border: 1px solid rgba(255, 255, 255, 0.14);
   border-radius: 0.45rem;
   padding: 0.55rem 0.65rem;
-  background: #46324b;
+  background: #454545;
   color: #fff;
 }
 
@@ -166,19 +166,19 @@ select {
   border: 0;
   border-radius: 999px;
   padding: 0.55rem 0.9rem;
-  background: #46324b;
-  color: #d9ccda;
+  background: #454545;
+  color: #d5d5d5;
   font-weight: 800;
 }
 
 .tabs button.active {
   background: #ffc473;
-  color: #332338;
+  color: #343434;
 }
 
 .status {
   min-height: 1.6rem;
-  color: #d3c5d4;
+  color: #d0d0d0;
   font-size: 0.8rem;
 }
 
@@ -199,7 +199,7 @@ select {
   gap: 1rem;
   padding: 0.75rem 0.9rem;
   border-radius: 0.6rem;
-  background: #412e46;
+  background: #484848;
 }
 
 .survey-row.past {
@@ -218,7 +218,7 @@ select {
 }
 
 .survey-row small {
-  color: #ded3df;
+  color: #dddddd;
 }
 
 .empty {

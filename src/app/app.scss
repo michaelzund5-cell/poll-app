@@ -1,14 +1,14 @@
 :host {
   display: block;
   min-height: 100vh;
-  background: #332338;
+  background: #343434;
 }
 
 .app-shell {
   width: 100%;
   min-height: 100vh;
   overflow-x: hidden;
-  background: #332338;
+  background: #343434;
 }
 
 .topbar {
@@ -22,7 +22,7 @@
   gap: 1rem;
   padding: 0.85rem clamp(1rem, 5vw, 4.5rem);
   border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-  background: rgba(51, 35, 56, 0.96);
+  background: rgba(52, 52, 52, 0.96);
   backdrop-filter: blur(12px);
 }
 
@@ -39,7 +39,7 @@ nav {
 }
 
 nav a {
-  color: #e8dfe9;
+  color: #e8e8e8;
   font-size: 0.85rem;
   font-weight: 800;
 }
@@ -54,7 +54,7 @@ nav button {
   border-radius: 0.5rem;
   padding: 0.62rem 0.9rem;
   background: #ffc473;
-  color: #332338;
+  color: #343434;
   font-weight: 900;
   box-shadow: 0 2px 0 #d38a42;
 }

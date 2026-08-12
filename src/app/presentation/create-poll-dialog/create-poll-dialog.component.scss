@@ -20,7 +20,7 @@
   max-height: calc(100vh - 2rem);
   overflow-y: auto;
   border-radius: 1rem;
-  background: #3a2940;
+  background: #3d3d3d;
   color: #fff;
   box-shadow: 0 28px 80px rgba(0, 0, 0, 0.4);
 }
@@ -34,7 +34,7 @@
   justify-content: space-between;
   gap: 1rem;
   padding: 1rem 1.25rem;
-  background: #3a2940;
+  background: #3d3d3d;
 }
 
 .dialog-header {
@@ -68,7 +68,7 @@
   place-items: center;
   border: 0;
   border-radius: 50%;
-  background: #4b3650;
+  background: #4d4d4d;
   color: #fff;
   font-size: 1.5rem;
 }
@@ -102,7 +102,7 @@ label strong {
 }
 
 label em {
-  color: #b9aaba;
+  color: #b8b8b8;
   font-size: 0.68rem;
   font-style: normal;
   font-weight: 500;
@@ -115,7 +115,7 @@ select {
   border: 1px solid transparent;
   border-radius: 0.45rem;
   padding: 0.68rem 0.72rem;
-  background: #533d58;
+  background: #565656;
   color: #fff;
 }
 
@@ -128,7 +128,7 @@ select:focus {
 
 input::placeholder,
 textarea::placeholder {
-  color: #c5b8c7;
+  color: #c3c3c3;
 }
 
 small {
@@ -154,7 +154,7 @@ small {
   margin-top: 0.75rem;
   padding: 0.9rem;
   border-radius: 0.7rem;
-  background: #46324b;
+  background: #454545;
 }
 
 .question-card header {
@@ -195,7 +195,7 @@ small {
   margin-top: 0.45rem;
   border-radius: 50%;
   background: #ffc473;
-  color: #332338;
+  color: #343434;
   font-size: 0.7rem;
   font-weight: 900;
 }
@@ -212,11 +212,11 @@ small {
 .primary {
   border: 0;
   background: #ffc473;
-  color: #332338;
+  color: #343434;
 }
 
 .cancel {
-  border: 1px solid #987f9a;
+  border: 1px solid #999999;
   background: transparent;
   color: #fff;
 }
@@ -225,7 +225,7 @@ small {
   border: 0;
   padding: 0.4rem;
   background: transparent;
-  color: #dbcddc;
+  color: #d7d7d7;
   font-size: 0.72rem;
   font-weight: 700;
 }

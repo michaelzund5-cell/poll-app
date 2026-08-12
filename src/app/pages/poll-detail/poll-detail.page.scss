@@ -1,8 +1,8 @@
 :host {
   display: block;
   min-height: calc(100vh - 72px);
-  background: #f7f4f7;
-  color: #332338;
+  background: #f4f4f4;
+  color: #343434;
 }
 
 .detail {
@@ -14,7 +14,7 @@
 .back {
   display: inline-flex;
   margin-bottom: 1rem;
-  color: #655767;
+  color: #656565;
   font-size: 0.8rem;
   font-weight: 800;
 }
@@ -36,7 +36,7 @@
   margin-bottom: 1rem;
   padding: 1.25rem 1.5rem;
   border-radius: 0.85rem;
-  background: #332338;
+  background: #343434;
   color: #fff;
 }
 
@@ -58,7 +58,7 @@
 .survey-header p:not(.eyebrow) {
   max-width: 700px;
   margin: 0.65rem 0 0;
-  color: #ede4ee;
+  color: #eeeeee;
   line-height: 1.5;
 }
 
@@ -66,7 +66,7 @@
   display: grid;
   min-width: 140px;
   gap: 0.25rem;
-  color: #dfd4e0;
+  color: #dedede;
   font-size: 0.72rem;
 }
 
@@ -80,13 +80,13 @@
   border-radius: 999px;
   padding: 0.32rem 0.55rem;
   background: #ffc473;
-  color: #332338;
+  color: #343434;
   font-weight: 900;
 }
 
 .badge.closed {
-  background: #59415e;
-  color: #f1e8f2;
+  background: #5d5d5d;
+  color: #eeeeee;
 }
 
 .layout {
@@ -98,10 +98,10 @@
 
 .voting,
 .results {
-  border: 1px solid #e8e0e9;
+  border: 1px solid #e3e3e3;
   border-radius: 0.85rem;
   background: #fff;
-  box-shadow: 0 12px 30px rgba(51, 35, 56, 0.06);
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.06);
 }
 
 .results {
@@ -115,7 +115,7 @@
   justify-content: space-between;
   gap: 1rem;
   padding: 1rem 1.1rem;
-  border-bottom: 1px solid #eee7ef;
+  border-bottom: 1px solid #e8e8e8;
 }
 
 .panel-header h2 {
@@ -131,11 +131,11 @@
 
 .question {
   padding: 1rem 1.1rem;
-  border-bottom: 1px solid #eee7ef;
+  border-bottom: 1px solid #e8e8e8;
 }
 
 .question.disabled {
-  background: #fbf9fb;
+  background: #fafafa;
 }
 
 .question-title {
@@ -162,7 +162,7 @@
 
 .question-title p {
   margin: 0.25rem 0 0;
-  color: #857986;
+  color: #858585;
   font-size: 0.7rem;
 }
 
@@ -178,11 +178,11 @@
   gap: 0.55rem;
   align-items: center;
   width: 100%;
-  border: 1px solid #e5dee6;
+  border: 1px solid #e1e1e1;
   border-radius: 0.45rem;
   padding: 0.65rem 0.7rem;
   background: #fff;
-  color: #332338;
+  color: #343434;
   text-align: left;
 }
 
@@ -199,7 +199,7 @@
 .control {
   width: 0.9rem;
   height: 0.9rem;
-  border: 1.5px solid #887c89;
+  border: 1.5px solid #888888;
   border-radius: 50%;
 }
 
@@ -223,7 +223,7 @@
 
 .vote-footer p {
   margin: 0 auto 0 0;
-  color: #756877;
+  color: #757575;
   font-size: 0.72rem;
 }
 
@@ -232,7 +232,7 @@
   border-radius: 0.45rem;
   padding: 0.65rem 0.9rem;
   background: #ffc473;
-  color: #332338;
+  color: #343434;
   font-weight: 900;
 }
 
@@ -245,8 +245,8 @@
   margin: 1rem;
   padding: 0.85rem;
   border-radius: 0.55rem;
-  background: #f4eef5;
-  color: #655767;
+  background: #f0f0f0;
+  color: #656565;
   font-size: 0.78rem;
 }
 
@@ -267,7 +267,7 @@
 
 .result-group {
   padding: 1rem 1.1rem;
-  border-bottom: 1px solid #eee7ef;
+  border-bottom: 1px solid #e8e8e8;
 }
 
 .result-group h3 {
@@ -296,7 +296,7 @@
   height: 0.55rem;
   overflow: hidden;
   border-radius: 999px;
-  background: #eee8ef;
+  background: #e9e9e9;
 }
 
 .bar > div {
@@ -307,14 +307,14 @@
 }
 
 .result-row small {
-  color: #968b97;
+  color: #969696;
   font-size: 0.65rem;
 }
 
 .results-note {
   margin: 0;
   padding: 1rem 1.1rem;
-  color: #756877;
+  color: #757575;
   font-size: 0.7rem;
   line-height: 1.45;
 }
