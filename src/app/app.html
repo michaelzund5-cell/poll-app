@@ -1,11 +1,13 @@
 <div class="app-shell">
   <header class="topbar">
     <a class="brand" routerLink="/" aria-label="Poll App home">
-      <img src="/images/pollapp_orange.png" alt="Poll App">
+      <img class="brand-logo brand-logo-orange" src="/images/pollapp_orange.png" alt="Poll App">
+      <img class="brand-logo brand-logo-dark" src="/images/pollapp_dark.png" alt="Poll App">
     </a>
 
     <nav aria-label="Primary navigation">
       <a
+        class="home-link"
         routerLink="/"
         routerLinkActive="active"
         [routerLinkActiveOptions]="{ exact: true }"
@@ -13,7 +15,7 @@
         Home
       </a>
 
-      <button type="button" (click)="createDialog.open()">
+      <button type="button" class="new-survey-button" (click)="createDialog.open()">
         New Survey
       </button>
     </nav>

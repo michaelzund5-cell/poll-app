@@ -1,14 +1,16 @@
 :host {
   display: block;
   min-height: 100vh;
-  background: #2f2032;
+  background: #302136;
 }
+
 .app-shell {
   width: 100%;
   min-height: 100vh;
   overflow-x: hidden;
-  background: #2f2032;
+  background: #302136;
 }
+
 .topbar {
   position: relative;
   z-index: 50;
@@ -17,26 +19,98 @@
   align-items: center;
   justify-content: space-between;
   gap: 1rem;
-  padding: .8rem clamp(1.25rem, 7vw, 6.5rem) 0;
-  background: #2f2032;
+  padding: 1rem clamp(1.25rem, 8vw, 7rem) 0;
+  background: #302136;
 }
-.brand img { display: block; width: 86px; height: auto; }
-nav { display: flex; align-items: center; gap: .8rem; }
-nav a { color: #fff8ef; font-size: .76rem; font-weight: 700; }
-nav a.active, nav a:hover { color: #ffc46b; }
-nav button {
-  border: 1px solid #2b1c2e;
-  border-radius: .35rem;
-  padding: .52rem .78rem;
-  background: #ffd18b;
-  color: #2f2032;
+
+.brand {
+  display: inline-flex;
+  align-items: center;
+}
+
+.brand-logo {
+  display: block;
+  width: 84px;
+  height: auto;
+}
+
+.brand-logo-dark {
+  display: none;
+}
+
+nav {
+  display: flex;
+  align-items: center;
+  gap: .8rem;
+}
+
+.home-link {
+  color: #fff8ef;
   font-size: .72rem;
-  font-weight: 900;
-  box-shadow: 0 2px 0 #e89b4b;
+  font-weight: 700;
 }
+
+.home-link.active,
+.home-link:hover {
+  color: #ffc06b;
+}
+
+.new-survey-button {
+  min-height: 30px;
+  border: 1px solid #e09a51;
+  border-radius: 5px;
+  padding: .4rem .72rem;
+  background: linear-gradient(180deg, #ffd08a 0%, #ffbd65 100%);
+  color: #2f2032;
+  font-size: .68rem;
+  font-weight: 900;
+  box-shadow: 0 1px 0 #d6843c;
+}
+
+/* The Figma detail page switches to a light header. */
+.app-shell:has(app-poll-detail-page) {
+  background: #ffffff;
+}
+
+.app-shell:has(app-poll-detail-page) .topbar {
+  min-height: 58px;
+  padding-top: .65rem;
+  border-bottom: 1px solid #eee8ef;
+  background: #ffffff;
+}
+
+.app-shell:has(app-poll-detail-page) .brand-logo-orange {
+  display: none;
+}
+
+.app-shell:has(app-poll-detail-page) .brand-logo-dark {
+  display: block;
+}
+
+.app-shell:has(app-poll-detail-page) .home-link {
+  color: #443748;
+}
+
+.app-shell:has(app-poll-detail-page) .new-survey-button::first-letter {
+  text-transform: uppercase;
+}
+
 @media (max-width: 520px) {
-  .topbar { min-height: 58px; padding-inline: 1rem; }
-  .brand img { width: 72px; }
-  nav a { display: none; }
-  nav button { padding: .46rem .65rem; font-size: .68rem; }
+  .topbar {
+    min-height: 58px;
+    padding: .75rem 1rem 0;
+  }
+
+  .brand-logo {
+    width: 72px;
+  }
+
+  .home-link {
+    display: none;
+  }
+
+  .new-survey-button {
+    padding: .38rem .58rem;
+    font-size: .65rem;
+  }
 }
