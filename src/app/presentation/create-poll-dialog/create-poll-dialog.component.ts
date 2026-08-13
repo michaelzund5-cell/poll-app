@@ -98,6 +98,15 @@ export class CreatePollDialogComponent {
     return control.invalid && control.touched;
   }
 
+  /**
+   * Clears one of the optional/top-level form inputs from the trash action.
+   * The form structure itself stays unchanged.
+   */
+  clearField(field: 'title' | 'description' | 'closesAt'): void {
+    this.form.controls[field].setValue('');
+    this.form.controls[field].markAsPristine();
+  }
+
   close(): void {
     if (!this.saving()) {
       this.dialog.close();

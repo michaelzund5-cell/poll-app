@@ -7,183 +7,225 @@
       aria-labelledby="new-survey-title"
     >
       <header class="dialog-header">
-        <div>
-          <p class="eyebrow">Poll App</p>
+        <div class="title-block">
+          <span class="draft-badge">Draft</span>
           <h2 id="new-survey-title">Create new survey</h2>
         </div>
 
         <button
           type="button"
-          class="close-button"
-          aria-label="Close new survey dialog"
+          class="cancel-top"
+          aria-label="Cancel and close new survey dialog"
           (click)="close()"
         >
-          ×
+          <span>Cancel</span>
+          <img src="/icons/close.svg" alt="">
         </button>
       </header>
 
       <form [formGroup]="form" (ngSubmit)="submit()" novalidate>
-        <section class="survey-fields">
-          <label>
-            <span>Survey title <strong>*</strong></span>
-            <input
-              formControlName="title"
-              placeholder="Enter survey title"
-              autocomplete="off"
-            >
-            <small>
-              @if (controlInvalid(form.controls.title)) {
-                Enter at least 5 non-space characters.
-              }
-            </small>
-          </label>
-
-          <label>
-            <span>Category <strong>*</strong></span>
-            <select formControlName="category">
-              <option value="" disabled>Select category</option>
-              @for (category of categories; track category) {
-                <option [value]="category">{{ category }}</option>
-              }
-            </select>
-            <small>
-              @if (
-                form.controls.category.touched &&
-                !form.controls.category.value
-              ) {
-                Choose a category.
-              }
-            </small>
-          </label>
-
-          <label class="full-width">
-            <span>Description <em>optional</em></span>
-            <textarea
-              rows="3"
-              formControlName="description"
-              placeholder="Describe the survey"
-            ></textarea>
-            <small></small>
-          </label>
-
-          <label>
-            <span>Deadline <em>optional</em></span>
-            <input type="date" formControlName="closesAt">
-            <small></small>
-          </label>
-        </section>
-
-        <section class="questions" formArrayName="prompts">
-          <div class="section-header">
-            <div>
-              <p class="eyebrow">Questions</p>
-              <h3>Survey questions</h3>
-            </div>
-
-            <button
-              type="button"
-              class="secondary"
-              (click)="addQuestion()"
-              [disabled]="prompts.length >= limits.maximumPrompts"
-            >
-              + Add question
-            </button>
-          </div>
-
-          @for (
-            prompt of prompts.controls;
-            track prompt;
-            let questionIndex = $index
-          ) {
-            <article class="question-card" [formGroupName]="questionIndex">
-              <header>
-                <strong>Question {{ questionIndex + 1 }}</strong>
-                <button
-                  type="button"
-                  class="text-button danger"
-                  (click)="removeQuestion(questionIndex)"
-                >
-                  Remove
-                </button>
-              </header>
-
+        <section class="form-surface">
+          <section class="survey-fields">
+            <div class="field-group survey-name">
               <label>
-                <span>Question <strong>*</strong></span>
-                <input
-                  formControlName="text"
-                  placeholder="Enter question"
-                >
+                <span>Survey name</span>
+                <div class="field-with-action">
+                  <input
+                    formControlName="title"
+                    placeholder=""
+                    autocomplete="off"
+                  >
+                  <button
+                    type="button"
+                    class="trash-button"
+                    aria-label="Clear survey name"
+                    (click)="clearField('title')"
+                  >
+                    <img src="/icons/trash_light.svg" alt="">
+                  </button>
+                </div>
                 <small>
-                  @if (controlInvalid($any(prompt.get('text')))) {
+                  @if (controlInvalid(form.controls.title)) {
                     Enter at least 5 non-space characters.
                   }
                 </small>
               </label>
+            </div>
 
-              <label class="multiple">
-                <input type="checkbox" formControlName="multiple">
-                <span>Allow multiple answers</span>
+            <div class="field-group description">
+              <label>
+                <span>Describing text <em>(optional)</em></span>
+                <div class="field-with-action textarea-action">
+                  <textarea
+                    rows="4"
+                    formControlName="description"
+                    placeholder=""
+                  ></textarea>
+                  <button
+                    type="button"
+                    class="trash-button"
+                    aria-label="Clear description"
+                    (click)="clearField('description')"
+                  >
+                    <img src="/icons/trash_light.svg" alt="">
+                  </button>
+                </div>
+                <small></small>
               </label>
+            </div>
 
-              <div class="answers" formArrayName="choices">
-                @for (
-                  choice of choicesAt(questionIndex).controls;
-                  track choice;
-                  let answerIndex = $index
-                ) {
-                  <div class="answer-row" [formGroupName]="answerIndex">
-                    <span class="answer-label">
-                      {{ answerLabel(answerIndex) }}
-                    </span>
+            <div class="field-group deadline">
+              <label>
+                <span>Set end date <em>(optional)</em></span>
+                <div class="field-with-action compact-field">
+                  <input type="date" formControlName="closesAt">
+                  <button
+                    type="button"
+                    class="trash-button"
+                    aria-label="Clear end date"
+                    (click)="clearField('closesAt')"
+                  >
+                    <img src="/icons/trash_light.svg" alt="">
+                  </button>
+                </div>
+                <small></small>
+              </label>
+            </div>
 
-                    <label>
-                      <input
-                        formControlName="text"
-                        [placeholder]="'Answer ' + answerLabel(answerIndex)"
-                      >
-                      <small>
-                        @if (controlInvalid($any(choice.get('text')))) {
-                          Answer cannot be blank.
-                        }
-                      </small>
-                    </label>
+            <div class="field-group category">
+              <label>
+                <span>Choose category</span>
+                <div class="select-wrap">
+                  <select formControlName="category">
+                    <option value="" disabled></option>
+                    @for (category of categories; track category) {
+                      <option [value]="category">{{ category }}</option>
+                    }
+                  </select>
+                  <img src="/icons/arrow_drop_down.svg" alt="" aria-hidden="true">
+                </div>
+                <small>
+                  @if (
+                    form.controls.category.touched &&
+                    !form.controls.category.value
+                  ) {
+                    Choose a category.
+                  }
+                </small>
+              </label>
+            </div>
+          </section>
 
+          <section class="questions" formArrayName="prompts">
+            <div class="question-grid">
+              @for (
+                prompt of prompts.controls;
+                track prompt;
+                let questionIndex = $index
+              ) {
+                <article class="question-card" [formGroupName]="questionIndex">
+                  <header class="question-header">
+                    <strong>{{ questionIndex + 1 }}. Question</strong>
                     <button
                       type="button"
-                      class="text-button"
-                      (click)="removeAnswer(questionIndex, answerIndex)"
+                      class="trash-button question-trash"
+                      [attr.aria-label]="'Delete question ' + (questionIndex + 1)"
+                      (click)="removeQuestion(questionIndex)"
                     >
-                      Remove
+                      <img src="/icons/trash_light.svg" alt="">
                     </button>
-                  </div>
-                }
-              </div>
+                  </header>
 
-              <button
-                type="button"
-                class="text-button add-answer"
-                (click)="addAnswer(questionIndex)"
-                [disabled]="
-                  choicesAt(questionIndex).length >= limits.maximumChoices
-                "
-              >
-                + Add answer
-              </button>
-            </article>
-          }
+                  <label class="question-input">
+                    <input
+                      formControlName="text"
+                      placeholder="Enter question"
+                    >
+                    <small>
+                      @if (controlInvalid($any(prompt.get('text')))) {
+                        Enter at least 5 non-space characters.
+                      }
+                    </small>
+                  </label>
+
+                  <div class="answers-heading">
+                    <strong>Answers</strong>
+                    <label class="multiple">
+                      <input type="checkbox" formControlName="multiple">
+                      <span>Allow multiple answers.</span>
+                    </label>
+                  </div>
+
+                  <div class="answers" formArrayName="choices">
+                    @for (
+                      choice of choicesAt(questionIndex).controls;
+                      track choice;
+                      let answerIndex = $index
+                    ) {
+                      <div class="answer-row" [formGroupName]="answerIndex">
+                        <span class="answer-label">
+                          {{ answerLabel(answerIndex) }}.
+                        </span>
+
+                        <label class="answer-input">
+                          <input
+                            formControlName="text"
+                            placeholder=""
+                          >
+                          <small>
+                            @if (controlInvalid($any(choice.get('text')))) {
+                              Answer cannot be blank.
+                            }
+                          </small>
+                        </label>
+
+                        <button
+                          type="button"
+                          class="trash-button answer-trash"
+                          [attr.aria-label]="
+                            'Delete answer ' + answerLabel(answerIndex)
+                          "
+                          (click)="removeAnswer(questionIndex, answerIndex)"
+                        >
+                          <img src="/icons/trash_light.svg" alt="">
+                        </button>
+                      </div>
+                    }
+                  </div>
+
+                  <button
+                    type="button"
+                    class="inline-add"
+                    (click)="addAnswer(questionIndex)"
+                    [disabled]="
+                      choicesAt(questionIndex).length >= limits.maximumChoices
+                    "
+                  >
+                    <span>Add answer</span>
+                    <img src="/icons/add_circle.svg" alt="">
+                  </button>
+                </article>
+              }
+            </div>
+
+            <button
+              type="button"
+              class="add-question"
+              (click)="addQuestion()"
+              [disabled]="prompts.length >= limits.maximumPrompts"
+            >
+              <span>Add next question</span>
+              <img src="/icons/add_circle.svg" alt="">
+            </button>
+          </section>
         </section>
 
         <footer class="dialog-footer">
           <p aria-live="polite">{{ submitMessage() }}</p>
 
-          <div>
-            <button type="button" class="cancel" (click)="close()">
-              Cancel
-            </button>
-            <button type="submit" class="primary" [disabled]="saving()">
-              {{ saving() ? 'Publishing…' : 'Publish survey' }}
-            </button>
-          </div>
+          <button type="submit" class="publish" [disabled]="saving()">
+            {{ saving() ? 'Publishing…' : 'Publish' }}
+          </button>
         </footer>
       </form>
     </section>
