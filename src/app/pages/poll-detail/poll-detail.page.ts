@@ -190,3 +190,5 @@ export class PollDetailPage implements OnDestroy {
     }
   }
 }
+
+

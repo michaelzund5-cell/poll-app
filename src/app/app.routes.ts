@@ -15,3 +15,5 @@ export const routes: Routes = [
   { path: 'poll/:id', component: PollDetailPage, title: 'Poll App | Survey' },
   { path: '**', component: NotFoundPage, title: 'Poll App | Not found' },
 ];
+
+

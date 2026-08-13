@@ -57,3 +57,5 @@ function startOfDay(date: Date): Date {
 function startOfToday(): Date {
   return startOfDay(new Date());
 }
+
+

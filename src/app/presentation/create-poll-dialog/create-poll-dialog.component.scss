@@ -122,7 +122,47 @@ form {
 .category {
   grid-area: category;
   align-self: end;
-  margin-bottom: 1.1rem;
+  margin-bottom: 1.6rem;
+}
+
+.category-trigger {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  width: fit-content;
+}
+
+.category-select {
+  appearance: none;
+  width: auto;
+  border: none;
+  border-radius: 0;
+  padding: 0.3rem 1.7rem 0.3rem 0;
+  background: transparent;
+  color: #fff;
+  font-size: 1rem;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.category-select:focus {
+  border: none;
+  outline: 2px solid rgba(255, 179, 92, 0.5);
+  outline-offset: 2px;
+}
+
+/* The native dropdown list itself still needs readable, opaque rows. */
+.category-select option {
+  color: #3a2a3e;
+  background: #fff;
+}
+
+.category-arrow {
+  position: absolute;
+  right: 0;
+  width: 1rem;
+  pointer-events: none;
+  filter: brightness(0) invert(1);
 }
 
 .field-group label,
@@ -188,26 +228,6 @@ small {
   min-height: 1rem;
   color: #ffbdc1;
   font-size: 0.72rem;
-}
-
-.select-wrap {
-  position: relative;
-}
-
-.select-wrap select {
-  min-height: 43px;
-  appearance: none;
-  padding-right: 2.4rem;
-}
-
-.select-wrap > img {
-  position: absolute;
-  top: 50%;
-  right: 0.8rem;
-  width: 1rem;
-  pointer-events: none;
-  transform: translateY(-50%);
-  filter: brightness(0) invert(1);
 }
 
 .trash-button {

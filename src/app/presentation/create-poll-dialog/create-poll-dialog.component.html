@@ -19,7 +19,7 @@
           (click)="close()"
         >
           <span>Cancel</span>
-          <img src="/icons/close.svg" alt="">
+          <img src="/assets-icons/close.svg" alt="">
         </button>
       </header>
 
@@ -41,7 +41,7 @@
                     aria-label="Clear survey name"
                     (click)="clearField('title')"
                   >
-                    <img src="/icons/trash_light.svg" alt="">
+                    <img src="/assets-icons/trash_light.svg" alt="">
                   </button>
                 </div>
                 <small>
@@ -67,7 +67,7 @@
                     aria-label="Clear description"
                     (click)="clearField('description')"
                   >
-                    <img src="/icons/trash_light.svg" alt="">
+                    <img src="/assets-icons/trash_light.svg" alt="">
                   </button>
                 </div>
                 <small></small>
@@ -85,7 +85,7 @@
                     aria-label="Clear end date"
                     (click)="clearField('closesAt')"
                   >
-                    <img src="/icons/trash_light.svg" alt="">
+                    <img src="/assets-icons/trash_light.svg" alt="">
                   </button>
                 </div>
                 <small></small>
@@ -93,26 +93,27 @@
             </div>
 
             <div class="field-group category">
-              <label>
-                <span>Choose category</span>
-                <div class="select-wrap">
-                  <select formControlName="category">
-                    <option value="" disabled></option>
-                    @for (category of categories; track category) {
-                      <option [value]="category">{{ category }}</option>
-                    }
-                  </select>
-                  <img src="/icons/arrow_drop_down.svg" alt="" aria-hidden="true">
-                </div>
-                <small>
-                  @if (
-                    form.controls.category.touched &&
-                    !form.controls.category.value
-                  ) {
-                    Choose a category.
+              <div class="category-trigger">
+                <select
+                  formControlName="category"
+                  class="category-select"
+                  aria-label="Choose category"
+                >
+                  <option value="" disabled>Choose category</option>
+                  @for (category of categories; track category) {
+                    <option [value]="category">{{ category }}</option>
                   }
-                </small>
-              </label>
+                </select>
+                <img src="/assets-icons/arrow_drop_down.svg" alt="" aria-hidden="true" class="category-arrow">
+              </div>
+              <small>
+                @if (
+                  form.controls.category.touched &&
+                  !form.controls.category.value
+                ) {
+                  Choose a category.
+                }
+              </small>
             </div>
           </section>
 
@@ -132,7 +133,7 @@
                       [attr.aria-label]="'Delete question ' + (questionIndex + 1)"
                       (click)="removeQuestion(questionIndex)"
                     >
-                      <img src="/icons/trash_light.svg" alt="">
+                      <img src="/assets-icons/trash_light.svg" alt="">
                     </button>
                   </header>
 
@@ -187,7 +188,7 @@
                           "
                           (click)="removeAnswer(questionIndex, answerIndex)"
                         >
-                          <img src="/icons/trash_light.svg" alt="">
+                          <img src="/assets-icons/trash_light.svg" alt="">
                         </button>
                       </div>
                     }
@@ -202,7 +203,7 @@
                     "
                   >
                     <span>Add answer</span>
-                    <img src="/icons/add_circle.svg" alt="">
+                    <img src="/assets-icons/add_circle.svg" alt="">
                   </button>
                 </article>
               }
@@ -215,7 +216,7 @@
               [disabled]="prompts.length >= limits.maximumPrompts"
             >
               <span>Add next question</span>
-              <img src="/icons/add_circle.svg" alt="">
+              <img src="/assets-icons/add_circle.svg" alt="">
             </button>
           </section>
         </section>
@@ -231,3 +232,5 @@
     </section>
   </div>
 }
+
+

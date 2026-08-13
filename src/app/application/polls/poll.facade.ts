@@ -117,3 +117,5 @@ export class PollFacade {
       : FALLBACK_CATEGORY;
   }
 }
+
+

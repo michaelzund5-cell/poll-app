@@ -23,3 +23,5 @@ import { CreatePollDialogService } from './presentation/create-poll-dialog/creat
 export class App {
   readonly createDialog = inject(CreatePollDialogService);
 }
+
+

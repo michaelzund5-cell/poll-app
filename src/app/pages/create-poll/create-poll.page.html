@@ -50,7 +50,7 @@
                 <strong>{{ promptIndex + 1 }}.</strong>
                 <input formControlName="text" placeholder="Enter question">
                 <button type="button" class="trash" (click)="removePrompt(promptIndex)" aria-label="Remove question">
-                  <img src="/icons/trash_light.svg" alt="">
+                  <img src="/assets-icons/trash_light.svg" alt="">
                 </button>
               </div>
 
@@ -69,7 +69,7 @@
                     <span class="answer-letter">{{ answerLabel(choiceIndex) }}</span>
                     <input formControlName="text" [placeholder]="'Answer ' + answerLabel(choiceIndex)">
                     <button type="button" class="trash answer-trash" (click)="removeChoice(promptIndex, choiceIndex)" [attr.aria-label]="'Remove answer ' + answerLabel(choiceIndex)">
-                      <img src="/icons/trash_light.svg" alt="">
+                      <img src="/assets-icons/trash_light.svg" alt="">
                     </button>
                     <small class="validation">
                       @if (controlInvalid($any(choice.get('text')))) { Answer cannot be blank. }
@@ -98,3 +98,5 @@
     </div>
   </form>
 </section>
+
+
