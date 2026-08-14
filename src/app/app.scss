@@ -1,26 +1,27 @@
 :host {
   display: block;
   min-height: 100vh;
-  background: #302136;
+  background: var(--eggplant);
 }
 
 .app-shell {
-  width: 100%;
   min-height: 100vh;
   overflow-x: hidden;
-  background: #302136;
+  background: var(--eggplant);
 }
 
 .topbar {
   position: relative;
   z-index: 50;
   display: flex;
-  min-height: 64px;
+  width: min(1180px, calc(100% - 48px));
+  min-height: 70px;
   align-items: center;
   justify-content: space-between;
-  gap: 1rem;
-  padding: 1rem clamp(1.25rem, 8vw, 7rem) 0;
-  background: #302136;
+  gap: 16px;
+  margin: 0 auto;
+  padding-top: 14px;
+  background: var(--eggplant);
 }
 
 .brand {
@@ -30,143 +31,115 @@
 
 .brand-logo {
   display: block;
-  width: 84px;
+  width: 88px;
   height: auto;
 }
 
-.brand-logo-dark {
+.brand-logo-dark,
+.detail-button-label {
   display: none;
 }
 
 nav {
   display: flex;
   align-items: center;
-  gap: .8rem;
+  gap: 16px;
 }
 
 .home-link {
-  color: #fff8ef;
-  font-size: .84rem;
+  color: #fffaf4;
+  font-size: 14px;
   font-weight: 700;
 }
 
-.home-link.active,
 .home-link:hover {
-  color: #ffc06b;
+  color: var(--peach);
 }
 
 .new-survey-button {
-  min-height: 30px;
-  border: 1px solid #e09a51;
-  border-radius: 5px;
-  padding: .4rem .72rem;
-  background: linear-gradient(180deg, #ffd08a 0%, #ffbd65 100%);
-  color: #2f2032;
-  font-size: .92rem;
-  font-weight: 900;
-  box-shadow: 0 1px 0 #d6843c;
+  min-height: 34px;
+  border: 1px solid #e59645;
+  border-radius: 6px;
+  padding: 7px 11px;
+  background: var(--peach);
+  color: var(--ink);
+  font-size: 13px;
+  font-weight: 800;
+  box-shadow: 0 2px 0 #ce7c35;
 }
 
-/* The Figma detail page switches to a light header. */
+.new-survey-button:hover:not(:disabled) {
+  transform: translateY(-2px);
+  background: #ffd99d;
+  box-shadow: 0 6px 14px rgba(0, 0, 0, .18);
+}
+
+/* Figma single-survey frame: white header and centered content boundary. */
 .app-shell:has(app-poll-detail-page) {
-  background: #ffffff;
+  background: #fff;
 }
 
 .app-shell:has(app-poll-detail-page) .topbar {
-  min-height: 58px;
-  padding-top: .65rem;
-  border-bottom: 1px solid #eee8ef;
-  background: #ffffff;
+  width: min(1100px, calc(100% - 48px));
+  min-height: 84px;
+  padding-top: 18px;
+  background: #fff;
 }
 
-.app-shell:has(app-poll-detail-page) .brand-logo-orange {
+.app-shell:has(app-poll-detail-page) .brand-logo-orange,
+.app-shell:has(app-poll-detail-page) .home-link,
+.app-shell:has(app-poll-detail-page) .home-button-label {
   display: none;
 }
 
-.app-shell:has(app-poll-detail-page) .brand-logo-dark {
+.app-shell:has(app-poll-detail-page) .brand-logo-dark,
+.app-shell:has(app-poll-detail-page) .detail-button-label {
   display: block;
 }
 
-.app-shell:has(app-poll-detail-page) .home-link {
-  color: #443748;
+.app-shell:has(app-poll-detail-page) .brand-logo {
+  width: 84px;
 }
 
-.app-shell:has(app-poll-detail-page) .new-survey-button::first-letter {
-  text-transform: uppercase;
+.app-shell:has(app-poll-detail-page) .new-survey-button {
+  min-height: 38px;
+  padding: 8px 13px;
+  font-size: 13px;
 }
 
-@media (max-width: 520px) {
-  .topbar {
-    min-height: 58px;
-    padding: .75rem 1rem 0;
+@media (max-width: 640px) {
+  .topbar,
+  .app-shell:has(app-poll-detail-page) .topbar {
+    width: calc(100% - 28px);
   }
 
   .brand-logo {
-    width: 72px;
+    width: 76px;
   }
 
   .home-link {
     display: none;
   }
-
-  .new-survey-button {
-    padding: .38rem .58rem;
-    font-size: .78rem;
-  }
 }
 
 
-.new-survey-button:hover:not(:disabled) {
-  transform: translateY(-2px);
-  border-color: #ffb45b;
-  background: linear-gradient(180deg, #ffe0ad 0%, #ffc46d 100%);
-  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.22);
-}
-
-.home-link:hover {
-  transform: translateY(-1px);
-  color: #ffc06b;
-}
-
-@media (min-width: 761px) {
-  .topbar { min-height: 72px; }
-  .brand-logo { width: 98px; }
-  .home-link { font-size: 0.95rem; }
-  .new-survey-button {
-    min-height: 42px;
-    padding: 0.58rem 0.9rem;
-    font-size: 0.92rem;
-  }
-}
-
-
-/* Final Figma hover pass for header actions. */
+/* Figma component-board interaction states. */
 .new-survey-button {
-  transition:
-    transform .16s ease,
-    background .16s ease,
-    border-color .16s ease,
-    box-shadow .16s ease;
+  border-radius: 5px;
+  background: #ffc978;
+  color: #35273A;
+  box-shadow: none;
 }
 
 .new-survey-button:hover:not(:disabled) {
-  transform: translateY(-3px);
-  border-color: #ffc06b;
-  background: linear-gradient(180deg, #ffe2b0 0%, #ffbd60 100%);
-  box-shadow: 0 8px 18px rgba(0, 0, 0, .24);
+  transform: none;
+  border-color: #9b7469;
+  background: #8b685f;
+  color: #fff;
+  box-shadow: none;
 }
 
 .new-survey-button:active:not(:disabled) {
-  transform: translateY(0) scale(.98);
-}
-
-.home-link {
-  transition:
-    transform .15s ease,
-    color .15s ease;
-}
-
-.home-link:hover {
-  transform: translateY(-2px);
-  color: #ffc06b;
+  transform: none;
+  background: #6f514a;
 }

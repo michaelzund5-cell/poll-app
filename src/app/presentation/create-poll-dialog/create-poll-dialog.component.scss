@@ -10,80 +10,74 @@
   display: grid;
   place-items: center;
   overflow-y: auto;
-  padding: 1rem;
-  background: rgba(26, 17, 29, 0.68);
+  padding: 20px;
+  background: rgba(28, 19, 31, .65);
   backdrop-filter: blur(3px);
 }
 
 .dialog {
-  width: min(980px, calc(100vw - 2rem));
-  max-height: calc(100vh - 2rem);
+  width: min(760px, calc(100vw - 28px));
+  max-height: calc(100vh - 28px);
   overflow-y: auto;
-  border: 1px solid #604766;
-  border-radius: 0 6rem 0 0;
-  background: #332238;
-  color: #fffaf4;
-  box-shadow: 0 24px 70px rgba(0, 0, 0, 0.34);
+  border-radius: 10px 68px 10px 10px;
+  background: var(--eggplant);
+  color: #fff;
+  box-shadow: 0 22px 60px rgba(0, 0, 0, .3);
 }
 
 .dialog-header {
   display: flex;
-  min-height: 150px;
+  min-height: 112px;
   align-items: center;
   justify-content: space-between;
-  gap: 1.5rem;
-  padding: 1.8rem 3rem 1.35rem;
-  background: #332238;
+  gap: 24px;
+  padding: 24px 34px 18px;
 }
 
 .title-block {
   display: grid;
-  gap: 0.55rem;
+  gap: 6px;
 }
 
 .draft-badge {
   width: fit-content;
-  padding: 0.3rem 0.55rem;
-  background: #ffd29a;
-  color: #39263d;
-  font-size: 0.9rem;
+  padding: 3px 7px;
+  background: var(--peach);
+  color: #412b38;
+  font-size: 11px;
+  font-weight: 700;
 }
 
 .dialog-header h2 {
   margin: 0;
-  color: #ff9f3f;
-  font-family: var(--font-headline), "Trebuchet MS", sans-serif;
-  font-size: clamp(2.35rem, 4.5vw, 3.65rem);
+  color: var(--orange);
+  font-family: var(--font-headline);
+  font-size: 39px;
+  font-weight: 400;
   line-height: 1;
-  letter-spacing: -0.03em;
 }
 
 .cancel-top {
   display: inline-flex;
   align-items: center;
-  gap: 0.7rem;
+  gap: 8px;
   border: 0;
-  border-radius: 0.75rem;
-  padding: 0.75rem 0.95rem;
-  background: #795b52;
+  border-radius: 5px;
+  padding: 7px 9px;
+  background: #816259;
   color: #fff;
-  font-size: 1rem;
+  font-size: 11px;
   font-weight: 800;
-  transition:
-    transform 160ms ease,
-    background 160ms ease,
-    box-shadow 160ms ease;
 }
 
 .cancel-top img {
-  width: 1rem;
+  width: 12px;
   filter: brightness(0) invert(1);
 }
 
 .cancel-top:hover {
   transform: translateY(-2px);
-  background: #8c695e;
-  box-shadow: 0 7px 18px rgba(0, 0, 0, 0.2);
+  background: #936f63;
 }
 
 form {
@@ -91,38 +85,97 @@ form {
 }
 
 .form-surface {
-  margin: 0 3rem;
-  padding: 2rem 1.25rem 1.6rem;
-  border-radius: 0 5rem 0 0;
-  background: #48344e;
+  margin: 0 30px;
+  padding: 26px 30px 22px;
+  border-radius: 10px 52px 0 0;
+  background: var(--eggplant-2);
 }
 
 .survey-fields {
   display: grid;
-  grid-template-columns: 1fr 0.55fr 1fr;
+  grid-template-columns: minmax(0, 1.15fr) minmax(120px, .72fr) minmax(0, 1.05fr);
   grid-template-areas:
     "name category description"
     "deadline category description";
-  gap: 0.3rem 1.35rem;
+  gap: 5px 24px;
   align-items: start;
 }
 
-.survey-name {
-  grid-area: name;
-}
-
-.description {
-  grid-area: description;
-}
-
-.deadline {
-  grid-area: deadline;
-}
-
+.survey-name { grid-area: name; }
+.description { grid-area: description; }
+.deadline { grid-area: deadline; }
 .category {
   grid-area: category;
   align-self: end;
-  margin-bottom: 1.6rem;
+  margin-bottom: 20px;
+}
+
+.field-group label,
+.question-input,
+.answer-input {
+  display: grid;
+  gap: 4px;
+}
+
+.field-group label > span,
+.answers-heading > strong,
+.question-header strong {
+  font-size: 11px;
+  font-weight: 800;
+}
+
+.field-group em {
+  font-style: normal;
+  font-weight: 500;
+}
+
+.field-with-action {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 22px;
+  gap: 6px;
+  align-items: center;
+}
+
+.textarea-action {
+  align-items: start;
+}
+
+.compact-field {
+  max-width: 205px;
+}
+
+input,
+textarea,
+select {
+  width: 100%;
+  min-height: 30px;
+  border: 1px solid #d8d0da;
+  border-radius: 5px;
+  padding: 5px 7px;
+  background: #fff;
+  color: var(--ink);
+  font-size: 11px;
+}
+
+textarea {
+  min-height: 68px;
+  resize: vertical;
+}
+
+input:hover,
+textarea:hover,
+select:hover,
+input:focus,
+textarea:focus,
+select:focus {
+  border-color: #f3a053;
+  outline: none;
+}
+
+small {
+  min-height: 9px;
+  color: #ffbdc1;
+  font-size: 8px;
 }
 
 .category-trigger {
@@ -135,325 +188,215 @@ form {
 .category-select {
   appearance: none;
   width: auto;
-  border: none;
-  border-radius: 0;
-  padding: 0.3rem 1.7rem 0.3rem 0;
+  min-height: auto;
+  border: 0;
+  padding: 3px 17px 3px 0;
   background: transparent;
   color: #fff;
-  font-size: 1rem;
+  font-size: 11px;
   font-weight: 800;
   cursor: pointer;
 }
 
-.category-select:focus {
-  border: none;
-  outline: 2px solid rgba(255, 179, 92, 0.5);
-  outline-offset: 2px;
-}
-
-/* The native dropdown list itself still needs readable, opaque rows. */
 .category-select option {
-  color: #3a2a3e;
+  color: var(--ink);
   background: #fff;
 }
 
 .category-arrow {
   position: absolute;
   right: 0;
-  width: 1rem;
+  width: 10px;
   pointer-events: none;
   filter: brightness(0) invert(1);
 }
 
-.field-group label,
-.question-input,
-.answer-input {
-  display: grid;
-  gap: 0.35rem;
-}
-
-.field-group label > span,
-.answers-heading > strong,
-.question-header strong {
-  font-size: 1rem;
-  font-weight: 800;
-}
-
-.field-group em {
-  color: #e0d5e1;
-  font-style: normal;
-  font-weight: 500;
-}
-
-.field-with-action {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) 2.3rem;
-  gap: 0.55rem;
-  align-items: center;
-}
-
-.textarea-action {
-  align-items: start;
-}
-
-.compact-field {
-  max-width: 280px;
-}
-
-input,
-textarea,
-select {
-  width: 100%;
-  border: 1px solid transparent;
-  border-radius: 1rem 1rem 0.45rem 0.45rem;
-  padding: 0.72rem 0.82rem;
-  background: #fff;
-  color: #3a2a3e;
-  font-size: 1rem;
-}
-
-textarea {
-  min-height: 104px;
-  resize: vertical;
-}
-
-input:focus,
-textarea:focus,
-select:focus {
-  border-color: #ffb35c;
-  outline: 3px solid rgba(255, 179, 92, 0.18);
-}
-
-small {
-  min-height: 1rem;
-  color: #ffbdc1;
-  font-size: 0.72rem;
-}
-
 .trash-button {
   display: grid;
-  width: 2rem;
-  height: 2rem;
+  width: 20px;
+  height: 20px;
   place-items: center;
   border: 0;
-  border-radius: 0.45rem;
+  border-radius: 3px;
+  padding: 0;
   background: transparent;
-  transition:
-    transform 140ms ease,
-    background 140ms ease;
 }
 
 .trash-button img {
-  width: 1.25rem;
-  height: 1.25rem;
+  width: 13px;
+  height: 13px;
 }
 
 .trash-button:hover {
-  transform: translateY(-2px) scale(1.05);
-  background: rgba(255, 255, 255, 0.1);
+  transform: translateY(-1px);
+  background: rgba(255, 255, 255, .1);
 }
 
 .questions {
-  margin-top: 1.4rem;
+  margin-top: 12px;
 }
 
 .question-grid {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 1.4rem 2rem;
+  gap: 18px 28px;
 }
 
 .question-card {
   min-width: 0;
-  padding: 0.75rem 0;
+  padding: 0;
 }
 
 .question-header {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 1rem;
-  margin-bottom: 0.55rem;
-}
-
-.question-trash {
-  flex: 0 0 auto;
+  gap: 8px;
+  margin-bottom: 5px;
 }
 
 .question-input input {
-  border-radius: 0.7rem;
+  border-radius: 5px;
 }
 
 .answers-heading {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 1rem;
-  margin: 0.8rem 0 0.65rem;
+  gap: 8px;
+  margin: 8px 0 5px;
 }
 
 .multiple {
   display: flex;
   align-items: center;
-  gap: 0.4rem;
-  color: #f3ebf4;
-  font-size: 0.72rem;
+  gap: 4px;
+  color: #f1e8f2;
+  font-size: 8px;
 }
 
 .multiple input {
-  width: 0.95rem;
-  height: 0.95rem;
+  width: 11px;
+  min-height: 11px;
+  height: 11px;
   margin: 0;
-  accent-color: #ffad50;
+  padding: 0;
+  accent-color: var(--orange);
 }
 
 .answers {
   display: grid;
-  gap: 0.1rem;
+  gap: 2px;
 }
 
 .answer-row {
   display: grid;
-  grid-template-columns: 1.35rem minmax(0, 1fr) 2rem;
-  gap: 0.55rem;
+  grid-template-columns: 14px minmax(0, 1fr) 20px;
+  gap: 4px;
   align-items: start;
 }
 
 .answer-label {
-  margin-top: 0.65rem;
-  font-size: 1rem;
+  margin-top: 5px;
+  font-size: 11px;
   font-weight: 800;
 }
 
 .answer-input input {
-  min-height: 40px;
-  border-radius: 0.65rem;
+  min-height: 28px;
 }
 
 .answer-trash {
-  margin-top: 0.28rem;
+  margin-top: 4px;
 }
 
 .inline-add,
 .add-question {
   display: inline-flex;
   align-items: center;
-  gap: 0.45rem;
+  gap: 5px;
   border: 0;
-  border-bottom: 2px solid rgba(255, 255, 255, 0.5);
   background: transparent;
   color: #fff;
+  font-size: 9px;
   font-weight: 800;
-  transition:
-    transform 150ms ease,
-    color 150ms ease,
-    border-color 150ms ease;
 }
 
 .inline-add {
-  margin: 0.45rem 0 0 2.05rem;
-  padding: 0.45rem 0.1rem 0.35rem;
+  margin: 4px 0 0 18px;
+  padding: 4px 0 2px;
+  border-bottom: 1px solid rgba(255, 255, 255, .65);
 }
 
 .inline-add img,
 .add-question img {
-  width: 1rem;
-  height: 1rem;
+  width: 11px;
+  height: 11px;
   filter: brightness(0) invert(1);
 }
 
-.inline-add:hover,
-.add-question:hover {
-  transform: translateY(-2px);
-  border-color: #ffc06b;
-  color: #ffc06b;
+.inline-add:hover {
+  color: var(--peach);
+  transform: translateY(-1px);
 }
 
 .add-question {
-  margin-top: 1.2rem;
-  border-bottom: 0;
-  border-radius: 0.65rem;
-  padding: 0.72rem 0.9rem;
-  background: #805f55;
+  margin-top: 12px;
+  border-radius: 6px;
+  padding: 7px 9px;
+  background: #85645b;
 }
 
 .add-question:hover {
-  background: #956f62;
-  color: #fff;
+  transform: translateY(-2px);
+  background: #967166;
 }
 
 .dialog-footer {
   display: flex;
-  min-height: 120px;
+  min-height: 76px;
   align-items: center;
   justify-content: flex-end;
-  gap: 1rem;
-  padding: 1rem 3rem 1.5rem;
-  background: #332238;
+  gap: 12px;
+  padding: 12px 34px 18px;
 }
 
 .dialog-footer > p {
-  min-height: 1rem;
   margin: 0 auto 0 0;
   color: #ffbdc1;
-  font-size: 0.8rem;
+  font-size: 9px;
 }
 
 .publish {
-  border: 1px solid #ffb45a;
-  border-radius: 0.65rem;
-  padding: 0.85rem 1.15rem;
-  background: #ffd08f;
-  color: #3a263d;
-  font-size: 1rem;
+  border: 1px solid #d88d42;
+  border-radius: 5px;
+  padding: 7px 10px;
+  background: var(--peach);
+  color: #402819;
+  font-size: 11px;
   font-weight: 900;
-  box-shadow: 0 2px 0 #d8873b;
-  transition:
-    transform 160ms ease,
-    background 160ms ease,
-    box-shadow 160ms ease;
+  box-shadow: none;
 }
 
 .publish:hover:not(:disabled) {
-  transform: translateY(-3px);
-  background: #ffbd68;
-  box-shadow: 0 7px 16px rgba(0, 0, 0, 0.22);
+  transform: translateY(-2px);
+  background: #ffd99e;
 }
 
 button:disabled {
   cursor: not-allowed;
-  opacity: 0.5;
+  opacity: .5;
 }
 
-button:focus-visible {
-  outline: 3px solid #ffc06b;
-  outline-offset: 2px;
-}
-
-/* Global modal button hover behavior requested by the Figma interaction. */
-.cancel-top,
-.trash-button,
-.inline-add,
-.add-question,
-.publish {
-  cursor: pointer;
-}
-
-@media (max-width: 900px) {
+@media (max-width: 760px) {
   .dialog {
-    width: min(760px, calc(100vw - 1rem));
-    border-radius: 0 3rem 0 0;
-  }
-
-  .dialog-header {
-    min-height: 120px;
-    padding: 1.6rem 1.5rem 1.2rem;
+    width: min(620px, calc(100vw - 16px));
+    border-radius: 10px 44px 10px 10px;
   }
 
   .form-surface {
-    margin: 0 1.5rem;
-    padding: 1.5rem 1rem;
-    border-radius: 0 2.5rem 0 0;
+    margin: 0 16px;
+    padding: 20px 18px;
   }
 
   .survey-fields {
@@ -461,21 +404,15 @@ button:focus-visible {
     grid-template-areas:
       "name description"
       "deadline category";
-    gap: 0.4rem 1rem;
+    gap: 5px 16px;
   }
 
   .question-grid {
     grid-template-columns: 1fr;
-    gap: 0.8rem;
-  }
-
-  .dialog-footer {
-    min-height: 90px;
-    padding: 1rem 1.5rem 1.5rem;
   }
 }
 
-@media (max-width: 600px) {
+@media (max-width: 520px) {
   .backdrop {
     align-items: end;
     padding: 0;
@@ -484,31 +421,21 @@ button:focus-visible {
   .dialog {
     width: 100%;
     max-height: 96vh;
-    border-radius: 1.5rem 1.5rem 0 0;
+    border-radius: 16px 16px 0 0;
   }
 
   .dialog-header {
     min-height: auto;
-    padding: 1rem;
-  }
-
-  .draft-badge {
-    font-size: 0.75rem;
+    padding: 16px;
   }
 
   .dialog-header h2 {
-    font-size: 2rem;
-  }
-
-  .cancel-top {
-    padding: 0.6rem 0.7rem;
-    font-size: 0.85rem;
+    font-size: 31px;
   }
 
   .form-surface {
     margin: 0;
-    padding: 1rem;
-    border-radius: 1.25rem 1.25rem 0 0;
+    border-radius: 12px 28px 0 0;
   }
 
   .survey-fields {
@@ -521,97 +448,36 @@ button:focus-visible {
   }
 
   .category {
-    align-self: auto;
     margin-bottom: 0;
   }
 
-  .compact-field {
-    max-width: none;
-  }
-
-  .question-grid {
-    grid-template-columns: 1fr;
-  }
-
-  .answers-heading {
-    align-items: flex-start;
-    flex-direction: column;
-  }
-
   .dialog-footer {
-    position: sticky;
-    bottom: 0;
-    min-height: auto;
-    padding: 0.9rem 1rem;
-  }
-
-  .publish {
-    width: 100%;
+    padding: 12px 16px 16px;
   }
 }
 
 
-input:hover,
-textarea:hover,
-select:hover {
-  border-color: #e7b06d;
-}
-
-.cancel-top:active,
-.trash-button:active,
-.inline-add:active,
-.add-question:active,
-.publish:active:not(:disabled) {
-  transform: translateY(0) scale(0.97);
-}
-
+/* Match Figma button states: visual color change, no floating animation. */
+.cancel-top:hover,
+.add-question:hover,
+.publish:hover:not(:disabled),
+.inline-add:hover,
 .trash-button:hover {
-  background: rgba(255, 192, 107, 0.14);
-  box-shadow: 0 0 0 1px rgba(255, 192, 107, 0.22);
+  transform: none;
 }
 
-.question-card {
-  transition: background 150ms ease, box-shadow 150ms ease;
+.publish:hover:not(:disabled) {
+  background: #8b685f;
+  color: #fff;
+  box-shadow: none;
 }
 
-.question-card:hover {
-  background: rgba(255, 255, 255, 0.025);
+.add-question:hover,
+.cancel-top:hover {
+  background: #967166;
+  color: #fff;
 }
 
-@media (min-width: 901px) {
-  .dialog-header { min-height: 125px; }
-  .dialog-header h2 {
-    font-size: clamp(2.5rem, 4vw, 3.25rem);
-  }
-
-  .form-surface {
-    max-width: 900px;
-    margin-inline: auto;
-  }
-
-  .field-group label > span,
-  .answers-heading > strong,
-  .question-header strong {
-    font-size: 1rem;
-  }
-
-  input,
-  textarea,
-  select {
-    min-height: 42px;
-    font-size: 0.95rem;
-  }
-
-  textarea { min-height: 98px; }
-  .question-input input,
-  .answer-input input { min-height: 42px; }
-  .answer-label { font-size: 1rem; }
-  .multiple { font-size: 0.82rem; }
-  .inline-add,
-  .add-question { font-size: 0.88rem; }
-
-  .cancel-top,
-  .publish {
-    min-height: 42px;
-  }
+.inline-add:hover {
+  color: #ffc978;
 }

@@ -3,12 +3,12 @@
   display: block;
   min-height: calc(100vh - 72px);
   color: #fffaf4;
-  background: #302136;
+  background: #35273A;
 }
 
 .home {
   min-height: calc(100vh - 72px);
-  background: #302136;
+  background: #35273A;
 }
 
 /* =========================
@@ -20,7 +20,7 @@
   grid-template-columns: minmax(0, 1.08fr) minmax(280px, .92fr);
   gap: clamp(2rem, 5vw, 4.5rem);
   align-items: center;
-  width: min(1120px, calc(100% - 3rem));
+  width: min(980px, calc(100% - 48px));
   min-height: 465px;
   margin: 0 auto;
   padding: clamp(3rem, 6vw, 5.2rem) 0 2.4rem;
@@ -50,32 +50,33 @@ h1 {
 }
 
 .hero-copy > button {
-  min-height: 44px;
-  border: 1px solid #e19a4d;
-  border-radius: 7px;
-  padding: .62rem 1rem;
-  background: linear-gradient(180deg, #ffd58f 0%, #ffc06b 100%);
-  color: #2f2032;
-  font-size: .92rem;
-  font-weight: 900;
-  box-shadow: 0 2px 0 #cf7e39;
+  min-height: 34px;
+  border: 1px solid #d99349;
+  border-radius: 5px;
+  padding: 7px 11px;
+  background: #ffc978;
+  color: #35273A;
+  font-size: .82rem;
+  font-weight: 800;
+  box-shadow: none;
   transition:
-    transform .16s ease,
-    background .16s ease,
-    box-shadow .16s ease,
-    border-color .16s ease;
+    background .15s ease,
+    color .15s ease,
+    border-color .15s ease;
 }
 
 .hero-copy > button:hover:not(:disabled) {
-  transform: translateY(-3px);
-  border-color: #ffbd62;
-  background: linear-gradient(180deg, #ffe2b0 0%, #ffbd60 100%);
-  box-shadow: 0 8px 18px rgba(0, 0, 0, .24);
+  border-color: #9b7469;
+  background: #8b685f;
+  color: #fff;
+  transform: none;
+  box-shadow: none;
 }
 
 .hero-copy > button:active:not(:disabled) {
-  transform: translateY(0) scale(.98);
-  box-shadow: 0 2px 0 #cf7e39;
+  background: #6f514a;
+  transform: none;
+  box-shadow: none;
 }
 
 .hero-art {
@@ -117,36 +118,9 @@ h1 {
    ========================= */
 
 .content {
-  width: min(1120px, calc(100% - 3rem));
+  width: min(980px, calc(100% - 48px));
   margin: 0 auto;
   padding: 0 0 clamp(3.5rem, 6vw, 5.5rem);
-}
-
-.survey-divider {
-  position: relative;
-  display: grid;
-  place-items: center;
-  width: min(500px, 70%);
-  height: 30px;
-  margin: 0 auto .15rem;
-  color: #725584;
-}
-
-.survey-divider::before,
-.survey-divider::after {
-  position: absolute;
-  top: 50%;
-  width: 42%;
-  border-top: 2px dashed #684b7d;
-  content: "";
-}
-
-.survey-divider::before { left: 0; }
-.survey-divider::after { right: 0; }
-
-.survey-divider span {
-  font-size: 1.15rem;
-  transform: rotate(45deg);
 }
 
 .content > h2 {
@@ -157,7 +131,7 @@ h1 {
 
 .ending-soon,
 .browser {
-  width: min(1040px, 100%);
+  width: min(860px, 100%);
   margin-inline: auto;
 }
 
@@ -192,6 +166,7 @@ h1 {
 }
 
 .soon-card {
+
   position: relative;
   display: flex;
   min-height: 176px;
@@ -199,7 +174,7 @@ h1 {
   padding: 1.2rem 1.35rem 1.05rem;
   overflow: hidden;
   border: 1px solid rgba(255, 255, 255, .72);
-  border-radius: 12px 42px 12px 12px;
+  border-radius: 10px 42px 10px 10px;
   background: linear-gradient(145deg, #fffdfc 0%, #f7eff8 100%);
   color: #2f2032;
   box-shadow: 0 7px 18px rgba(21, 10, 24, .13);
@@ -320,34 +295,32 @@ h1 {
 }
 
 .tabs button {
-  min-height: 38px;
-  border: 1px solid #c28b50;
-  border-radius: 999px;
-  padding: .45rem .8rem;
-  background: transparent;
-  color: #fffaf4;
-  font-size: .84rem;
+  min-height: 25px;
+  border: 1px solid #d8c8d9;
+  border-radius: 5px;
+  padding: .28rem .55rem;
+  background: #fffaf4;
+  color: #4b3a4f;
+  font-size: .72rem;
   font-weight: 700;
   transition:
-    transform .15s ease,
     background .15s ease,
     color .15s ease,
-    box-shadow .15s ease,
     border-color .15s ease;
 }
 
 .tabs button:hover:not(:disabled) {
-  transform: translateY(-3px);
-  border-color: #ffc06b;
-  background: #4c3452;
-  color: #ffc06b;
-  box-shadow: 0 7px 16px rgba(0, 0, 0, .18);
+  border-color: #d99349;
+  background: #ffc978;
+  color: #35273A;
+  transform: none;
+  box-shadow: none;
 }
 
 .tabs button.active {
-  border-color: #e49b4d;
-  background: #ffc06b;
-  color: #2f2032;
+  border-color: #d99349;
+  background: #ffc978;
+  color: #35273A;
 }
 
 .tabs button.active:hover:not(:disabled) {

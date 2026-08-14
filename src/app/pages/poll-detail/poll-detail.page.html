@@ -1,113 +1,102 @@
 <section class="detail">
-  <a class="back" routerLink="/">← Back to surveys</a>
-
   @if (busy()) {
     <div class="state">Loading survey…</div>
   } @else if (problem()) {
     <div class="state error">{{ problem() }}</div>
   } @else if (poll(); as current) {
-    <header class="survey-header">
-      <div>
-        <p class="eyebrow">{{ current.category }}</p>
-        <h1>{{ current.title }}</h1>
+    <div class="detail-grid">
+      <section class="survey-sheet">
+        <header class="survey-intro">
+          <div class="publish-meta">
+            <div>
+              <span class="published-badge">Published</span>
+              <small>
+                Ends on {{ formatDate(current.closesAt) }}
+              </small>
+            </div>
 
-        @if (current.description) {
-          <p>{{ current.description }}</p>
-        }
-      </div>
-
-      <div class="meta">
-        <span>Deadline</span>
-        <strong>{{ formatDate(current.closesAt) }}</strong>
-
-        <span class="badge" [class.closed]="locked()">
-          {{ locked() ? 'Past survey' : 'Open survey' }}
-        </span>
-      </div>
-    </header>
-
-    <div class="layout">
-      <section class="voting">
-        <header class="panel-header">
-          <div>
-            <p class="eyebrow">Vote</p>
-            <h2>Your answers</h2>
+            <span class="category">
+              Category: {{ current.category }}
+            </span>
           </div>
 
-          @if (locked()) {
-            <span>Voting disabled</span>
+          <h1>{{ current.title }}</h1>
+
+          @if (current.description) {
+            <p class="description">{{ current.description }}</p>
           }
         </header>
 
-        @for (
-          prompt of current.prompts;
-          track prompt.id;
-          let questionIndex = $index
-        ) {
-          <article class="question" [class.disabled]="locked()">
-            <div class="question-title">
-              <span>{{ questionIndex + 1 }}</span>
-              <div>
-                <h3>{{ prompt.text }}</h3>
-                <p>
+        <section class="questions-grid">
+          @for (
+            prompt of current.prompts;
+            track prompt.id;
+            let questionIndex = $index
+          ) {
+            <article class="question" [class.disabled]="locked()">
+              <header class="question-heading">
+                <strong>{{ questionIndex + 1 }}. {{ prompt.text }}</strong>
+                <small>
                   {{
                     prompt.multiple
-                      ? 'Select one or more answers'
-                      : 'Select one answer'
+                      ? 'More than one answers are possible.'
+                      : 'More than one answers are possible.'
                   }}
-                </p>
+                </small>
+              </header>
+
+              <div class="choices">
+                @for (
+                  choice of prompt.choices;
+                  track choice.id;
+                  let answerIndex = $index
+                ) {
+                  <button
+                    type="button"
+                    [class.selected]="isSelected(prompt.id, choice.id)"
+                    [disabled]="locked()"
+                    (click)="toggle(prompt.id, choice.id, prompt.multiple)"
+                  >
+                    <span
+                      class="control"
+                      [class.multiple]="prompt.multiple"
+                    ></span>
+                    <span class="choice-letter">
+                      {{ answerLabel(answerIndex) }}.
+                    </span>
+                    <span>{{ choice.text }}</span>
+                  </button>
+                }
               </div>
-            </div>
+            </article>
+          }
+        </section>
 
-            <div class="choices">
-              @for (choice of prompt.choices; track choice.id) {
-                <button
-                  type="button"
-                  [class.selected]="isSelected(prompt.id, choice.id)"
-                  [disabled]="locked()"
-                  (click)="toggle(prompt.id, choice.id, prompt.multiple)"
-                >
-                  <span
-                    class="control"
-                    [class.multiple]="prompt.multiple"
-                  ></span>
-                  <span>{{ choice.text }}</span>
-                </button>
-              }
-            </div>
-          </article>
-        }
+        <footer class="survey-footer">
+          <p aria-live="polite">{{ feedback() }}</p>
 
-        @if (locked()) {
-          <div class="locked-note">
-            {{
-              alreadyVoted()
-                ? 'You already voted in this browser. Results remain visible.'
-                : 'This survey has ended. It can still be viewed, but voting is disabled.'
-            }}
-          </div>
-        } @else {
-          <footer class="vote-footer">
-            <p aria-live="polite">{{ feedback() }}</p>
+          @if (!locked()) {
             <button
               type="button"
+              class="complete-button"
               [disabled]="!canSubmit() || saving()"
               (click)="submitVote()"
             >
-              {{ saving() ? 'Submitting…' : 'Submit vote' }}
+              {{ saving() ? 'Submitting…' : 'Complete survey' }}
             </button>
-          </footer>
-        }
+          }
+        </footer>
       </section>
 
       <aside class="results">
-        <header class="panel-header">
-          <div>
-            <p class="eyebrow">Live</p>
-            <h2>Current results</h2>
-          </div>
-          <span class="live">Live</span>
-        </header>
+        <h2>
+          Survey results
+          <span class="live-indicator">LIVE</span>
+        </h2>
+
+        <p class="results-intro">
+          Results will be shown here after participants complete the survey.
+        </p>
 
         @for (
           prompt of current.prompts;
@@ -117,12 +106,13 @@
           <section class="result-group">
             <h3>{{ questionIndex + 1 }}. {{ prompt.text }}</h3>
 
-            @for (choice of prompt.choices; track choice.id) {
+            @for (
+              choice of prompt.choices;
+              track choice.id;
+              let answerIndex = $index
+            ) {
               <div class="result-row">
-                <div>
-                  <span>{{ choice.text }}</span>
-                  <strong>{{ livePercentage(prompt, choice) }}%</strong>
-                </div>
+                <span class="result-letter">{{ answerLabel(answerIndex) }}</span>
 
                 <div class="bar">
                   <div
@@ -130,22 +120,12 @@
                   ></div>
                 </div>
 
-                <small>
-                  {{ liveVotes(prompt, choice) }}
-                  vote{{ liveVotes(prompt, choice) === 1 ? '' : 's' }}
-                </small>
+                <strong>{{ livePercentage(prompt, choice) }}%</strong>
               </div>
             }
           </section>
         }
-
-        <p class="results-note">
-          Results update while you select answers and refresh when submitted
-          votes arrive through Supabase Realtime.
-        </p>
       </aside>
     </div>
   }
 </section>
-
-

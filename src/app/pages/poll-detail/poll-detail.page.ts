@@ -104,6 +104,10 @@ export class PollDetailPage implements OnDestroy {
     );
   }
 
+  answerLabel(index: number): string {
+    return String.fromCharCode(65 + index);
+  }
+
   canSubmit(): boolean {
     const current = this.poll();
 
