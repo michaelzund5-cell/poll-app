@@ -123,11 +123,14 @@ export class CreatePollDialogComponent {
     this.form.markAllAsTouched();
     this.submitMessage.set(null);
 
-    if (
-      this.form.invalid ||
-      !this.form.controls.category.value ||
-      this.saving()
-    ) {
+    if (this.saving()) {
+      return;
+    }
+
+    if (this.form.invalid || !this.form.controls.category.value) {
+      this.submitMessage.set(
+        'Please complete the required survey name, category, question and answers.',
+      );
       return;
     }
 

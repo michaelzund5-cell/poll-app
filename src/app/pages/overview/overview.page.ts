@@ -78,6 +78,26 @@ export class OverviewPage {
       .slice(0, 3),
   );
 
+  readonly endingSoonDisplay = computed(() => {
+    const urgent = this.closingSoon();
+
+    if (urgent.length >= 3) {
+      return urgent.slice(0, 3);
+    }
+
+    const urgentIds = new Set(urgent.map((poll) => poll.id));
+    const fallback = [...this.source()]
+      .filter((poll) => !isClosed(poll.closesAt))
+      .filter((poll) => !urgentIds.has(poll.id))
+      .sort(
+        (left, right) =>
+          deadlineTimestamp(left.closesAt) -
+          deadlineTimestamp(right.closesAt),
+      );
+
+    return [...urgent, ...fallback].slice(0, 3);
+  });
+
   constructor() {
     void this.reload();
   }

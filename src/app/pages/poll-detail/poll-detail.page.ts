@@ -22,7 +22,7 @@ import { isClosed } from '../../domain/polls/poll.rules';
 @Component({
   selector: 'app-poll-detail-page',
   standalone: true,
-  imports: [RouterLink],
+  imports: [],
   templateUrl: './poll-detail.page.html',
   styleUrl: './poll-detail.page.scss',
 })
