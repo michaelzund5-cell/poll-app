@@ -59,11 +59,11 @@ nav {
 .new-survey-button {
   min-height: 34px;
   border: 1px solid #e59645;
-  border-radius: 6px;
+  border-radius: 5px;
   padding: 7px 11px;
-  background: var(--peach);
+  background: #FFB770;
   color: var(--ink);
-  font-size: 13px;
+  font-size: 16px;
   font-weight: 800;
   box-shadow: 0 2px 0 #ce7c35;
 }
@@ -126,7 +126,7 @@ nav {
 /* Figma component-board interaction states. */
 .new-survey-button {
   border-radius: 5px;
-  background: #ffc978;
+  background: #FFB770;
   color: #35273A;
   box-shadow: none;
 }
