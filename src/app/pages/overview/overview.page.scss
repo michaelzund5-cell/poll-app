@@ -26,19 +26,20 @@
   padding-left: 0;
 }
 
-h1,
+h1 {
+  max-width: 712px;
+  margin: 0;
+  font-family: "Nerko One", cursive;
+  font-size: 100px;
+  font-weight: 400;
+  line-height: 89px;
+  letter-spacing: 0;
+  color: #ffb770;
+}
+
 h2 {
   font-family: var(--font-headline), "Trebuchet MS", sans-serif;
   color: #ffc06b;
-}
-
-h1 {
-  max-width: 660px;
-  margin: 0;
-  font-size: clamp(3rem, 5vw, 4.8rem);
-  font-weight: 400;
-  line-height: .98;
-  letter-spacing: -.025em;
 }
 
 .hero-copy > p {
