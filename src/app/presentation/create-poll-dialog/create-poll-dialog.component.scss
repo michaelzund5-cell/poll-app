@@ -16,8 +16,8 @@
 }
 
 .dialog {
-  width: min(760px, calc(100vw - 28px));
-  max-height: calc(100vh - 28px);
+  width: min(1100px, calc(100vw - 40px));
+  max-height: calc(100vh - 40px);
   overflow-y: auto;
   border-radius: 10px 68px 10px 10px;
   background: var(--eggplant);
