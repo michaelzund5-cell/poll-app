@@ -44,7 +44,7 @@
   padding: 3px 7px;
   background: var(--peach);
   color: #412b38;
-  font-size: 11px;
+  font-size: 16px;
   font-weight: 700;
 }
 
@@ -95,7 +95,7 @@ form {
   display: grid;
   grid-template-columns: minmax(0, 1.15fr) minmax(120px, .72fr) minmax(0, 1.05fr);
   grid-template-areas:
-    "name category description"
+    "name name description"
     "deadline category description";
   gap: 5px 24px;
   align-items: start;
@@ -120,7 +120,7 @@ form {
 .field-group label > span,
 .answers-heading > strong,
 .question-header strong {
-  font-size: 11px;
+  font-size: 16px;
   font-weight: 800;
 }
 
@@ -148,13 +148,13 @@ input,
 textarea,
 select {
   width: 100%;
-  min-height: 30px;
+  min-height: 37px;
   border: 1px solid #d8d0da;
-  border-radius: 5px;
-  padding: 5px 7px;
-  background: #fff;
+  border-radius: 5px 20px 5px 5px;
+  padding: 7px 13px;
+  background: #FEFDFF;
   color: var(--ink);
-  font-size: 11px;
+  font-size: 16px;
 }
 
 textarea {
@@ -175,7 +175,7 @@ select:focus {
 small {
   min-height: 9px;
   color: #ffbdc1;
-  font-size: 8px;
+  font-size: 16px;
 }
 
 .category-trigger {
@@ -186,29 +186,62 @@ small {
 }
 
 .category-select {
-  appearance: none;
-  width: auto;
-  min-height: auto;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
   border: 0;
-  padding: 3px 17px 3px 0;
-  background: transparent;
+  border-radius: 5px 20px 5px 5px;
+  padding: 8px 12px;
+  background: #5a4761;
   color: #fff;
-  font-size: 11px;
+  font-family: inherit;
+  font-size: 16px;
   font-weight: 800;
   cursor: pointer;
 }
 
-.category-select option {
-  color: var(--ink);
-  background: #fff;
+.category-arrow {
+  width: 10px;
+  filter: brightness(0) invert(1);
+  transition: transform .15s ease;
 }
 
-.category-arrow {
+.category-trigger.open .category-arrow {
+  transform: rotate(180deg);
+}
+
+.category-menu {
   position: absolute;
-  right: 0;
-  width: 10px;
-  pointer-events: none;
-  filter: brightness(0) invert(1);
+  top: calc(100% + 6px);
+  left: 0;
+  z-index: 20;
+  display: grid;
+  min-width: 220px;
+  margin: 0;
+  padding: 6px;
+  border-radius: 8px;
+  background: #fff;
+  box-shadow: 0 12px 30px rgba(0, 0, 0, .28);
+  list-style: none;
+}
+
+.category-menu button {
+  width: 100%;
+  border: 0;
+  border-radius: 5px;
+  padding: 9px 10px;
+  background: transparent;
+  color: var(--ink);
+  font-family: inherit;
+  font-size: 16px;
+  font-weight: 600;
+  text-align: left;
+  cursor: pointer;
+}
+
+.category-menu button:hover,
+.category-menu button[aria-selected="true"] {
+  background: #f3ecf4;
 }
 
 .trash-button {
@@ -255,10 +288,6 @@ small {
   margin-bottom: 5px;
 }
 
-.question-input input {
-  border-radius: 5px;
-}
-
 .answers-heading {
   display: flex;
   align-items: center;
@@ -272,7 +301,7 @@ small {
   align-items: center;
   gap: 4px;
   color: #f1e8f2;
-  font-size: 8px;
+  font-size: 16px;
 }
 
 .multiple input {
@@ -298,7 +327,7 @@ small {
 
 .answer-label {
   margin-top: 5px;
-  font-size: 11px;
+  font-size: 16px;
   font-weight: 800;
 }
 
@@ -364,23 +393,43 @@ small {
 .dialog-footer > p {
   margin: 0 auto 0 0;
   color: #ffbdc1;
-  font-size: 9px;
+  font-size: 16px;
 }
 
 .publish {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  overflow: hidden;
   border: 1px solid #d88d42;
   border-radius: 5px;
   padding: 7px 10px;
   background: var(--peach);
-  color: #402819;
-  font-size: 16px;
-  font-weight: 900;
+  color: #221227;
+  font-family: "Nokora", sans-serif;
+  font-size: 18px;
+  font-weight: 700;
   box-shadow: none;
 }
 
+.publish img {
+  width: 0;
+  height: 16px;
+  opacity: 0;
+  transform: translateX(10px);
+  transition: opacity .2s ease, transform .2s ease, width .2s ease;
+}
+
+.publish:hover:not(:disabled) img {
+  width: 16px;
+  opacity: 1;
+  transform: translateX(0);
+}
+
 .publish:hover:not(:disabled) {
-  transform: translateY(-2px);
+  transform: none;
   background: #ffd99e;
+  box-shadow: none;
 }
 
 button:disabled {
@@ -460,16 +509,9 @@ button:disabled {
 /* Match Figma button states: visual color change, no floating animation. */
 .cancel-top:hover,
 .add-question:hover,
-.publish:hover:not(:disabled),
 .inline-add:hover,
 .trash-button:hover {
   transform: none;
-}
-
-.publish:hover:not(:disabled) {
-  background: #8b685f;
-  color: #fff;
-  box-shadow: none;
 }
 
 .add-question:hover,

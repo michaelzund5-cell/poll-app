@@ -6,7 +6,7 @@
  * owns only form/presentation state; database persistence stays in PollFacade.
  */
 
-import { Component, inject, signal } from '@angular/core';
+import { Component, ElementRef, HostListener, inject, signal } from '@angular/core';
 import { FormArray, FormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { PollFacade } from '../../application/polls/poll.facade';
@@ -33,12 +33,14 @@ export class CreatePollDialogComponent {
   private readonly formBuilder = inject(FormBuilder).nonNullable;
   private readonly polls = inject(PollFacade);
   private readonly router = inject(Router);
+  private readonly host = inject(ElementRef<HTMLElement>);
 
   readonly dialog = inject(CreatePollDialogService);
   readonly categories = POLL_CATEGORIES;
   readonly limits = POLL_LIMITS;
   readonly saving = signal(false);
   readonly submitMessage = signal<string | null>(null);
+  readonly categoryMenuOpen = signal(false);
 
   readonly form = this.formBuilder.group({
     title: ['', [meaningfulText(5)]],
@@ -92,6 +94,32 @@ export class CreatePollDialogComponent {
 
   answerLabel(index: number): string {
     return String.fromCharCode(65 + index);
+  }
+
+  toggleCategoryMenu(): void {
+    this.categoryMenuOpen.update((open) => !open);
+  }
+
+  closeCategoryMenu(): void {
+    this.categoryMenuOpen.set(false);
+  }
+
+  selectCategory(category: PollCategory | ''): void {
+    this.form.controls.category.setValue(category);
+    this.form.controls.category.markAsTouched();
+    this.categoryMenuOpen.set(false);
+  }
+
+  @HostListener('document:click', ['$event'])
+  onDocumentClick(event: MouseEvent): void {
+    if (!this.categoryMenuOpen()) {
+      return;
+    }
+
+    const trigger = this.host.nativeElement.querySelector('.category-trigger');
+    if (trigger && !trigger.contains(event.target as Node)) {
+      this.categoryMenuOpen.set(false);
+    }
   }
 
   controlInvalid(control: { invalid: boolean; touched: boolean }): boolean {

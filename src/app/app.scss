@@ -47,31 +47,44 @@ nav {
 }
 
 .home-link {
-  color: #fffaf4;
-  font-size: 14px;
-  font-weight: 700;
-}
-
-.home-link:hover {
-  color: var(--peach);
+  display: none;
 }
 
 .new-survey-button {
+  display: none;
+  align-items: center;
+  gap: 6px;
   min-height: 34px;
+  overflow: hidden;
   border: 1px solid #e59645;
   border-radius: 5px;
   padding: 7px 11px;
   background: #FFB770;
   color: var(--ink);
+  font-family: "Nokora", sans-serif;
   font-size: 16px;
   font-weight: 800;
   box-shadow: 0 2px 0 #ce7c35;
+}
+
+.new-survey-button img {
+  width: 0;
+  height: 16px;
+  opacity: 0;
+  transform: translateX(10px);
+  transition: opacity .2s ease, transform .2s ease, width .2s ease;
 }
 
 .new-survey-button:hover:not(:disabled) {
   transform: translateY(-2px);
   background: #ffd99d;
   box-shadow: 0 6px 14px rgba(0, 0, 0, .18);
+}
+
+.new-survey-button:hover:not(:disabled) img {
+  width: 16px;
+  opacity: 1;
+  transform: translateX(0);
 }
 
 /* Figma single-survey frame: white header and centered content boundary. */
@@ -92,6 +105,10 @@ nav {
   display: none;
 }
 
+.app-shell:has(app-poll-detail-page) .new-survey-button {
+  display: inline-flex;
+}
+
 .app-shell:has(app-poll-detail-page) .brand-logo-dark,
 .app-shell:has(app-poll-detail-page) .detail-button-label {
   display: block;
@@ -104,7 +121,7 @@ nav {
 .app-shell:has(app-poll-detail-page) .new-survey-button {
   min-height: 38px;
   padding: 8px 13px;
-  font-size: 13px;
+  font-size: 16px;
 }
 
 @media (max-width: 640px) {
@@ -115,10 +132,6 @@ nav {
 
   .brand-logo {
     width: 76px;
-  }
-
-  .home-link {
-    display: none;
   }
 }
 
@@ -133,13 +146,13 @@ nav {
 
 .new-survey-button:hover:not(:disabled) {
   transform: none;
-  border-color: #9b7469;
-  background: #8b685f;
-  color: #fff;
+  border-color: #d99349;
+  background: #ffd793;
+  color: #35273A;
   box-shadow: none;
 }
 
 .new-survey-button:active:not(:disabled) {
   transform: none;
-  background: #6f514a;
+  background: #ffc98a;
 }

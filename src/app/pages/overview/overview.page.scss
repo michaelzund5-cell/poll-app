@@ -53,18 +53,37 @@ h1 {
 }
 
 .hero-copy > button {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
   min-height: 34px;
+  overflow: hidden;
   border: 1px solid #d99349;
   border-radius: 5px;
   padding: 7px 12px;
   background: #FFB770;
+  font-family: "Nokora", sans-serif;
   color: #35273A;
   font-size: 1rem;
   font-weight: 800;
 }
 
+.hero-copy > button img {
+  width: 0;
+  height: 16px;
+  opacity: 0;
+  transform: translateX(10px);
+  transition: opacity .2s ease, transform .2s ease, width .2s ease;
+}
+
 .hero-copy > button:hover:not(:disabled) {
   background: #ffd793;
+}
+
+.hero-copy > button:hover:not(:disabled) img {
+  width: 16px;
+  opacity: 1;
+  transform: translateX(0);
 }
 
 .hero-art {
@@ -133,7 +152,7 @@ h1 {
   padding: 32px;
   overflow: hidden;
   border: 0;
-  border-radius: 0 60px 0 0;
+  border-radius: 5px 50px 5px 5px;
   background: #f8f4fa;
   color: #302436;
   box-shadow: none;
@@ -147,7 +166,7 @@ h1 {
 
 .card-category {
   color: #746979;
-  font-size: 12px;
+  font-size: 16px;
   font-weight: 600;
 }
 
@@ -163,10 +182,10 @@ h1 {
   margin-top: auto;
   padding: .2rem .34rem;
   border: 0;
-  border-radius: 0;
+  border-radius: 4px;
   background: #FFB770;
   color: #55351d;
-  font-size: 10px;
+  font-size: 16px;
   font-weight: 700;
 }
 
@@ -190,12 +209,19 @@ h1 {
 .tabs button {
   min-height: 25px;
   border: 1px solid #efe5ef;
-  border-radius: 5px;
+  border-radius: 999px;
   padding: .28rem .72rem;
   background: #fffaf4;
   color: #4b3a4f;
+  font-family: "Nokora", sans-serif;
   font-size: 16px;
   font-weight: 600;
+  transition: background .15s ease, border-color .15s ease, color .15s ease;
+}
+
+.tabs button:hover:not(.active) {
+  border-color: #FFB770;
+  background: #ffe9cf;
 }
 
 .tabs button.active {
@@ -208,7 +234,7 @@ h1 {
   border: 0;
   background: transparent;
   color: #fffaf4;
-  font-size: 14px;
+  font-size: 16px;
   font-weight: 600;
   cursor: pointer;
   padding-right: 1rem;
@@ -217,7 +243,7 @@ h1 {
 .status {
   min-height: 0;
   margin: 0;
-  font-size: 13px;
+  font-size: 16px;
 }
 
 .error { color: #ffb7bd; }
@@ -236,7 +262,7 @@ h1 {
   gap: 1rem;
   padding: 24px;
   border: 0;
-  border-radius: 0 60px 0 0;
+  border-radius: 5px 50px 5px 5px;
   background: #49364f;
   color: #fffaf4;
   box-shadow: none;
@@ -258,7 +284,7 @@ h1 {
 
 .survey-row-copy span {
   color: #d9c0dc;
-  font-size: 12px;
+  font-size: 16px;
 }
 
 .survey-row-copy strong {
@@ -271,10 +297,10 @@ h1 {
 .survey-row-badge {
   flex: 0 0 auto;
   padding: .22rem .34rem;
-  border-radius: 0;
+  border-radius: 4px;
   background: #FFB770;
   color: #55351d;
-  font-size: 10px;
+  font-size: 16px;
   font-weight: 700;
 }
 

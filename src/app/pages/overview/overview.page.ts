@@ -19,7 +19,7 @@ import {
 } from '../../domain/polls/poll.rules';
 import { CreatePollDialogService } from '../../presentation/create-poll-dialog/create-poll-dialog.service';
 
-type SurveyMode = 'open' | 'closed';
+type SurveyMode = 'open' | 'closed' | null;
 type CategoryFilter = PollCategory | 'all';
 
 @Component({
@@ -42,15 +42,17 @@ export class OverviewPage {
   readonly categories = POLL_CATEGORIES;
 
   readonly activeCategory = computed(() =>
-    this.mode() === 'open' ? this.openCategory() : this.closedCategory(),
+    this.mode() === 'closed' ? this.closedCategory() : this.openCategory(),
   );
 
   readonly visiblePolls = computed(() => {
-    const closed = this.mode() === 'closed';
+    const mode = this.mode();
     const category = this.activeCategory();
 
     return [...this.source()]
-      .filter((poll) => isClosed(poll.closesAt) === closed)
+      .filter(
+        (poll) => mode === null || isClosed(poll.closesAt) === (mode === 'closed'),
+      )
       .filter((poll) => category === 'all' || poll.category === category)
       .sort(
         (left, right) =>
@@ -103,7 +105,7 @@ export class OverviewPage {
   }
 
   setMode(mode: SurveyMode): void {
-    this.mode.set(mode);
+    this.mode.set(this.mode() === mode ? null : mode);
   }
 
   setCategory(value: string): void {

@@ -93,18 +93,39 @@
             </div>
 
             <div class="field-group category">
-              <div class="category-trigger">
-                <select
-                  formControlName="category"
+              <div class="category-trigger" [class.open]="categoryMenuOpen()">
+                <button
+                  type="button"
                   class="category-select"
-                  aria-label="Choose category"
+                  aria-haspopup="listbox"
+                  [attr.aria-expanded]="categoryMenuOpen()"
+                  (click)="toggleCategoryMenu()"
                 >
-                  <option value="" disabled>Choose category</option>
-                  @for (category of categories; track category) {
-                    <option [value]="category">{{ category }}</option>
-                  }
-                </select>
-                <img src="/assets-icons/arrow_drop_down.svg" alt="" aria-hidden="true" class="category-arrow">
+                  <span>{{ form.controls.category.value || 'Choose category' }}</span>
+                  <img src="/assets-icons/arrow_drop_down.svg" alt="" aria-hidden="true" class="category-arrow">
+                </button>
+
+                @if (categoryMenuOpen()) {
+                  <ul class="category-menu" role="listbox">
+                    <li>
+                      <button type="button" role="option" (click)="selectCategory('')">
+                        All Surveys
+                      </button>
+                    </li>
+                    @for (category of categories; track category) {
+                      <li>
+                        <button
+                          type="button"
+                          role="option"
+                          [attr.aria-selected]="form.controls.category.value === category"
+                          (click)="selectCategory(category)"
+                        >
+                          {{ category }}
+                        </button>
+                      </li>
+                    }
+                  </ul>
+                }
               </div>
               <small>
                 @if (
@@ -225,7 +246,8 @@
           <p aria-live="polite">{{ submitMessage() }}</p>
 
           <button type="submit" class="publish" [disabled]="saving()">
-            {{ saving() ? 'Publishing…' : 'Publish' }}
+            <span>{{ saving() ? 'Publishing…' : 'Publish' }}</span>
+            <img src="/assets-icons/check.svg" alt="" aria-hidden="true">
           </button>
         </footer>
       </form>

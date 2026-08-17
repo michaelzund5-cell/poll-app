@@ -1,4 +1,13 @@
 <section class="detail">
+  @if (feedback()) {
+    <div class="publish-toast" role="status">
+      <strong>{{ feedback() }}</strong>
+      <button type="button" aria-label="Dismiss" (click)="dismissFeedback()">
+        <img src="/assets-icons/close.svg" alt="">
+      </button>
+    </div>
+  }
+
   @if (busy()) {
     <div class="state">Loading survey…</div>
   } @else if (problem()) {
@@ -73,8 +82,6 @@
         </section>
 
         <footer class="survey-footer">
-          <p aria-live="polite">{{ feedback() }}</p>
-
           @if (!locked()) {
             <button
               type="button"

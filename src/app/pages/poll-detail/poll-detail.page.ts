@@ -46,6 +46,10 @@ export class PollDetailPage implements OnDestroy {
   );
   readonly alreadyVoted = signal(this.readVoteMarker());
 
+  dismissFeedback(): void {
+    this.feedback.set(null);
+  }
+
   readonly locked = computed(
     () => this.alreadyVoted() || isClosed(this.poll()?.closesAt),
   );
