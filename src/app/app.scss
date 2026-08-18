@@ -135,6 +135,28 @@ nav {
   }
 }
 
+@media (max-width: 360px) {
+  .topbar,
+  .app-shell:has(app-poll-detail-page) .topbar {
+    width: calc(100% - 16px);
+    min-height: 56px;
+    gap: 8px;
+    padding-top: 10px;
+  }
+
+  .brand-logo {
+    width: 56px;
+  }
+
+  .new-survey-button {
+    padding: 6px 9px;
+  }
+
+  .new-survey-button img {
+    display: none;
+  }
+}
+
 
 /* Figma component-board interaction states. */
 .new-survey-button {

@@ -131,7 +131,7 @@ form {
 
 .field-with-action {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) 22px;
+  grid-template-columns: minmax(0, 1fr) 26px;
   gap: 6px;
   align-items: center;
 }
@@ -246,18 +246,18 @@ small {
 
 .trash-button {
   display: grid;
-  width: 20px;
-  height: 20px;
+  width: 26px;
+  height: 26px;
   place-items: center;
   border: 0;
   border-radius: 3px;
-  padding: 0;
+  padding: 4px;
   background: transparent;
 }
 
 .trash-button img {
-  width: 13px;
-  height: 13px;
+  width: 18px;
+  height: 18px;
 }
 
 .trash-button:hover {
@@ -469,39 +469,289 @@ button:disabled {
 
   .dialog {
     width: 100%;
-    max-height: 96vh;
+    max-height: 100dvh;
     border-radius: 16px 16px 0 0;
+    overscroll-behavior: contain;
   }
 
   .dialog-header {
     min-height: auto;
-    padding: 16px;
+    align-items: flex-start;
+    padding: 14px 14px 12px;
+  }
+
+  .title-block {
+    gap: 5px;
+    min-width: 0;
+  }
+
+  .draft-badge {
+    font-size: 12px;
+    padding: 2px 5px;
   }
 
   .dialog-header h2 {
-    font-size: 31px;
+    max-width: 220px;
+    font-size: clamp(25px, 8vw, 31px);
+    line-height: .95;
+  }
+
+  .cancel-top {
+    flex: 0 0 30px;
+    width: 30px;
+    height: 30px;
+    justify-content: center;
+    margin-top: 2px;
+    padding: 0;
+    border-radius: 50%;
+  }
+
+  .cancel-top span {
+    display: none;
+  }
+
+  .cancel-top img {
+    width: 11px;
   }
 
   .form-surface {
-    margin: 0;
-    border-radius: 12px 28px 0 0;
+    margin: 0 10px;
+    padding: 24px 8px 20px;
+    border-radius: 5px 52px 5px 5px;
   }
 
   .survey-fields {
-    grid-template-columns: 1fr;
+    grid-template-columns: minmax(0, 1fr);
     grid-template-areas:
       "name"
-      "deadline"
       "category"
+      "deadline"
       "description";
+    gap: 3px;
+  }
+
+  .field-group,
+  .question-card,
+  .answer-row,
+  .answer-input,
+  .question-input {
+    min-width: 0;
   }
 
   .category {
     margin-bottom: 0;
   }
 
+  .category-trigger,
+  .category-select {
+    max-width: 100%;
+  }
+
+  .category-select {
+    padding: 5px 0;
+    background: transparent;
+    border-radius: 0;
+  }
+
+  .category-menu {
+    min-width: min(220px, calc(100vw - 56px));
+  }
+
+  .compact-field {
+    max-width: 100%;
+  }
+
+  .field-group.survey-name label,
+  .field-group.deadline label,
+  .field-group.description label {
+    position: relative;
+  }
+
+  /* Mobile: label + trash icon share the top row, input stays full width below. */
+  .field-group.survey-name label > span,
+  .field-group.deadline label > span,
+  .field-group.description label > span {
+    padding-right: 30px;
+  }
+
+  .field-group.survey-name .field-with-action,
+  .field-group.deadline .field-with-action,
+  .field-group.description .field-with-action {
+    display: block;
+  }
+
+  .field-group.survey-name .trash-button,
+  .field-group.deadline .trash-button,
+  .field-group.description .trash-button {
+    position: absolute;
+    top: -4px;
+    right: 0;
+    z-index: 1;
+  }
+
+  input,
+  textarea,
+  select {
+    min-width: 0;
+    min-height: 31px;
+    padding: 5px 8px;
+    font-size: 13px;
+    border-radius: 4px 14px 4px 4px;
+  }
+
+  textarea {
+    min-height: 74px;
+  }
+
+  .field-group label > span,
+  .answers-heading > strong,
+  .question-header strong,
+  .answer-label,
+  .multiple,
+  .inline-add,
+  .add-question,
+  small {
+    font-size: 12px;
+  }
+
+  small {
+    min-height: 7px;
+  }
+
+  .questions {
+    margin-top: 8px;
+  }
+
+  .question-grid {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 18px;
+  }
+
+  .question-header {
+    margin-bottom: 4px;
+  }
+
+  .question-input input,
+  .answer-input input {
+    min-height: 28px;
+  }
+
+  .answers-heading {
+    align-items: flex-start;
+    margin: 6px 0 4px;
+  }
+
+  .multiple {
+    justify-content: flex-end;
+    flex-wrap: wrap;
+    text-align: right;
+  }
+
+  .multiple input {
+    width: 10px;
+    height: 10px;
+    min-height: 10px;
+  }
+
+  .answers {
+    gap: 5px;
+  }
+
+  /* Each answer becomes two clean rows: A. + trash, then the full-width input. */
+  .answer-row {
+    position: relative;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 26px;
+    grid-template-areas:
+      "label trash"
+      "input input";
+    gap: 1px 4px;
+    align-items: center;
+  }
+
+  .answer-label {
+    grid-area: label;
+    margin-top: 0;
+  }
+
+  .answer-input {
+    grid-area: input;
+    width: 100%;
+  }
+
+  .answer-trash {
+    grid-area: trash;
+    justify-self: end;
+    margin-top: 0;
+  }
+
+  .trash-button {
+    width: 24px;
+    height: 24px;
+    padding: 4px;
+  }
+
+  .trash-button img {
+    width: 15px;
+    height: 15px;
+  }
+
+  .inline-add {
+    margin: 5px 0 0 8px;
+    padding: 3px 0 2px;
+  }
+
+  .add-question {
+    margin-top: 10px;
+    padding: 6px 8px;
+  }
+
   .dialog-footer {
-    padding: 12px 16px 16px;
+    min-height: 68px;
+    padding: 10px 14px 14px;
+  }
+
+  .publish {
+    min-height: 34px;
+    padding: 6px 9px;
+    font-size: 13px;
+  }
+}
+
+@media (max-width: 360px) {
+  .dialog-header {
+    padding: 12px;
+  }
+
+  .dialog-header h2 {
+    font-size: 24px;
+  }
+
+  .form-surface {
+    padding: 40px 10px;
+  }
+
+  .compact-field {
+    max-width: 100%;
+  }
+
+  .question-grid {
+    gap: 22px;
+  }
+
+  .dialog-footer {
+    flex-wrap: wrap;
+    padding: 10px 12px 14px;
+  }
+
+  .dialog-footer > p {
+    order: 2;
+    width: 100%;
+  }
+
+  .publish {
+    width: 100%;
+    justify-content: center;
   }
 }
 
