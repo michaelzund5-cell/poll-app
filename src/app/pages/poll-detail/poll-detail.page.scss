@@ -6,9 +6,9 @@
 }
 
 .detail {
-  width: min(1100px, calc(100% - 48px));
+  width: min(1148px, 100%);
   margin: 0 auto;
-  padding: 22px 0 64px;
+  padding: 22px 24px 64px;
 }
 
 .state {
@@ -241,6 +241,10 @@
   transition: background-color 0.15s ease;
 }
 
+.complete-button:focus {
+  outline: none;
+}
+
 .complete-button:hover:not(:disabled) {
   // Gleiche Farbe, beim Hover heller: 60 %
   background: rgb(255 183 112 / 60%);
@@ -335,8 +339,8 @@
 
 @media (max-width: 640px) {
   .detail {
-    width: calc(100% - 24px);
-    padding-top: 12px;
+    width: 100%;
+    padding: 12px 12px 64px;
   }
 
   .survey-sheet {
@@ -361,7 +365,9 @@
 
 @media (max-width: 360px) {
   .detail {
-    width: calc(100% - 16px);
+    width: 100%;
+    padding-left: 8px;
+    padding-right: 8px;
   }
 
   .survey-sheet {
@@ -403,3 +409,36 @@
 
 
 
+
+
+.detail-grid > *,
+.publish-meta > *,
+.questions-grid > *,
+.result-row > *,
+.choices button > * {
+  min-width: 0;
+}
+
+.results,
+.result-group,
+.bar {
+  min-width: 0;
+  max-width: 100%;
+}
+
+@media (max-width: 420px) {
+  .survey-sheet {
+    padding: 18px 12px 16px;
+  }
+
+  .category,
+  .publish-meta small,
+  .description,
+  .question-heading small {
+    overflow-wrap: anywhere;
+  }
+
+  .result-row {
+    grid-template-columns: 13px minmax(0, 1fr) 38px;
+  }
+}

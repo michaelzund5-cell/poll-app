@@ -10,14 +10,17 @@
       <div class="survey-meta">
         <label>
           <span>Survey title</span>
-          <input formControlName="title" placeholder="Enter survey title" autocomplete="off">
-          <small class="validation">@if (controlInvalid(form.controls.title)) { Enter at least 5 non-space characters. }</small>
+          <input formControlName="title" placeholder="Enter survey title" autocomplete="off" [maxlength]="limits.maximumTitleLength">
+          <small class="validation limit-feedback">
+            <span>@if (controlInvalid(form.controls.title)) { Enter at least 5 non-space characters. }</span>
+            <span>{{ form.controls.title.value.length }} / {{ limits.maximumTitleLength }}</span>
+          </small>
         </label>
 
         <label>
           <span>Description (optional)</span>
-          <textarea rows="3" formControlName="description" placeholder="Enter survey description"></textarea>
-          <small class="validation"></small>
+          <textarea rows="3" formControlName="description" placeholder="Enter survey description" [maxlength]="limits.maximumDescriptionLength"></textarea>
+          <small class="validation description-limit">{{ form.controls.description.value.length }} / {{ limits.maximumDescriptionLength }} characters</small>
         </label>
 
         <div class="meta-grid">
@@ -48,7 +51,7 @@
             <article class="question-card" [formGroupName]="promptIndex">
               <div class="question-top">
                 <strong>{{ promptIndex + 1 }}.</strong>
-                <input formControlName="text" placeholder="Enter question">
+                <input formControlName="text" placeholder="Enter question" [maxlength]="limits.maximumQuestionLength">
                 <button type="button" class="trash" (click)="removePrompt(promptIndex)" aria-label="Remove question">
                   <img src="/assets-icons/trash_light.svg" alt="">
                 </button>
@@ -67,7 +70,7 @@
                 @for (choice of choicesAt(promptIndex).controls; track choice; let choiceIndex = $index) {
                   <div class="answer-row" [formGroupName]="choiceIndex">
                     <span class="answer-letter">{{ answerLabel(choiceIndex) }}</span>
-                    <input formControlName="text" [placeholder]="'Answer ' + answerLabel(choiceIndex)">
+                    <input formControlName="text" [placeholder]="'Answer ' + answerLabel(choiceIndex)" [maxlength]="limits.maximumAnswerLength">
                     <button type="button" class="trash answer-trash" (click)="removeChoice(promptIndex, choiceIndex)" [attr.aria-label]="'Remove answer ' + answerLabel(choiceIndex)">
                       <img src="/assets-icons/trash_light.svg" alt="">
                     </button>

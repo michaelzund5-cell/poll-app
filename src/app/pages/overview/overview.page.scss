@@ -16,10 +16,10 @@
   display: grid;
   grid-template-columns: 1.25fr .75fr;
   align-items: center;
-  width: min(1218px, calc(100% - 40px));
+  width: min(1218px, 100%);
   height: 520px;
   margin: 0 auto;
-  padding: 0;
+  padding: 0 20px;
 }
 
 .hero-copy {
@@ -108,9 +108,9 @@ h1 {
 .hero-art:hover .phone-hover { opacity: 1; }
 
 .content {
-  width: min(1042px, calc(100% - 40px));
+  width: min(1082px, 100%);
   margin: 0 auto;
-  padding: 0 0 72px;
+  padding: 0 20px 72px;
 }
 
 .content > h2 {
@@ -231,13 +231,25 @@ h1 {
 }
 
 .category-filter select {
-  border: 0;
-  background: transparent;
+  min-height: 34px;
+  border: 1px solid #FFB770;
+  border-radius: 4px;
+  padding: 5px 30px 5px 8px;
+  background: #35273A;
   color: #fffaf4;
   font-size: 16px;
   font-weight: 600;
   cursor: pointer;
-  padding-right: 1rem;
+}
+
+.category-filter select option {
+  background: #fff;
+  color: #35273A;
+}
+
+.category-filter select:focus {
+  outline: none;
+  border-color: #FFB770;
 }
 
 .status {
@@ -315,7 +327,7 @@ h1 {
 
 @media (max-width: 900px) {
   .hero {
-    width: min(94%, 900px);
+    width: min(900px, 100%);
     height: auto;
     min-height: 420px;
     grid-template-columns: 1fr 320px;
@@ -323,7 +335,7 @@ h1 {
   }
 
   .content {
-    width: min(94%, 900px);
+    width: min(900px, 100%);
   }
 }
 
@@ -355,7 +367,29 @@ h1 {
     margin-bottom: 34px;
   }
 
-  .soon-grid,
+  .soon-grid {
+    display: flex;
+    gap: 16px;
+    width: 100%;
+    max-width: 100%;
+    padding: 0 12px 10px 0;
+    overflow-x: auto;
+    overscroll-behavior-inline: contain;
+    scroll-snap-type: inline mandatory;
+    scrollbar-width: none;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .soon-grid::-webkit-scrollbar {
+    display: none;
+  }
+
+  .soon-card {
+    flex: 0 0 min(82vw, 330px);
+    min-height: 260px;
+    scroll-snap-align: start;
+  }
+
   .survey-list {
     grid-template-columns: 1fr;
   }
@@ -364,19 +398,28 @@ h1 {
 @media (max-width: 480px) {
   .hero,
   .content {
-    width: calc(100% - 24px);
+    width: 100%;
+    padding-left: 12px;
+    padding-right: 12px;
   }
 
   .tabs {
-    align-items: flex-start;
+    align-items: stretch;
     flex-direction: column;
+  }
+
+  .category-filter,
+  .category-filter select {
+    width: 100%;
   }
 }
 
 @media (max-width: 360px) {
   .hero,
   .content {
-    width: calc(100% - 16px);
+    width: 100%;
+    padding-left: 8px;
+    padding-right: 8px;
   }
 
   h1 {
@@ -397,6 +440,7 @@ h1 {
   }
 
   .soon-card {
+    flex-basis: min(86vw, 286px);
     min-height: 220px;
     padding: 18px;
   }
@@ -405,5 +449,55 @@ h1 {
     flex-wrap: wrap;
     min-height: auto;
     padding: 16px;
+  }
+}
+
+
+/* Final responsive guardrails: every page element can shrink to 320px without
+   creating a second, page-level horizontal scroll area. */
+.hero > *,
+.content > *,
+.tabs > *,
+.survey-list > *,
+.survey-row > * {
+  min-width: 0;
+}
+
+.category-filter {
+  min-width: 0;
+  max-width: 100%;
+}
+
+.category-filter select {
+  max-width: 100%;
+}
+
+@media (max-width: 420px) {
+  .tabs > div {
+    width: 100%;
+    flex-wrap: wrap;
+  }
+
+  .tabs button {
+    flex: 1 1 130px;
+  }
+
+  .soon-grid {
+    padding-right: 8px;
+  }
+
+  .soon-card {
+    flex-basis: min(84vw, 280px);
+  }
+}
+
+@media (max-width: 340px) {
+  .survey-row {
+    gap: 10px;
+    padding: 14px;
+  }
+
+  .survey-row-badge {
+    max-width: 100%;
   }
 }

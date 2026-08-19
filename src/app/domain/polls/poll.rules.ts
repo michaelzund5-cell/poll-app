@@ -11,7 +11,7 @@ export const POLL_LIMITS = {
   maximumChoices: 6,
   endingSoonDays: 7,
   maximumTitleLength: 120,
-  maximumDescriptionLength: 600,
+  maximumDescriptionLength: 1000,
   maximumQuestionLength: 160,
   maximumAnswerLength: 120,
 } as const;

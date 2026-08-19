@@ -14,13 +14,13 @@
   position: relative;
   z-index: 50;
   display: flex;
-  width: min(1180px, calc(100% - 48px));
+  width: min(1228px, 100%);
   min-height: 70px;
   align-items: center;
   justify-content: space-between;
   gap: 16px;
   margin: 0 auto;
-  padding-top: 14px;
+  padding: 14px 24px 0;
   background: var(--eggplant);
 }
 
@@ -53,49 +53,89 @@ nav {
 .new-survey-button {
   display: none;
   align-items: center;
-  gap: 6px;
-  min-height: 34px;
+  justify-content: center;
+
+  width: 149px;
+  height: 48px;
+  gap: 0;
+
   overflow: hidden;
-  border: 1px solid #e59645;
-  border-radius: 5px;
-  padding: 7px 11px;
-  background: #FFB770;
+
+  border: none;
+  border-radius: 10px;
+  padding: 12px 16px;
+
+  background: #FFCFA1;
   color: var(--ink);
+
   font-family: "Nokora", sans-serif;
   font-size: 16px;
   font-weight: 800;
-  box-shadow: 0 2px 0 #ce7c35;
+  white-space: nowrap;
+
+  cursor: pointer;
+
+  transition:
+    width .25s ease,
+    background-color .25s ease;
 }
 
+
+/* PLUS IST NORMAL KOMPLETT WEG */
 .new-survey-button img {
+  display: block;
+
   width: 0;
   height: 16px;
+  margin-left: 0;
+
   opacity: 0;
-  transform: translateX(10px);
-  transition: opacity .2s ease, transform .2s ease, width .2s ease;
+  visibility: hidden;
+
+  transform: translateX(12px);
+
+  transition:
+    width .25s ease,
+    margin-left .25s ease,
+    opacity .15s ease,
+    transform .25s ease,
+    visibility 0s linear .25s;
 }
 
+
+/* BUTTON WIRD BEIM HOVER BREITER */
 .new-survey-button:hover:not(:disabled) {
-  transform: translateY(-2px);
-  background: #ffd99d;
-  box-shadow: 0 6px 14px rgba(0, 0, 0, .18);
+  width: 183px;
+  background: #FFB770;
 }
 
+
+/* PLUS ERSCHEINT NUR BEIM HOVER */
 .new-survey-button:hover:not(:disabled) img {
   width: 16px;
-  opacity: 1;
-  transform: translateX(0);
-}
+  margin-left: 10px;
 
+  opacity: 1;
+  visibility: visible;
+
+  transform: translateX(0);
+
+  transition:
+    width .25s ease,
+    margin-left .25s ease,
+    opacity .15s ease,
+    transform .25s ease,
+    visibility 0s;
+}
 /* Figma single-survey frame: white header and centered content boundary. */
 .app-shell:has(app-poll-detail-page) {
   background: #fff;
 }
 
 .app-shell:has(app-poll-detail-page) .topbar {
-  width: min(1100px, calc(100% - 48px));
+  width: min(1148px, 100%);
   min-height: 84px;
-  padding-top: 18px;
+  padding: 18px 24px 0;
   background: #fff;
 }
 
@@ -119,15 +159,55 @@ nav {
 }
 
 .app-shell:has(app-poll-detail-page) .new-survey-button {
-  min-height: 38px;
-  padding: 8px 13px;
+  width: 149px;
+  min-width: 0;
+  height: 48px;
+  min-height: 48px;
+  justify-content: center;
+  gap: 0;
+  border: 0;
+  border-radius: 10px;
+  padding: 12px 16px;
+  background: #FFCFA1;
+  color: #35263A;
   font-size: 16px;
+  font-weight: 800;
+  white-space: nowrap;
+}
+
+.app-shell:has(app-poll-detail-page) .new-survey-button img {
+  display: block;
+  width: 0;
+  height: 16px;
+  margin-left: 0;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateX(12px);
+}
+
+.app-shell:has(app-poll-detail-page) .new-survey-button:hover:not(:disabled) {
+  width: 183px;
+}
+
+.app-shell:has(app-poll-detail-page) .new-survey-button:hover:not(:disabled) img {
+  width: 16px;
+  margin-left: 10px;
+  opacity: 1;
+  visibility: visible;
+  transform: translateX(0);
+}
+
+.app-shell:has(app-poll-detail-page) .new-survey-button:hover:not(:disabled) {
+  border-color: transparent;
+  background: #FFB770;
 }
 
 @media (max-width: 640px) {
   .topbar,
   .app-shell:has(app-poll-detail-page) .topbar {
-    width: calc(100% - 28px);
+    width: 100%;
+    padding-left: 14px;
+    padding-right: 14px;
   }
 
   .brand-logo {
@@ -138,10 +218,10 @@ nav {
 @media (max-width: 360px) {
   .topbar,
   .app-shell:has(app-poll-detail-page) .topbar {
-    width: calc(100% - 16px);
+    width: 100%;
     min-height: 56px;
     gap: 8px;
-    padding-top: 10px;
+    padding: 10px 8px 0;
   }
 
   .brand-logo {
@@ -152,9 +232,15 @@ nav {
     padding: 6px 9px;
   }
 
-  .new-survey-button img {
-    display: none;
+
+  .app-shell:has(app-poll-detail-page) .new-survey-button {
+    width: auto;
+    min-width: 0;
+    height: 42px;
+    min-height: 42px;
+    padding: 10px 12px;
   }
+
 }
 
 
@@ -177,4 +263,22 @@ nav {
 .new-survey-button:active:not(:disabled) {
   transform: none;
   background: #ffc98a;
+}
+
+
+@media (max-width: 340px) {
+  nav {
+    min-width: 0;
+  }
+
+  .app-shell:has(app-poll-detail-page) .new-survey-button {
+    width: 136px;
+    padding-left: 10px;
+    padding-right: 10px;
+    font-size: 15px;
+  }
+
+  .app-shell:has(app-poll-detail-page) .new-survey-button:hover:not(:disabled) {
+    width: 160px;
+  }
 }

@@ -45,10 +45,15 @@
                     <img src="/assets-icons/trash_light.svg" alt="">
                   </button>
                 </div>
-                <small>
-                  @if (controlInvalid(form.controls.title)) {
-                    Enter at least 5 non-space characters.
-                  }
+                <small class="field-feedback">
+                  <span>
+                    @if (controlInvalid(form.controls.title)) {
+                      Enter at least 5 non-space characters.
+                    }
+                  </span>
+                  <span class="character-count">
+                    {{ form.controls.title.value.length }} / {{ limits.maximumTitleLength }}
+                  </span>
                 </small>
               </label>
             </div>
@@ -72,7 +77,12 @@
                     <img src="/assets-icons/trash_light.svg" alt="">
                   </button>
                 </div>
-                <small></small>
+                <small class="field-feedback">
+                  <span>Describe the survey in up to {{ limits.maximumDescriptionLength }} characters.</span>
+                  <span class="character-count">
+                    {{ form.controls.description.value.length }} / {{ limits.maximumDescriptionLength }}
+                  </span>
+                </small>
               </label>
             </div>
 
@@ -166,10 +176,15 @@
                       placeholder="Enter question"
                       [maxlength]="limits.maximumQuestionLength"
                     >
-                    <small>
-                      @if (controlInvalid($any(prompt.get('text')))) {
-                        Enter at least 5 non-space characters.
-                      }
+                    <small class="input-feedback">
+                      <span>
+                        @if (controlInvalid($any(prompt.get('text')))) {
+                          Enter at least 5 non-space characters.
+                        }
+                      </span>
+                      <span class="character-count">
+                        {{ ($any(prompt.get('text'))?.value?.length || 0) }} / {{ limits.maximumQuestionLength }}
+                      </span>
                     </small>
                   </label>
 
@@ -198,10 +213,15 @@
                             placeholder=""
                             [maxlength]="limits.maximumAnswerLength"
                           >
-                          <small>
-                            @if (controlInvalid($any(choice.get('text')))) {
-                              Answer cannot be blank.
-                            }
+                          <small class="input-feedback">
+                            <span>
+                              @if (controlInvalid($any(choice.get('text')))) {
+                                Answer cannot be blank.
+                              }
+                            </span>
+                            <span class="character-count">
+                              {{ ($any(choice.get('text'))?.value?.length || 0) }} / {{ limits.maximumAnswerLength }}
+                            </span>
                           </small>
                         </label>
 

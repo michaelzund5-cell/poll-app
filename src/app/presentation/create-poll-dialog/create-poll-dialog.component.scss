@@ -16,8 +16,9 @@
 }
 
 .dialog {
-  width: min(1100px, calc(100vw - 40px));
-  max-height: calc(100vh - 40px);
+  width: min(1100px, 100%);
+  max-width: 100%;
+  max-height: calc(100dvh - 40px);
   overflow-y: auto;
   border-radius: 10px 68px 10px 10px;
   background: var(--eggplant);
@@ -178,6 +179,21 @@ small {
   color: #ffbdc1;
   font-size: 16px;
   line-height: 1.25;
+}
+
+.field-feedback {
+  display: flex;
+  min-height: 20px;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.character-count {
+  flex: 0 0 auto;
+  color: #efe6f0;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
 }
 
 .category-trigger {
@@ -440,8 +456,12 @@ button:disabled {
 }
 
 @media (max-width: 760px) {
+  .backdrop {
+    padding: 8px;
+  }
+
   .dialog {
-    width: min(620px, calc(100vw - 16px));
+    width: min(620px, 100%);
     border-radius: 10px 44px 10px 10px;
   }
 
@@ -471,7 +491,7 @@ button:disabled {
 
   .dialog {
     width: 100%;
-    max-height: 96vh;
+    max-height: 96dvh;
     border-radius: 16px 16px 0 0;
   }
 
@@ -538,6 +558,21 @@ button:disabled {
 }
 
 @media (max-width: 360px) {
+  .backdrop {
+    width: 100%;
+    max-width: 100%;
+  }
+
+  .dialog {
+    width: 100%;
+    max-width: 100%;
+  }
+
+  .field-feedback {
+    gap: 6px;
+    font-size: 13px;
+  }
+
   .dialog-header {
     padding: 12px;
   }
@@ -591,4 +626,89 @@ button:disabled {
 
 .inline-add:hover {
   color: #FFB770;
+}
+
+
+.input-feedback {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.dialog *,
+.form-surface *,
+.question-card *,
+.answer-row * {
+  min-width: 0;
+}
+
+.category-trigger,
+.category-select {
+  max-width: 100%;
+}
+
+.category-select span {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+@media (max-width: 420px) {
+  .dialog-header {
+    gap: 10px;
+  }
+
+  .title-block {
+    min-width: 0;
+  }
+
+  .field-feedback,
+  .input-feedback {
+    flex-wrap: wrap;
+  }
+
+  .field-feedback .character-count,
+  .input-feedback .character-count {
+    margin-left: auto;
+  }
+
+  .answers-heading {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .multiple {
+    width: 100%;
+  }
+
+  .category-trigger,
+  .category-select {
+    width: 100%;
+  }
+
+  .category-select {
+    justify-content: space-between;
+  }
+
+  .category-menu {
+    width: 100%;
+    min-width: 0;
+    max-width: 100%;
+  }
+}
+
+@media (max-width: 340px) {
+  .dialog-header h2 {
+    font-size: 22px;
+  }
+
+  .form-surface {
+    padding-left: 8px;
+    padding-right: 8px;
+  }
+
+  .answer-row {
+    grid-template-columns: 12px minmax(0, 1fr) 20px;
+  }
 }

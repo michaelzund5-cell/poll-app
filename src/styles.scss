@@ -28,15 +28,37 @@ body,
 app-root {
   display: block;
   width: 100%;
-  min-width: 320px;
+  min-width: 0;
+  max-width: 100%;
   min-height: 100%;
   margin: 0;
+}
+
+html {
+  /* Prevent the page from shifting sideways when filtering changes the
+     document height and the vertical scrollbar appears/disappears. */
+  scrollbar-gutter: stable;
 }
 
 body {
   min-height: 100vh;
   font-family: var(--font-body);
   background: var(--eggplant);
+}
+
+img,
+svg,
+video,
+canvas {
+  max-width: 100%;
+}
+
+button,
+input,
+textarea,
+select {
+  min-width: 0;
+  max-width: 100%;
 }
 
 h1,

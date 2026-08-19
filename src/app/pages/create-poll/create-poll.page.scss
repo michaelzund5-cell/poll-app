@@ -282,3 +282,48 @@ button:disabled {
     margin-right: 0;
   }
 }
+
+
+.limit-feedback {
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.create-page *,
+.create-panel *,
+.form-columns > *,
+.question-top > *,
+.answer-row > * {
+  min-width: 0;
+}
+
+@media (max-width: 420px) {
+  .create-page {
+    padding-left: 8px;
+    padding-right: 8px;
+  }
+
+  .create-panel {
+    padding: 12px;
+  }
+
+  .create-head {
+    gap: 8px;
+  }
+
+  .question-top {
+    grid-template-columns: auto minmax(0, 1fr) 30px;
+  }
+
+  .footer-actions {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .cancel,
+  .publish {
+    width: 100%;
+    text-align: center;
+  }
+}
