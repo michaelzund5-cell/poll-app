@@ -41,6 +41,7 @@ export class CreatePollDialogComponent {
   readonly saving = signal(false);
   readonly submitMessage = signal<string | null>(null);
   readonly categoryMenuOpen = signal(false);
+  readonly minDeadline = new Date().toISOString().slice(0, 10);
 
   readonly form = this.formBuilder.group({
     title: ['', [meaningfulText(5)]],

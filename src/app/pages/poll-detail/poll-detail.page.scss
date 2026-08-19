@@ -119,6 +119,8 @@
   font-weight: 400;
   line-height: .98;
   letter-spacing: .01em;
+  overflow-wrap: break-word;
+  word-break: break-word;
 }
 
 .description {
@@ -127,6 +129,8 @@
   color: #4f4651;
   font-size: 16px;
   line-height: 1.42;
+  overflow-wrap: break-word;
+  word-break: break-word;
 }
 
 .questions-grid {
@@ -148,6 +152,8 @@
 .question-heading strong {
   font-size: 15px;
   line-height: 1.24;
+  overflow-wrap: break-word;
+  word-break: break-word;
 }
 
 .question-heading small {
@@ -219,30 +225,31 @@
   color: #817682;
   font-size: 16px;
 }
-
 .complete-button {
-  border: 1px solid #d58b42;
+  border: none;
   border-radius: 10px;
   padding: 8px 12px;
-  background: var(--peach);
-  color: #4b301b;
+
+  // Figma: #FFB770 mit 30 %
+  background: rgb(255 183 112 / 30%);
+
+  color: #35263a;
   font-family: "Nokora", sans-serif;
   font-size: 16px;
   font-weight: 800;
-  transition: background .15s ease;
+
+  transition: background-color 0.15s ease;
 }
 
 .complete-button:hover:not(:disabled) {
-  transform: none;
-  background: rgba(255, 183, 112, .3);
-  box-shadow: none;
+  // Gleiche Farbe, beim Hover heller: 60 %
+  background: rgb(255 183 112 / 60%);
 }
 
 .complete-button:disabled {
   cursor: not-allowed;
-  opacity: .5;
+  opacity: 0.5;
 }
-
 .results {
   padding-top: 118px;
 }

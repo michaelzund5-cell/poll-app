@@ -10,6 +10,10 @@ export const POLL_LIMITS = {
   minimumChoices: 2,
   maximumChoices: 6,
   endingSoonDays: 7,
+  maximumTitleLength: 120,
+  maximumDescriptionLength: 600,
+  maximumQuestionLength: 160,
+  maximumAnswerLength: 120,
 } as const;
 
 /** Rejects empty and whitespace-only text. */

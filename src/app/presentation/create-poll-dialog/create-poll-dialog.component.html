@@ -34,6 +34,7 @@
                     formControlName="title"
                     placeholder=""
                     autocomplete="off"
+                    [maxlength]="limits.maximumTitleLength"
                   >
                   <button
                     type="button"
@@ -60,6 +61,7 @@
                     rows="4"
                     formControlName="description"
                     placeholder=""
+                    [maxlength]="limits.maximumDescriptionLength"
                   ></textarea>
                   <button
                     type="button"
@@ -78,7 +80,7 @@
               <label>
                 <span>Set end date <em>(optional)</em></span>
                 <div class="field-with-action compact-field">
-                  <input type="date" formControlName="closesAt">
+                  <input type="date" formControlName="closesAt" [min]="minDeadline">
                   <button
                     type="button"
                     class="trash-button"
@@ -162,6 +164,7 @@
                     <input
                       formControlName="text"
                       placeholder="Enter question"
+                      [maxlength]="limits.maximumQuestionLength"
                     >
                     <small>
                       @if (controlInvalid($any(prompt.get('text')))) {
@@ -193,6 +196,7 @@
                           <input
                             formControlName="text"
                             placeholder=""
+                            [maxlength]="limits.maximumAnswerLength"
                           >
                           <small>
                             @if (controlInvalid($any(choice.get('text')))) {
