@@ -67,6 +67,8 @@
                     formControlName="description"
                     placeholder=""
                     [maxlength]="limits.maximumDescriptionLength"
+                    (beforeinput)="onDescriptionBeforeInput($event)"
+                    (input)="syncDescriptionLimitMessage()"
                   ></textarea>
                   <button
                     type="button"
@@ -78,7 +80,11 @@
                   </button>
                 </div>
                 <small class="field-feedback">
-                  <span>Describe the survey in up to {{ limits.maximumDescriptionLength }} characters.</span>
+                  <span>
+                    @if (descriptionLimitReached()) {
+                      Maximum of {{ limits.maximumDescriptionLength }} characters reached.
+                    }
+                  </span>
                   <span class="character-count">
                     {{ form.controls.description.value.length }} / {{ limits.maximumDescriptionLength }}
                   </span>

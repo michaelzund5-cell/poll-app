@@ -16,50 +16,73 @@ export const POLL_LIMITS = {
   maximumAnswerLength: 120,
 } as const;
 
-/** Rejects empty and whitespace-only text. */
+/**
+ * Builds a validator that rejects blank or too-short text.
+ * @param minimumCharacters Minimum non-space characters.
+ * @returns Validator for meaningful text.
+ */
 export function meaningfulText(minimumCharacters: number): ValidatorFn {
   return (control: AbstractControl): ValidationErrors | null => {
     const value = String(control.value ?? '').trim();
-
     return value.length >= minimumCharacters
       ? null
       : { meaningfulText: { requiredLength: minimumCharacters } };
   };
 }
 
-/** Normalizes user text before persistence. */
+/**
+ * Normalizes user-entered text before persistence.
+ * @param value Raw user value.
+ * @returns Trimmed text with normalized whitespace.
+ */
 export function normalizeText(value: unknown): string {
   return String(value ?? '').trim().replace(/\s+/g, ' ');
 }
 
-/** Returns true when a poll deadline is before today. */
+/**
+ * Checks whether a poll deadline has already passed.
+ * @param date Optional poll deadline.
+ * @returns Whether the deadline is before today.
+ */
 export function isClosed(date?: Date): boolean {
   return Boolean(date && startOfDay(date).getTime() < startOfToday().getTime());
 }
 
-/** Returns whole calendar days remaining, or null when no deadline exists. */
+/**
+ * Calculates whole calendar days until a deadline.
+ * @param date Optional poll deadline.
+ * @returns Whole days remaining, or null without a deadline.
+ */
 export function daysRemaining(date?: Date): number | null {
-  if (!date) {
-    return null;
-  }
-
+  if (!date) return null;
   const difference = startOfDay(date).getTime() - startOfToday().getTime();
   return Math.ceil(difference / 86_400_000);
 }
 
-/** Sorting helper: surveys without deadlines are placed last. */
+/**
+ * Creates a sortable timestamp for an optional deadline.
+ * @param date Optional poll deadline.
+ * @returns Sort timestamp with missing deadlines last.
+ */
 export function deadlineTimestamp(date?: Date): number {
   return date?.getTime() ?? Number.MAX_SAFE_INTEGER;
 }
 
+/**
+ * Normalizes a date to midnight.
+ * @param date Date to normalize.
+ * @returns Copy set to the start of its day.
+ */
 function startOfDay(date: Date): Date {
   const normalized = new Date(date);
   normalized.setHours(0, 0, 0, 0);
   return normalized;
 }
 
+/**
+ * Returns today normalized to midnight.
+ * @returns Current date normalized to the start of today.
+ */
 function startOfToday(): Date {
   return startOfDay(new Date());
 }
-
-

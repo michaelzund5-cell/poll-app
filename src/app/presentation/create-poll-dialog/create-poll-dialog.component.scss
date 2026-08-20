@@ -712,3 +712,34 @@ button:disabled {
     grid-template-columns: 12px minmax(0, 1fr) 20px;
   }
 }
+
+/* Keep all mobile form rows aligned to the same content edges. */
+@media (max-width: 520px) {
+  .field-group.survey-name label,
+  .field-group.deadline label,
+  .field-group.description label {
+    padding-right: 0;
+  }
+
+  .field-group.survey-name .field-with-action,
+  .field-group.deadline .field-with-action,
+  .field-group.description .field-with-action {
+    grid-template-columns: minmax(0, 1fr) 26px;
+  }
+
+  .field-group.survey-name .trash-button,
+  .field-group.deadline .trash-button,
+  .field-group.description .trash-button {
+    position: static;
+  }
+
+  .category-trigger,
+  .category-select,
+  .field-with-action {
+    width: 100%;
+  }
+
+  .answer-row {
+    column-gap: 8px;
+  }
+}
